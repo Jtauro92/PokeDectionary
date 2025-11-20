@@ -1,0 +1,117 @@
+NUM_OF_POKEMON = 1025
+TYPE_LIST = [
+    "NORMAL", "FIRE", "WATER", "ELECTRIC", "GRASS", "ICE", "FIGHTING",
+    "POISON", "GROUND", "FLYING", "PSYCHIC", "BUG", "ROCK", "GHOST",
+    "DRAGON", "DARK", "STEEL", "FAIRY"
+]
+
+def set_type(type):
+    type = type.upper()
+    if type not in TYPE_LIST:
+        return
+    return type
+
+class Pokemon():
+    def __init__(self,name = "Default",number = 0,type1 = "Default",type2 ="Default",ability1="Default",ability2="Default",hidden_ability="Default"):
+        self.__name = name
+        self.__number = number
+        self.__type1 = type1
+        self.__type2 = type2
+        self.ability1 = ability1
+        self.ability2 = ability2
+        self.hidden_ability = hidden_ability
+
+    def __str__(self):
+        return (f"Name: {self.name}\n"
+                f"Number: {self.number}\n"
+                f"Type 1: {self.type1}\n"
+                f"Type 2: {self.type2}\n"
+                f"Ability 1: {self.ability1}\n"
+                f"Ability 2: {self.ability2}\n"
+                f"Hidden Ability: {self.hidden_ability}")
+
+    # Getter and Setter for name attribute
+
+    @property
+    def name(self):
+        return self.__name
+
+    #Sets the name attribute, capitalizing it if it's not numeric
+    @name.setter
+    def name(self, new_name):
+        name = new_name
+
+        try:
+            int(name)
+        except ValueError:
+            if not name.isnumeric():
+                name = name.title()
+            
+        self.__name = name
+
+    @property
+    def number(self):
+        return self.__number
+
+    #Sets the number attribute, ensuring it's within valid range
+    @number.setter
+    def number(self, new_number):
+
+        #Try to convert new_number to an integer
+        try:
+            number = int(new_number)
+        except (TypeError, ValueError): 
+            return #Exit if conversion fails
+
+        #Check if number is within valid range
+        if not (1 <= number <= NUM_OF_POKEMON):
+            return #Exit if number is out of range
+            
+        self.__number = number
+
+    #class method to validate and set type
+    @classmethod
+    def set_type(cls,type):
+         type = type.upper()
+         if type not in TYPE_LIST:
+            return 
+
+    # Getter and Setter for type1 attribute
+    @property
+    def type1(self):
+        return self.__type1
+
+    @type1.setter
+    def type1(self, new_type):
+        type1 = set_type(new_type) #Validate type using set_type method
+        if type1 is None:
+            return
+        self.__type1 = type1
+
+    # Getter and Setter for type2 attribute
+    @property
+    def type2(self):
+        return self.__type2
+
+    @type2.setter
+    def type2(self, new_type):
+        type2 = set_type(new_type)
+
+        if not((type2 != None) and (type2 != self.type1)): #Ensure type2 is valid and different from type1
+            return
+        
+        self.__type2 = type2
+
+    @classmethod
+    def set_ability(cls, ability):
+        ability = ability.title()
+        return ability
+
+    
+
+if __name__ == "__main__":
+    pokemon = Pokemon()
+    pokemon.type1 = "fire"
+    pokemon.type2 = "FIRE"
+    print(pokemon.type2)
+

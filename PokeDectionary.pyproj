@@ -11,6 +11,7 @@
     <OutputPath>.</OutputPath>
     <Name>PokeDectionary</Name>
     <RootNamespace>PokeDectionary</RootNamespace>
+    <InterpreterId>MSBuild|Pokev|$(MSBuildProjectFullPath)</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,7 +22,20 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="module1.py" />
     <Compile Include="PokeDectionary.py" />
+    <Compile Include="Pokemon.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Interpreter Include="Pokev\">
+      <Id>Pokev</Id>
+      <Version>3.13</Version>
+      <Description>Pokev (Python 3.13 (64-bit))</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X64</Architecture>
+    </Interpreter>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
