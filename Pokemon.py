@@ -1,3 +1,6 @@
+
+
+
 NUM_OF_POKEMON = 1025
 TYPE_LIST = [
     "NORMAL", "FIRE", "WATER", "ELECTRIC", "GRASS", "ICE", "FIGHTING",
@@ -5,28 +8,45 @@ TYPE_LIST = [
     "DRAGON", "DARK", "STEEL", "FAIRY"
 ]
 
-def set_type(type):
-    type = type.upper()
-    if type not in TYPE_LIST:
-        return
-    return type
+# Function to validate and set a Pokemon's ability
+def set_ability(new_ability):
+    ABILITY_FILE ="abilities.txt"
+    ability = new_ability.title()
 
+    # Read abilities from the file and split them into a list
+    with open (ABILITY_FILE, "r") as file: 
+        abilities = file.read()
+        abilities = abilities.split(",")
+
+    for name in abilities:
+        if ability == name.strip():
+            return ability
+
+
+def set_type(new_type):
+    new_type = new_type.upper()
+    if new_type not in TYPE_LIST:
+        return
+    return new_type
+
+
+# Definition of the Pokemon class with attributes and validation methods 
 class Pokemon():
     def __init__(self,name = "Default",number = 0,type1 = "Default",type2 ="Default",ability1="Default",ability2="Default",hidden_ability="Default"):
         self.__name = name
         self.__number = number
         self.__type1 = type1
         self.__type2 = type2
-        self.ability1 = ability1
+        self.__ability1 = ability1
         self.ability2 = ability2
         self.hidden_ability = hidden_ability
 
     def __str__(self):
-        return (f"Name: {self.name}\n"
-                f"Number: {self.number}\n"
-                f"Type 1: {self.type1}\n"
-                f"Type 2: {self.type2}\n"
-                f"Ability 1: {self.ability1}\n"
+        return (f"Name: {self.__name}\n"
+                f"Number: {self.__number}\n"
+                f"Type 1: {self.__type1}\n"
+                f"Type 2: {self.__type2}\n"
+                f"Ability 1: {self.__ability1}\n"
                 f"Ability 2: {self.ability2}\n"
                 f"Hidden Ability: {self.hidden_ability}")
 
@@ -69,13 +89,6 @@ class Pokemon():
             
         self.__number = number
 
-    #class method to validate and set type
-    @classmethod
-    def set_type(cls,type):
-         type = type.upper()
-         if type not in TYPE_LIST:
-            return 
-
     # Getter and Setter for type1 attribute
     @property
     def type1(self):
@@ -102,16 +115,23 @@ class Pokemon():
         
         self.__type2 = type2
 
-    @classmethod
-    def set_ability(cls, ability):
-        ability = ability.title()
-        return ability
+    # Getter and Setter for ability1 attribute
+    @property
+    def ability1(self):
+        return self.__ability1
+
+    @ability1.setter
+    def ability1(self, new_ability):
+        name = set_ability(new_ability)
+        if name == None:
+            return
+        self.__ability1 = name
 
     
 
 if __name__ == "__main__":
     pokemon = Pokemon()
     pokemon.type1 = "fire"
-    pokemon.type2 = "FIRE"
-    print(pokemon.type2)
-
+    pokemon.type2 = "water"
+    pokemon.ability1 ="a"
+    print(pokemon)
