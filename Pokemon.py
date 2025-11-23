@@ -133,5 +133,5 @@ if __name__ == "__main__":
     pokemon = Pokemon()
     pokemon.type1 = "fire"
     pokemon.type2 = "water"
-    pokemon.ability1 ="a"
+    pokemon.ability1 ="overgrow"
     print(pokemon)
