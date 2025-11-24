@@ -9,16 +9,17 @@ TYPE_LIST = [
 ]
 
 # Function to validate and set a Pokemon's ability
-def set_ability(setter):
-    ABILITY_FILE ="abilities.txt"
-    def wrapper(self, new_ability):
-        ability = new_ability.title()
-        with open(ABILITY_FILE,'r') as f:
-            abilities = f.read().strip().split()
-            if any (ability == name for name in abilities):
-                target = setter(self,ability)
-    return wrapper #End of set_ability function
+def set_ability(func):
 
+    def wrapper(self,value):
+        value = value.title()
+        with open("abilities.txt", "r") as file:
+            abilities = file.read().split(",")
+            abilities = [ability.strip() for ability in abilities]
+        if (value not in abilities) or ([self.ability1,self.ability2,self.hidden_ability].count(value) > 0):
+            return
+        return func(self,value)
+    return wrapper
 
 def set_type(new_type):
     new_type = new_type.upper()
@@ -70,7 +71,7 @@ class Pokemon():
     def number(self):
         return self.__number
 
-    #Sets the number attribute, ensuring it's within valid range
+    '''Sets the number attribute, ensuring it's within valid range'''
     @number.setter
     def number(self, new_number):
 
@@ -116,8 +117,9 @@ class Pokemon():
     @property
     def ability1(self):
         return self.__ability1
-
     
+    #Sets the ability1 attribute, validating it using the set_ability decorator
+   
     @ability1.setter
     @set_ability
     def ability1(self, new_ability):
@@ -129,5 +131,5 @@ if __name__ == "__main__":
     pokemon = Pokemon()
     pokemon.type1 = "fire"
     pokemon.type2 = "water"
-    pokemon.ability1 ="Blaze"
-    print(pokemon)
+    pokemon.ability1 ="OVERGROW"
+    print(pokemon.ability1)
