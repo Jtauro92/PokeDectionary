@@ -16,7 +16,7 @@ def set_ability(func):
         with open("abilities.txt", "r") as file:
             abilities = file.read().split(",")
             abilities = [ability.strip() for ability in abilities]
-        if (value not in abilities) or ([self.ability1,self.ability2,self.hidden_ability].count(value) > 0):
+        if (value not in abilities) or ([self.ability1,self.ability2,self.hidden_ability].count(value) > 0): 
             return
         return func(self,value)
     return wrapper
@@ -36,8 +36,8 @@ class Pokemon():
         self.__type1 = type1
         self.__type2 = type2
         self.__ability1 = ability1
-        self.ability2 = ability2
-        self.hidden_ability = hidden_ability
+        self.__ability2 = ability2
+        self.__hidden_ability = hidden_ability
 
     def __str__(self):
         return (f"Name: {self.__name}\n"
@@ -45,8 +45,8 @@ class Pokemon():
                 f"Type 1: {self.__type1}\n"
                 f"Type 2: {self.__type2}\n"
                 f"Ability 1: {self.__ability1}\n"
-                f"Ability 2: {self.ability2}\n"
-                f"Hidden Ability: {self.hidden_ability}")
+                f"Ability 2: {self.__ability2}\n"
+                f"Hidden Ability: {self.__hidden_ability}")
 
     # Getter and Setter for name attribute
 
@@ -124,12 +124,36 @@ class Pokemon():
     @set_ability
     def ability1(self, new_ability):
         self.__ability1 = new_ability
+    
+    #sets ability2 attribute
+    @property
+    def ability2(self):
+        return self.__ability2
+    
+    #Sets the ability1 attribute, validating it using the set_ability decorator
+   
+    @ability2.setter
+    @set_ability
+    def ability2(self, new_ability):
+        self.__ability2 = new_ability
 
+    #sets hidden_ability attribute
+    @property
+    def hidden_ability(self):
+        return self.__hidden_ability
+    
+    #Sets the hidden_ability attribute, validating it using the set_ability decorator
+   
+    @hidden_ability.setter
+    @set_ability
+    def hidden_ability(self, new_ability):
+        self.__hidden_ability = new_ability
     
 
 if __name__ == "__main__":
     pokemon = Pokemon()
     pokemon.type1 = "fire"
     pokemon.type2 = "water"
-    pokemon.ability1 ="OVERGROW"
-    print(pokemon.ability1)
+    pokemon.ability2 ="overgrow"
+    pokemon.ability1 = "overgrow"
+    print(pokemon)
