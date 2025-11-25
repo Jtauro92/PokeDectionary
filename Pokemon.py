@@ -18,17 +18,29 @@ def set_ability(func):
             abilities = file.read().split(",")
             abilities = [ability.strip() for ability in abilities]
 
-        if (value not in abilities) or ([self.ability1,self.ability2,self.hidden_ability].count(value) > 0): 
-            return
+        if (value not in abilities):
+            raise ValueError("This ability does not exist!")
+
+        elif ([self.ability1,self.ability2,self.hidden_ability].count(value) > 0): 
+            raise ValueError("Ability already assigned to this Pokemon!")
 
         return func(self,value)
     return wrapper
 
-def set_type(new_type):
-    new_type = new_type.upper()
-    if new_type not in TYPE_LIST:
-        return
-    return new_type
+# Function to validate and set a Pokemon's Type
+def set_type(func):
+
+    def wrapper(self,value):
+        value = value.upper()
+
+        if (value not in TYPE_LIST):
+            raise ValueError("This type does not exist!")
+
+        elif ([self.type1, self.type2].count(value) > 0):
+            raise ValueError(f"This type ({self.type1}) is already assigned to this Pokemon!")
+
+        return func(self,value)
+    return wrapper
 
 
 # Definition of the Pokemon class with attributes and validation methods 
@@ -60,12 +72,12 @@ class Pokemon():
     #Sets the name attribute, capitalizing it if it's not numeric
     @name.setter
     def name(self, new_name):
-        name = new_name
+        name = new_name.strip()
 
-        if not name.isnumeric():
+        if not ((name.isnumeric()) or (name.strip() == "")):
             name = name.title()
         else:
-            raise ValueError("Names cannot be numerical!")
+            raise ValueError("Names cannot be empty or numerical!")
             
         self.__name = name
 
@@ -73,33 +85,34 @@ class Pokemon():
     def number(self):
         return self.__number
 
-    '''Sets the number attribute, ensuring it's within valid range'''
+    #Sets the number attribute, ensuring it's within valid range'''
     @number.setter
     def number(self, new_number):
 
-        #Try to convert new_number to an integer
-        try:
-            number = int(new_number)
-        except (TypeError, ValueError): 
-            return #Exit if conversion fails
+        # Try to convert new_number to an integer and preserve original error
 
-        #Check if number is within valid range
+        if (new_number.isnumeric()):
+            number = int(new_number)
+        else:
+            raise ValueError("Number must be an interger")
+
+        # Check if number is within valid range
         if not (1 <= number <= NUM_OF_POKEMON):
-            return #Exit if number is out of range
+            raise ValueError(f"Number must be between 1 and {NUM_OF_POKEMON}!")
             
         self.__number = number
+
 
     # Getter and Setter for type1 attribute
     @property
     def type1(self):
         return self.__type1
 
+    
     @type1.setter
+    @set_type
     def type1(self, new_type):
-        type1 = set_type(new_type) #Validate type using set_type method
-        if type1 is None:
-            return
-        self.__type1 = type1
+        self.__type1 = new_type
 
     # Getter and Setter for type2 attribute
     @property
@@ -107,13 +120,9 @@ class Pokemon():
         return self.__type2
 
     @type2.setter
+    @set_type
     def type2(self, new_type):
-        type2 = set_type(new_type)
-
-        if not((type2 != None) and (type2 != self.type1)): #Ensure type2 is valid and different from type1
-            return
-        
-        self.__type2 = type2
+        self.__type2 = new_type
 
     # Getter and Setter for ability1 attribute
     @property
@@ -155,8 +164,9 @@ class Pokemon():
 if __name__ == "__main__":
     pokemon = Pokemon()
     pokemon.type1 = "fire"
-    pokemon.type2 = "water"
+    pokemon.type2 = "k"
     pokemon.ability2 ="overgrow"
-    pokemon.ability1 = "overgrow"
-    pokemon.name = "123"
+    pokemon.ability1 = "blaze"
+
+    pokemon.name = " Jason"
     print(pokemon)
