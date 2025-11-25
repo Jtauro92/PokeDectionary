@@ -1,6 +1,6 @@
 
 
-
+#Constants
 NUM_OF_POKEMON = 1025
 TYPE_LIST = [
     "NORMAL", "FIRE", "WATER", "ELECTRIC", "GRASS", "ICE", "FIGHTING",
