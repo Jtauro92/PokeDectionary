@@ -16,7 +16,7 @@ def set_ability(func):
         with open("abilities.txt", "r") as file:
             abilities = file.read().split(",")
             abilities = [ability.strip() for ability in abilities]
-        if (value not in abilities) or ([self.ability1,self.ability2,self.hidden_ability].count(value) > 0):
+        if (value not in abilities) or ([self.ability1,self.ability2,self.hidden_ability].count(value) > 0): 
             return
         return func(self,value)
     return wrapper
@@ -131,5 +131,5 @@ if __name__ == "__main__":
     pokemon = Pokemon()
     pokemon.type1 = "fire"
     pokemon.type2 = "water"
-    pokemon.ability1 ="OVERGROW"
+    pokemon.ability1 ="a"
     print(pokemon.ability1)
