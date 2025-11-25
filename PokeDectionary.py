@@ -1,6 +1,3 @@
-from multiprocessing import Value
-
-
 choice = input("Enter Choice: ")
 
 while True:
