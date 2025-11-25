@@ -13,11 +13,14 @@ def set_ability(func):
 
     def wrapper(self,value):
         value = value.title()
+
         with open("abilities.txt", "r") as file:
             abilities = file.read().split(",")
             abilities = [ability.strip() for ability in abilities]
+
         if (value not in abilities) or ([self.ability1,self.ability2,self.hidden_ability].count(value) > 0): 
             return
+
         return func(self,value)
     return wrapper
 
@@ -59,11 +62,10 @@ class Pokemon():
     def name(self, new_name):
         name = new_name
 
-        try:
-            int(name)
-        except ValueError:
-            if not name.isnumeric():
-                name = name.title()
+        if not name.isnumeric():
+            name = name.title()
+        else:
+            raise ValueError("Names cannot be numerical!")
             
         self.__name = name
 
