@@ -13,6 +13,9 @@
     <RootNamespace>PokeDectionary</RootNamespace>
     <InterpreterId>MSBuild|Pokev|$(MSBuildProjectFullPath)</InterpreterId>
     <IsWindowsApplication>False</IsWindowsApplication>
+    <TestFramework>pytest</TestFramework>
+    <UnitTestPattern>test*.py</UnitTestPattern>
+    <UnitTestRootDirectory>.</UnitTestRootDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -24,6 +27,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AddNew.py" />
+    <Compile Include="Database.py" />
     <Compile Include="PokeDectionary.py" />
     <Compile Include="Pokemon.py" />
   </ItemGroup>

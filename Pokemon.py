@@ -121,7 +121,7 @@ class Pokemon():
 
     @type2.setter
     @set_type
-    def type2(self, new_type):
+    def type2(self, new_type):        
         self.__type2 = new_type
 
     # Getter and Setter for ability1 attribute
