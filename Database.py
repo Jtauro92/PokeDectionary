@@ -30,7 +30,7 @@ class Database:
                                         hidden_ability TEXT
                                     )''')
             except sqlite3.Error as e:
-                print(f"Error creating table: {e}")
+                raise e
 
     '''Add a new Pokemon to the database'''
 
@@ -55,10 +55,10 @@ class Database:
                 cursor.execute(sql_statement, VALUES) # Execute the insert statement and values
                 connection.commit() # Commit the transaction and close the connection
             except sqlite3.Error as e:
-                print(f"Error inserting Pokemon: {e}")
+                raise f"The pokemon could not be added. Error: {e}"
 
     '''Check if a Pokemon name already exists in the database'''
-    def if_name_exists(self, name):
+    def if_name_exist(self, name):
         sql_statement = '''SELECT COUNT(*) FROM pokemon WHERE name = ?'''
         with self.connectdb() as connection:
             cursor = connection.cursor()

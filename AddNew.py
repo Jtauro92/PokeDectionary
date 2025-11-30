@@ -12,19 +12,30 @@ class add_new():
 
     def add_name(self):
         np.name = input("Enter name: ")
-        if db().if_name_exists(np.name) != False:  # Check if the name already exists in the database
+        if db().if_name_exist(np.name) != False:  # Check if the name already exists in the database
             raise ValueError("Duplicate Pokemon name.")
-        return np.name
 
     def add_number(self):
-        np.number = input("Enter number: ")
-                                
-        return np.number
+        np.number = input("Enter number: ")                   
+        if db().if_number_exist(np.number) != False:  # Check if the number already exists in the database
+            raise ValueError("Duplicate Pokemon number.")
+
 
     def add_type(self):
-        np.type1 = input("Enter type 1: ")
-        np.type2 = input("Enter type 2: ")
-        return np.type1, np.type2
+        try:
+            np.type1 = input("Enter type 1: ")
+
+            np.type2 = input("Enter type 2: ")
+
+        except ValueError as ve:
+            msg = str(ve)
+            if "already assigned" in msg:
+                pass
+
+        return (np.type1, np.type2)
+
+
+
 
     def add_abilities(self):
         np.ability1 = input("Enter ability 1: ")
@@ -38,24 +49,16 @@ class add_new():
     def create_pokemon(self):
         try:
             self.add_name()
-        except ValueError as ve:
-            print(ve)
 
             self.add_number()
-        except ValueError as ve:
-            print(ve)
         
             self.add_type()
-        except ValueError as ve:
-            print(ve)
-       
+
             self.add_abilities()
         except ValueError as ve:
             print(ve)
             return None
 
-
-        return (np.name, np.number, np.type1, np.type2, np.ability1, np.ability2, np.hidden_ability))
 
     def main(self):
         while True:
@@ -69,7 +72,8 @@ class add_new():
 
 if __name__ == "__main__":
     p = add_new()
-    p.main()
+    print(p.create_pokemon())
+
 
 
 
