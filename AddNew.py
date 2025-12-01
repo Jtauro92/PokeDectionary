@@ -1,10 +1,8 @@
+import sqlite3
 from Database import Database as db
 from ErrorHandling import DuplicateAbilityError, DuplicateTypeError, validation_loop
 from Pokemon import Pokemon as pk
 
-
-
-np = pk() # Create an instance of the Pokemon class
 
 '''Class to add a new Pokemon'''
 
@@ -27,29 +25,29 @@ class add_new(pk):
 
     @validation_loop
     def set_type1(self):
-        np.type1 = input("Enter type 1: ")
-    
+        self.type1 = input("Enter type 1: ")
+
+    @validation_loop
     def set_type2(self):
-        try:
-            np.type2 = input("Enter type 2 (or press Enter to skip): ")
-        except DuplicateTypeError:
-            np.type2 = None
+        self.type2 = input("Enter type 2 (or press Enter to skip): ")
         
     @validation_loop
     def set_ability1(self):
-        np.ability1 = input("Enter ability 1: ")
+        self.ability1 = input("Enter ability 1: ")
     
+    @validation_loop
     def set_ability2(self):
         try:
-            np.ability2 = input("Enter ability 2: ")
+            self.ability2 = input("Enter ability 2: ")
         except DuplicateAbilityError:
-            np.ability2 = None
-
+            self.ability2 = None
+    
+    @validation_loop
     def set_hidden_ability(self):
         try:
-            np.hidden_ability = input("Enter hidden ability: ")
+            self.hidden_ability = input("Enter hidden ability: ")
         except DuplicateAbilityError:
-            np.hidden_ability = None
+            self.hidden_ability = None
     
     def create_pokemon(self):
         self.set_name()
@@ -59,6 +57,7 @@ class add_new(pk):
         self.set_ability1()
         self.set_ability2()
         self.set_hidden_ability()
+        self.add_pokemon()
             
     def get_pokemon(self):
         return (
@@ -71,21 +70,24 @@ class add_new(pk):
             self.hidden_ability
         )
 
+    def add_pokemon(self):
+        try:
+            db().add_pokemon(self.get_pokemon())
+            print("Pokemon added successfully!.")
+        except Exception as e:
+            print(f"Database error: {e}")
     
     def main(self):
-        add = db().add_pokemon
         while True:
-            pokemon = self.create_pokemon()
-            if pokemon:
-                add(self.get_pokemon)
-                print("Pokemon added successfully:")
+            self.create_pokemon()
+            cont = input("Add another Pokemon? (y/n): ").strip().lower()
+            if cont != 'y':
                 break
-            else:
-                print("Failed to add Pokemon. Please try again.")
 
 if __name__ == "__main__":
     p = add_new()
-    p.main()
+    p.set_type1()
+    p.set_type2()
 
-
+    print(p)
 

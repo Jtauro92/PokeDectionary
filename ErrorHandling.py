@@ -80,16 +80,18 @@ def set_type(func):
         try:
             value = value.upper().strip()
         except AttributeError:
-            return func(self, None)
+            pass #Return None if not a string
 
         # Check if type exists
         if not (value in TYPE_LIST):
             raise FakeTypeError("This type does not exist!")
 
         # Check for duplicate types
-        elif ([self.type1].count(value) > 0):
-            raise DuplicateTypeError(f"This type ({self.type1}) is already assigned to this Pokemon!")
-
+        elif ([self.type1].count(value) == 0): #Pass if not duplicate
+            pass
+        else:
+            value = None 
+            
         return func(self,value)
     return wrapper
 
@@ -102,13 +104,15 @@ def set_ability(func):
         try:
             value = value.title().strip()
         except AttributeError:
-             return func(self, None)
+             pass #Return None if not a string
 
         if (value not in ABILITIES):
             raise FakeAbilityError("This ability does not exist!")
 
-        elif ([self.ability1,self.ability2,self.hidden_ability].count(value) > 0): 
-            raise DuplicateAbilityError("Ability already assigned to this Pokemon!")
+        elif ([self.ability1,self.ability2,self.hidden_ability].count(value) == 0): 
+            pass #Pass if not duplicate
+        else:
+            value = None
 
         return func(self,value)
     return wrapper
