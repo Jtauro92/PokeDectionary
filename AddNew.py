@@ -1,6 +1,6 @@
 import sqlite3
 from Database import Database as db
-from ErrorHandling import DuplicateAbilityError, DuplicateTypeError, validation_loop
+from ErrorHandling import DuplicateAbilityError, DuplicateTypeError, EmptyTypeError, validation_loop
 from Pokemon import Pokemon as pk
 
 
@@ -25,11 +25,17 @@ class add_new(pk):
 
     @validation_loop
     def set_type1(self):
-        self.type1 = input("Enter type 1: ")
+        try:
+            self.type1 = input("Enter type 1: ")
+        except EmptyTypeError:
+            raise EmptyTypeError("Type 1 cannot be empty!")
 
     @validation_loop
     def set_type2(self):
-        self.type2 = input("Enter type 2 (or press Enter to skip): ")
+        try:
+            self.type2 = input("Enter type 2 (or press Enter to skip): ")
+        except EmptyTypeError:
+            return  # Allow skipping type2 by pressing Enter
         
     @validation_loop
     def set_ability1(self):

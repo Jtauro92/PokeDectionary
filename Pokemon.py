@@ -1,10 +1,10 @@
-from ErrorHandling import EmptyFieldError, set_name, set_number, set_type, set_ability
+from ErrorHandling import EmptyFieldError, EmptyTypeError, set_name, set_number, set_type, set_ability
 
 
 # Definition of the Pokemon class with attributes and validation methods 
 class Pokemon():
 
-    def __init__(self,name = "Default",number = 0,type1 = "Default",type2 ="Default",ability1="Default",ability2="Default",hidden_ability="Default"):
+    def __init__(self,name = "Default",number = 0,type1 = "Default",type2 =None,ability1="Default",ability2=None,hidden_ability=None):
         self.__name = name
         self.__number = number
         self.__type1 = type1
@@ -63,8 +63,9 @@ class Pokemon():
 
     @type2.setter
     @set_type
-    def type2(self, new_type):        
+    def type2(self, new_type):
         self.__type2 = new_type
+
 
     # Getter and Setter for ability1 attribute
     @property

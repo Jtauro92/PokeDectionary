@@ -26,6 +26,8 @@ class OutOfDexRangeError(ValueError):
 
 class FakeTypeError(ValueError):
     '''Custom error for invalid Pokemon types'''
+class EmptyTypeError(ValueError):
+    '''Custom error for empty Pokemon types'''
 
 class DuplicateTypeError(ValueError):
     '''Custom error for duplicate Pokemon types'''
@@ -80,14 +82,17 @@ def set_type(func):
         try:
             value = value.upper().strip()
         except AttributeError:
-            pass #Return None if not a string
+           return
 
         # Check if type exists
-        if not (value in TYPE_LIST):
-            raise FakeTypeError("This type does not exist!")
+        if value != '':
+            if not (value in TYPE_LIST):
+                    raise FakeTypeError("This type does not exist!")
+        else:
+            raise EmptyTypeError("Type cannot be empty!")
 
         # Check for duplicate types
-        elif ([self.type1].count(value) == 0): #Pass if not duplicate
+        if ([self.type1].count(value) == 0): #Pass if not duplicate
             pass
         else:
             value = None 
@@ -116,6 +121,7 @@ def set_ability(func):
 
         return func(self,value)
     return wrapper
+
 
 def validation_loop(setter_method):
     def wrapper(self):
