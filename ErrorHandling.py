@@ -13,6 +13,11 @@ TYPE_LIST = [
     "DRAGON", "DARK", "STEEL", "FAIRY"
 ]
 
+with open("abilities.txt", "r") as file:
+    abilities = file.read().split(",")
+    ABILITIES = [ability.strip() for ability in abilities]
+'''Custom Error Classes'''
+
 class EmptyFieldError(ValueError):
     '''Custom error for empty fields'''
 
@@ -28,9 +33,10 @@ class DuplicateTypeError(ValueError):
 class FakeAbilityError(ValueError):
     '''Custom error for invalid Pokemon abilities'''
 
+class DuplicateAbilityError(ValueError):
+    '''Custom error for duplicate Pokemon abilities'''
 
-
-
+'''Decorator Functions'''
 
 '''Function to validate and set a Pokemon's name'''
 def set_name(func):
@@ -59,9 +65,7 @@ def set_number(func):
             raise ValueError("Number must be an interger")
 
         # Check if number is within valid range
-        if (1 <= number <= NUM_OF_POKEMON):
-            pass
-        else:
+        if number not in range(1, NUM_OF_POKEMON + 1):
             raise OutOfDexRangeError(f"Number must be between 1 and {NUM_OF_POKEMON}!")
             
         return func(self,number)
@@ -71,16 +75,19 @@ def set_number(func):
 '''Function to validate and set a Pokemon's Type'''
 def set_type(func):
     def wrapper(self,value):
-        value = value.upper().strip()
+
+        # Standardize input, return None if not a string
+        try:
+            value = value.upper().strip()
+        except AttributeError:
+            return func(self, None)
 
         # Check if type exists
-        if (value in TYPE_LIST):
-            pass
-        else:
+        if not (value in TYPE_LIST):
             raise FakeTypeError("This type does not exist!")
 
         # Check for duplicate types
-        if ([self.type1].count(value) > 0):
+        elif ([self.type1].count(value) > 0):
             raise DuplicateTypeError(f"This type ({self.type1}) is already assigned to this Pokemon!")
 
         return func(self,value)
@@ -91,17 +98,28 @@ def set_type(func):
 def set_ability(func):
 
     def wrapper(self,value):
-        value = value.title().strip()
 
-        with open("abilities.txt", "r") as file:
-            abilities = file.read().split(",")
-            abilities = [ability.strip() for ability in abilities]
+        try:
+            value = value.title().strip()
+        except AttributeError:
+             return func(self, None)
 
-        if (value not in abilities):
+        if (value not in ABILITIES):
             raise FakeAbilityError("This ability does not exist!")
 
         elif ([self.ability1,self.ability2,self.hidden_ability].count(value) > 0): 
-            raise ValueError("Ability already assigned to this Pokemon!")
+            raise DuplicateAbilityError("Ability already assigned to this Pokemon!")
 
         return func(self,value)
+    return wrapper
+
+def validation_loop(setter_method):
+    def wrapper(self):
+        while True:
+            try:
+                setter_method(self)
+                break
+            except (ValueError, EmptyFieldError, OutOfDexRangeError, FakeTypeError, DuplicateTypeError, FakeAbilityError, DuplicateAbilityError) as e:
+                print(e)
+                continue
     return wrapper

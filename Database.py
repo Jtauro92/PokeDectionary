@@ -35,14 +35,7 @@ class Database:
     '''Add a new Pokemon to the database'''
 
     def add_pokemon(self, pokemon):
-        VALUES = (pokemon.name,
-                  pokemon.number, 
-                  pokemon.type1, 
-                  pokemon.type2,
-                  pokemon.ability1, 
-                  pokemon.ability2, 
-                  pokemon.hidden_ability
-            )
+        VALUES = pokemon
         sql_statement = '''INSERT INTO pokemon (name, number, type1, type2, ability1, ability2, hidden_ability)
                            VALUES (?, ?, ?, ?, ?, ?, ?)'''
 
