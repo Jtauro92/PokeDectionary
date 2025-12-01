@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>8ecf9299-562a-4a62-b533-1a2d903d45ee</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>AddNew.py</StartupFile>
+    <StartupFile>Pokemon.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -28,6 +28,7 @@
   <ItemGroup>
     <Compile Include="AddNew.py" />
     <Compile Include="Database.py" />
+    <Compile Include="ErrorHandling.py" />
     <Compile Include="PokeDectionary.py" />
     <Compile Include="Pokemon.py" />
   </ItemGroup>
