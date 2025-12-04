@@ -1,10 +1,11 @@
-from ErrorHandling import EmptyFieldError, EmptyTypeError, set_name, set_number, set_type, set_ability
+from ErrorHandling import set_name, set_number, set_type, set_ability
+from Database import Database as db
 
 
 # Definition of the Pokemon class with attributes and validation methods 
 class Pokemon():
 
-    def __init__(self,name = "Default",number = 0,type1 = "Default",type2 =None,ability1="Default",ability2=None,hidden_ability=None):
+    def __init__(self,name = "Default",number = 0,type1 = "Default",type2 ="Default",ability1="Default",ability2=None,hidden_ability=None):
         self.__name = name
         self.__number = number
         self.__type1 = type1
@@ -101,6 +102,11 @@ class Pokemon():
     @set_ability
     def hidden_ability(self, new_ability):
         self.__hidden_ability = new_ability
+
+    '''Behavioral methods can be added here in the future'''
+    def add_to_dex(self):
+        VALUES = (self.name, self.number, self.type1, self.type2, self.ability1, self.ability2, self.hidden_ability)
+        db().add_pokemon(VALUES)
     
 
 if __name__ == "__main__":
