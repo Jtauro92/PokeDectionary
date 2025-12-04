@@ -74,6 +74,22 @@ class Database:
             except sqlite3.Error:
                 print("This pokemon number does not exist!")
                 return False
+    
+    '''Retrieve a Pokemon's details by name or number'''
+    def get_pokemon(self, identifier):
+        sql_search = '''SELECT name, number, type1, type2, ability1, ability2, hidden_ability 
+                        FROM pokemon 
+                        WHERE name = ? OR number = ?'''
+        with self.connectdb() as connection:
+            cursor = connection.cursor()
+            try:
+                cursor.execute(sql_search, (identifier, identifier))
+                result = cursor.fetchone()
+                return result
+            except sqlite3.Error:
+                print("Error retrieving the pokemon.")
+                return None
+
 
 if __name__ == "__main__":
     db = Database()

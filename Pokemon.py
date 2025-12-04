@@ -1,5 +1,5 @@
 from ErrorHandling import set_name, set_number, set_type, set_ability
-from Database import Database as db
+from Database import Database as db, sqlite3
 
 
 # Definition of the Pokemon class with attributes and validation methods 
@@ -24,7 +24,6 @@ class Pokemon():
                 f"Hidden Ability: {self.__hidden_ability}")
 
     # Getter and Setter for name attribute
-
     @property
     def name(self):
         return self.__name
@@ -103,18 +102,47 @@ class Pokemon():
     def hidden_ability(self, new_ability):
         self.__hidden_ability = new_ability
 
-    '''Behavioral methods can be added here in the future'''
+    '''Behavioral methods for adding and checking Pokemon in the database'''
     def add_to_dex(self):
         VALUES = (self.name, self.number, self.type1, self.type2, self.ability1, self.ability2, self.hidden_ability)
-        db().add_pokemon(VALUES)
+        try:
+            db().add_pokemon(VALUES)
+        except sqlite3.Error as e:
+            raise e
+
+    def name_in_dex(self):
+        return db().if_name_exist(self.name)
+
+    def number_in_dex(self):
+        return db().if_number_exist(self.number)
+
+    def show(self,identifier):
+        p = db().get_pokemon(identifier)
+        if not p:
+            return f"Pokemon '{identifier}' not found."
+
+        result = [f"Name: {p[0]}\nNumber: {p[1]:04}"]
+        
+        type_str = f"Type: {p[2]}"
+        if p[3] is not None:
+            type_str += f" / {p[3]}"
+        result.append(type_str)
+
+        result.append(f"Ability #1: {p[4]}")
+
+        ability2_str = "Ability #2: "
+        if p[5]:
+            ability2_str += p[5]
+        result.append(ability2_str)
+
+        hidden_ability_str = "Hidden Ability: "
+        if p[6]:
+            hidden_ability_str += p[6]
+        result.append(hidden_ability_str)
+        
+        return "\n".join(result)
     
 
 if __name__ == "__main__":
     pokemon = Pokemon()
-    pokemon.type1 = ""
-    pokemon.ability2 ="overgrow"
-    pokemon.ability1 = "blaze"
-
-    pokemon.number = "1025"
-    pokemon.name = "charizard"
-    print(pokemon)
+    pokemon.show("Hydrapple")

@@ -1,7 +1,7 @@
-from Database import Database as db
-from ErrorHandling import (DuplicateValueError as dv, 
+import sqlite3
+from ErrorHandling import (BackToStart, DuplicateValueError as dv, 
                           EmptyFieldError as ef, 
-                          validation_loop
+                          validation_loop as vl
                           )
 from Pokemon import Pokemon as pk
 
@@ -13,41 +13,42 @@ class add_new(pk):
         super().__init__()
     
     '''Setters with validation loops for each attribute'''    
-    @validation_loop
+    @vl
     def set_name(self):
         self.name = input("Enter name: ")
-        if db().if_name_exist(self.name) != False:  # Check if the name already exists in the database
-            raise ValueError("Duplicate Pokemon name.")
+        if self.name_in_dex() != False:  # Check if the name already exists in the database
+            raise ValueError(f"This pokemon already exists! \n{self.show(self.name)}")
 
-    @validation_loop
+    @vl
     def set_number(self):
         self.number = input("Enter number: ")                   
-        if db().if_number_exist(self.number) != False:  # Check if the number already exists in the database
-            raise ValueError("Duplicate Pokemon number.")
+        if self.number_in_dex() != False:  # Check if the number already exists in the database
 
-    @validation_loop
+            raise ValueError(f"This pokemon already exists!\n{self.show(self.number)}")
+
+    @vl
     def set_type1(self):
         self.type1 = input("Enter type 1: ")
 
-    @validation_loop
+    @vl
     def set_type2(self):
         try:
             self.type2 = input("Enter type 2 (or press Enter to skip): ")
         except (dv,ef):
             self.type2 = None
         
-    @validation_loop
+    @vl
     def set_ability1(self):
         self.ability1 = input("Enter ability 1: ")
     
-    @validation_loop
+    @vl
     def set_ability2(self):
         try:
             self.ability2 = input("Enter ability 2: ")
         except (dv,ef):
             self.ability2 = None
     
-    @validation_loop
+    @vl
     def set_hidden_ability(self):
         try:
             self.hidden_ability = input("Enter hidden ability: ")
@@ -55,18 +56,31 @@ class add_new(pk):
             self.hidden_ability = None
     
     def create_pokemon(self):
-        self.set_name()
-        self.set_number()
-        self.set_type1()
-        self.set_type2()
-        self.set_ability1()
-        self.set_ability2()
-        self.set_hidden_ability()
-        self.add_to_dex()
+        try:
+            self.set_name()
+            self.set_number()
+            self.set_type1()
+            self.set_type2()
+            self.set_ability1()
+            self.set_ability2()
+            self.set_hidden_ability()          
+            self.add_to_dex()
+        except sqlite3.Error as sql:
+            raise sql
+        except BackToStart:
+            return
+        except ValueError as ve:
+            raise ve
+        
+
 
     def main(self):
         while True:
-            self.create_pokemon()
+            try:
+                self.create_pokemon()
+            except ValueError as ve:
+                print(ve)
+
             cont = input("Add another Pokemon? (y/n): ").strip().lower()
             if cont != 'y':
                 break
@@ -74,6 +88,4 @@ class add_new(pk):
 if __name__ == "__main__":
     p = add_new()
     p.main()
-
-    print(p)
 

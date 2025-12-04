@@ -37,6 +37,12 @@ class DuplicateValueError(ValueError):
         self.message = message
         super().__init__(self.message)
 
+class BackToStart(KeyboardInterrupt):
+    '''Custom error to return to the start of the program'''
+    def __init__(self, message="Returning to start..."):
+        self.message = message
+        super().__init__(self.message)
+
 
 '''Decorator Functions'''
 '''Function to validate and set a Pokemon's name'''
@@ -146,9 +152,8 @@ def validation_loop(setter_method):
             try:
                 setter_method(self)
                 break
-            except KeyboardInterrupt:
-                print('Goodbye!')
-                exit()
+            except (KeyboardInterrupt):
+                raise BackToStart
             except (OutOfDexRangeError, InvalidValueError, EmptyFieldError, DuplicateValueError) as e:
                 print(e)
                 continue
