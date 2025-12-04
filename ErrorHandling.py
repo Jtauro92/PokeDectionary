@@ -3,9 +3,6 @@
 
 
 #Constants
-from ast import Pass
-
-
 NUM_OF_POKEMON = 1025
 TYPE_LIST = [
     "NORMAL", "FIRE", "WATER", "ELECTRIC", "GRASS", "ICE", "FIGHTING",
@@ -20,23 +17,27 @@ with open("abilities.txt", "r") as file:
 
 class EmptyFieldError(ValueError):
     '''Custom error for empty fields'''
+    def __init__(self, message="This field cannot be empty!"):
+        self.message = message
+        super().__init__(self.message)
 
 class OutOfDexRangeError(ValueError):
     '''Custom error for out of Pokedex range'''
+    def __init__(self, message="Number is out of Pokedex range!"):
+        self.message = message
+        super().__init__(self.message)
 
-class FakeTypeError(ValueError):
+class InvalidValueError(ValueError):
     '''Custom error for invalid Pokemon types'''
-class EmptyTypeError(ValueError):
-    '''Custom error for empty Pokemon types'''
+    def __init__(self, message="Invalid value provided!"):
+        self.message = message
+        super().__init__(self.message)
 
-class DuplicateTypeError(ValueError):
+class DuplicateValueError(ValueError):
     '''Custom error for duplicate Pokemon types'''
-
-class FakeAbilityError(ValueError):
-    '''Custom error for invalid Pokemon abilities'''
-
-class DuplicateAbilityError(ValueError):
-    '''Custom error for duplicate Pokemon abilities'''
+    def __init__(self, message="Duplicate value provided!"):
+        self.message = message
+        super().__init__(self.message)
 
 '''Decorator Functions'''
 
@@ -45,10 +46,10 @@ def set_name(func):
     def wrapper(self,value):
         name = value.title().strip()
         if name.isnumeric():
-            raise ValueError("Names cannot be numerical!")
+            raise InvalidValueError("Names cannot be numerical!")
         
         elif name.strip() == '':
-            raise EmptyFieldError("Names cannot be empty!!")
+            raise EmptyFieldError
             
         return func(self,name)
     return wrapper
@@ -64,7 +65,7 @@ def set_number(func):
         elif (value.isnumeric()):
             number = int(value)
         else:
-            raise ValueError("Number must be an interger")
+            raise InvalidValueError("Number must be an interger")
 
         # Check if number is within valid range
         if number not in range(1, NUM_OF_POKEMON + 1):
@@ -81,22 +82,22 @@ def set_type(func):
         # Standardize input, return None if not a string
         try:
             value = value.upper().strip()
-        except AttributeError:
-           return
-
-        # Check if type exists
-        if value != '':
-            if not (value in TYPE_LIST):
-                    raise FakeTypeError("This type does not exist!")
-        else:
-            raise EmptyTypeError("Type cannot be empty!")
-
-        # Check for duplicate types
-        if ([self.type1].count(value) == 0): #Pass if not duplicate
-            pass
-        else:
-            value = None 
             
+            # Check if type exists
+            if value != '':
+                if value not in TYPE_LIST:
+                    raise InvalidValueError("This type does not exist!")
+                
+                #Check for duplicate types
+                elif not ([self.type1, self.type2].count(value) == 0):
+                    raise DuplicateValueError
+            
+            else:
+                raise EmptyFieldError #Return None if empty string
+        
+        except AttributeError: 
+            pass #Return None if not a string
+           
         return func(self,value)
     return wrapper
 
@@ -108,16 +109,23 @@ def set_ability(func):
 
         try:
             value = value.title().strip()
+
+            #Check for empty string
+            if value != '':
+                
+                #Raise error if ability1 is empty
+                if value not in ABILITIES:
+                    raise InvalidValueError("This ability does not exist!")
+
+                #Check for duplicate abilities
+                elif ([self.ability1,self.ability2,self.hidden_ability].count(value) > 0): 
+                    raise DuplicateValueError
+
+            else:
+                raise EmptyFieldError #Return None if empty string
+
         except AttributeError:
-             pass #Return None if not a string
-
-        if (value not in ABILITIES):
-            raise FakeAbilityError("This ability does not exist!")
-
-        elif ([self.ability1,self.ability2,self.hidden_ability].count(value) == 0): 
-            pass #Pass if not duplicate
-        else:
-            value = None
+            pass #Return None if not a string
 
         return func(self,value)
     return wrapper
@@ -129,7 +137,7 @@ def validation_loop(setter_method):
             try:
                 setter_method(self)
                 break
-            except (ValueError, EmptyFieldError, OutOfDexRangeError, FakeTypeError, DuplicateTypeError, FakeAbilityError, DuplicateAbilityError) as e:
+            except (OutOfDexRangeError, InvalidValueError, EmptyFieldError, DuplicateValueError) as e:
                 print(e)
                 continue
     return wrapper
