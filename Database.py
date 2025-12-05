@@ -50,51 +50,7 @@ class Database:
             except sqlite3.Error as e:
                 raise f"The pokemon could not be added. Error: {e}"
 
-    '''Check if a Pokemon name already exists in the database'''
-    def if_name_exist(self, name):
-        sql_statement = '''SELECT COUNT(*) FROM pokemon WHERE name = ?'''
-        with self.connectdb() as connection:
-            cursor = connection.cursor()
-            try:
-                cursor.execute(sql_statement, (name,))
-                count = cursor.fetchone()[0]
-                return count > 0
-            except sqlite3.Error:
-                print("This pokemon does not exist!")
-                return False
-
-    def if_number_exist(self, number):
-        sql_statement = '''SELECT COUNT(*) FROM pokemon WHERE number = ?'''
-        with self.connectdb() as connection:
-            cursor = connection.cursor()
-            try:
-                cursor.execute(sql_statement, (number,))
-                count = cursor.fetchone()[0]
-                return count > 0
-            except sqlite3.Error:
-                print("This pokemon number does not exist!")
-                return False
-    
-    '''Retrieve a Pokemon's details by name or number'''
-    def get_pokemon(self, identifier):
-        sql_search = '''SELECT name, number, type1, type2, ability1, ability2, hidden_ability 
-                        FROM pokemon 
-                        WHERE name = ? OR number = ?'''
-        with self.connectdb() as connection:
-            cursor = connection.cursor()
-            try:
-                cursor.execute(sql_search, (identifier, identifier))
-                result = cursor.fetchone()
-                return result
-            except sqlite3.Error:
-                print("Error retrieving the pokemon.")
-                return None
-
 
 if __name__ == "__main__":
-    db = Database()
-    conn = db.connectdb()
-    cursor = conn.cursor()
-    db.create_table(cursor)
-    conn.close()
+    print(Database().get_pokemon("Hydrapple"))
 

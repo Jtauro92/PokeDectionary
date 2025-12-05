@@ -3,9 +3,10 @@ from Database import Database as db, sqlite3
 
 
 # Definition of the Pokemon class with attributes and validation methods 
-class Pokemon():
+class Pokemon(db):
 
     def __init__(self,name = "Default",number = 0,type1 = "Default",type2 ="Default",ability1="Default",ability2=None,hidden_ability=None):
+        super().__init__()
         self.__name = name
         self.__number = number
         self.__type1 = type1
@@ -23,81 +24,72 @@ class Pokemon():
                 f"Ability 2: {self.__ability2}\n"
                 f"Hidden Ability: {self.__hidden_ability}")
 
-    # Getter and Setter for name attribute
+    '''Getters and Setters with validation decorators for each attribute'''
+    
+    '''Getter and Setter for name attribute'''
     @property
     def name(self):
         return self.__name
 
-    #Sets the name attribute, capitalizing it if it's not numeric
-    @name.setter
-    @set_name
+    @name.setter #Sets name attribute
+    @set_name #Decorator to validate and stardize name
     def name(self, new_name):            
         self.__name = new_name
 
+    '''Getter and Setter for number attribute'''
     @property
     def number(self):
         return self.__number
 
-    #Sets the number attribute, ensuring it's within valid range'''
-    @number.setter
-    @set_number
+    @number.setter #Sets number attribute
+    @set_number 
     def number(self, new_number):
         self.__number = new_number
-
-
-    # Getter and Setter for type1 attribute
+    
+    '''Getter and Setter for type attributes'''
     @property
     def type1(self):
         return self.__type1
 
-    
-    @type1.setter
-    @set_type
+    @type1.setter #Sets type1 attribute
+    @set_type 
     def type1(self, new_type):        
         self.__type1 = new_type
 
-    # Getter and Setter for type2 attribute
     @property
     def type2(self):
         return self.__type2
 
-    @type2.setter
-    @set_type
-    def type2(self, new_type):
-        self.__type2 = new_type
+    @type2.setter #Sets type2 attribute
+    @set_type 
+    def type2(self, new_type): 
+        self.__type2 = new_type 
 
 
-    # Getter and Setter for ability1 attribute
+    '''Getter and Setter for ability attributes ensuring unique values'''
     @property
     def ability1(self):
         return self.__ability1
-    
-    #Sets the ability1 attribute, validating it using the set_ability decorator
    
-    @ability1.setter
+    @ability1.setter #Sets ability1 attribute
     @set_ability
     def ability1(self, new_ability):
         self.__ability1 = new_ability
     
-    #sets ability2 attribute
     @property
     def ability2(self):
         return self.__ability2
-    
-    #Sets the ability1 attribute, validating it using the set_ability decorator
    
-    @ability2.setter
+    @ability2.setter #Sets ability2 attribute
     @set_ability
     def ability2(self, new_ability):
         self.__ability2 = new_ability
 
-    #sets hidden_ability attribute
     @property
     def hidden_ability(self):
         return self.__hidden_ability
     
-    #Sets the hidden_ability attribute, validating it using the set_ability decoratoion
-    @hidden_ability.setter
+    @hidden_ability.setter #Sets hidden_ability attribute
     @set_ability
     def hidden_ability(self, new_ability):
         self.__hidden_ability = new_ability
@@ -106,20 +98,43 @@ class Pokemon():
     def add_to_dex(self):
         VALUES = (self.name, self.number, self.type1, self.type2, self.ability1, self.ability2, self.hidden_ability)
         try:
-            db().add_pokemon(VALUES)
+            self.add_pokemon(VALUES)
         except sqlite3.Error as e:
             raise e
 
-    def name_in_dex(self):
-        return db().if_name_exist(self.name)
+    '''Check if a Pokemon exists in the database by name or number'''
+    def exists_in_db(self):
+        sql_search = '''SELECT COUNT(*) FROM pokemon WHERE name = ? OR number = ?'''
+        with self.connectdb() as connection:
+            cursor = connection.cursor()
+            try:
+                cursor.execute(sql_search, (self.name, self.number)) 
+                count = cursor.fetchone()[0]
+                return count > 0 # Return True if exists, False otherwise
+            except sqlite3.Error as e:
+                print(f"Database error: {e}")
 
-    def number_in_dex(self):
-        return db().if_number_exist(self.number)
+    '''Retrieve a Pokemon's details by name or number'''
+    def get_pokemon(self):
+        sql_search = '''SELECT name, number, type1, type2, ability1, ability2, hidden_ability 
+                        FROM pokemon 
+                        WHERE name = ? OR number = ?'''
 
-    def show(self,identifier):
-        p = db().get_pokemon(identifier)
-        if not p:
-            return f"Pokemon '{identifier}' not found."
+        with self.connectdb() as connection:
+            cursor = connection.cursor()
+
+            try:
+                cursor.execute(sql_search, (self.name, self.number))
+                result = cursor.fetchone()
+
+            except sqlite3.Error as e:
+                raise e
+ 
+            return result
+
+    '''Display a Pokemon's details in a formatted manner'''
+    def show(self):
+        p = self.get_pokemon()
 
         result = [f"Name: {p[0]}\nNumber: {p[1]:04}"]
         
@@ -140,9 +155,10 @@ class Pokemon():
             hidden_ability_str += p[6]
         result.append(hidden_ability_str)
         
-        return "\n".join(result)
+        print( "\n".join(result))
     
 
 if __name__ == "__main__":
     pokemon = Pokemon()
-    pokemon.show("Hydrapple")
+    pokemon.name ="Pikachu"
+    pokemon.show()

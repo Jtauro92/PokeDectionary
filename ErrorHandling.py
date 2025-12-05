@@ -43,7 +43,6 @@ class BackToStart(KeyboardInterrupt):
         self.message = message
         super().__init__(self.message)
 
-
 '''Decorator Functions'''
 '''Function to validate and set a Pokemon's name'''
 def set_name(func):
