@@ -1,9 +1,8 @@
 from ErrorHandling import (BackToStart, DuplicateValueError as dv, 
                           EmptyFieldError as ef, 
-                          validation_loop as vl,
-                          sqlite3 as sql
+                          validation_loop as vl
                           )
-from Pokemon import Pokemon as pk
+from Pokemon import Pokemon as pk, sqlite3
 
 
 '''Class to add a new Pokemon'''
@@ -68,7 +67,7 @@ class add_new(pk):
             self.set_ability2()
             self.set_hidden_ability()          
             self.add_to_dex()
-        except sql.Error as sql:
+        except sqlite3.Error as sql:
             raise sql
         except BackToStart:
             return
