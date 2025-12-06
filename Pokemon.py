@@ -2,7 +2,7 @@ from ErrorHandling import set_name, set_number, set_type, set_ability
 from Database import Database as db, sqlite3
 
 
-# Definition of the Pokemon class with attributes and validation methods 
+'''Pokemon Class representing a Pokemon entity with attributes and methods to interact with a database.'''
 class Pokemon(db):
 
     def __init__(self,name = "Default",number = 0,type1 = "Default",type2 ="Default",ability1="Default",ability2=None,hidden_ability=None):
