@@ -1,7 +1,9 @@
 from os import system
+from time import sleep
 
 from AddNew import add_new as an
 class Main:
+    system('cls')
     def __init__(self):
         self.jobs ={
                 '1': an().main,
@@ -10,7 +12,7 @@ class Main:
     def display_menu(self):
         print('-'*30)
         print("Menu:")
-        print("1 Option 1")
+        print("1 Add Pokemon")
         print("2. Option 2")
         print("3. Option 3")
         print("4. Option 4")
@@ -28,11 +30,14 @@ class Main:
                 self.jobs[choice]()
             else:
                 print("Invalid choice. Please try again.\n")
+                sleep(1)
+                system('cls')
 
     def main(self):
         while True:
             try:
                 self.process_job()
+                system('cls')
             except KeyboardInterrupt:
                 system('cls')
                 print("Exiting program. Goodbye!")

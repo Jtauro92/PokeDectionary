@@ -63,9 +63,9 @@ class Pokemon(db):
     @type2.setter #Sets type2 attribute
     @set_type 
     def type2(self, new_type): 
-        self.__type2 = new_type 
-
-
+        self.__type2 = new_type
+        
+ 
     '''Getter and Setter for ability attributes ensuring unique values'''
     @property
     def ability1(self):
