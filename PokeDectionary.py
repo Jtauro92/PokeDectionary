@@ -1,4 +1,4 @@
-import os
+from os import system
 
 from AddNew import add_new as an
 class Main:
@@ -25,10 +25,10 @@ class Main:
             if choice == '0':
                 raise KeyboardInterrupt
             elif any(choice == key for key in self.jobs):
-                os.system('cls')
+                system('cls')
                 self.jobs[choice]()
             else:
-                os.system('cls')
+                system('cls')
                 print("Invalid choice. Please try again.\n")
         except KeyboardInterrupt:
             raise KeyboardInterrupt
@@ -38,7 +38,7 @@ class Main:
             try:
                 self.process_job()
             except KeyboardInterrupt:
-                os.system('cls')
+                system('cls')
                 print("Exiting program. Goodbye!")
                 break
 
