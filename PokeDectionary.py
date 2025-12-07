@@ -19,7 +19,7 @@ class Main:
         print("Select an option to proceed: ")
 
     def process_job(self):
-        try:
+
             self.display_menu()
             choice = input().strip()
             system('cls')
@@ -29,14 +29,13 @@ class Main:
                 self.jobs[choice]()
             else:
                 print("Invalid choice. Please try again.\n")
-        except KeyboardInterrupt:
-            raise KeyboardInterrupt
 
     def main(self):
         while True:
             try:
                 self.process_job()
             except KeyboardInterrupt:
+                system('cls')
                 print("Exiting program. Goodbye!")
                 break
 
