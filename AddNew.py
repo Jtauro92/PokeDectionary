@@ -66,7 +66,7 @@ class add_new(pk):
             self.set_ability1()
             self.set_ability2()
             self.set_hidden_ability()          
-            self.add_to_dex()
+            self.add_pokemon()
         except sqlite3.Error as sql:
             raise sql
         except BackToStart:

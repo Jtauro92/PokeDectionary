@@ -94,44 +94,6 @@ class Pokemon(db):
     def hidden_ability(self, new_ability):
         self.__hidden_ability = new_ability
 
-    '''Behavioral methods for adding and checking Pokemon in the database'''
-    def add_to_dex(self):
-        VALUES = (self.name, self.number, self.type1, self.type2, self.ability1, self.ability2, self.hidden_ability)
-        try:
-            self.add_pokemon(VALUES)
-        except sqlite3.Error as e:
-            raise e
-
-    '''Check if a Pokemon exists in the database by name or number'''
-    def exists_in_db(self):
-        sql_search = '''SELECT COUNT(*) FROM pokemon WHERE name = ? OR number = ?'''
-        with self.connectdb() as connection:
-            cursor = connection.cursor()
-            try:
-                cursor.execute(sql_search, (self.name, self.number)) 
-                count = cursor.fetchone()[0]
-                return count > 0 # Return True if exists, False otherwise
-            except sqlite3.Error as e:
-                print(f"Database error: {e}")
-
-    '''Retrieve a Pokemon's details by name or number'''
-    def get_pokemon(self):
-        sql_search = '''SELECT name, number, type1, type2, ability1, ability2, hidden_ability 
-                        FROM pokemon 
-                        WHERE name = ? OR number = ?'''
-
-        with self.connectdb() as connection:
-            cursor = connection.cursor()
-
-            try:
-                cursor.execute(sql_search, (self.name, self.number))
-                result = cursor.fetchone()
-
-            except sqlite3.Error as e:
-                raise e
- 
-            return result
-
     '''Display a Pokemon's details in a formatted manner'''
     def show(self):
         p = self.get_pokemon()
