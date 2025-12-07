@@ -22,13 +22,12 @@ class Main:
         try:
             self.display_menu()
             choice = input().strip()
+            system('cls')
             if choice == '0':
                 raise KeyboardInterrupt
             elif any(choice == key for key in self.jobs):
-                system('cls')
                 self.jobs[choice]()
             else:
-                system('cls')
                 print("Invalid choice. Please try again.\n")
         except KeyboardInterrupt:
             raise KeyboardInterrupt
@@ -38,7 +37,6 @@ class Main:
             try:
                 self.process_job()
             except KeyboardInterrupt:
-                system('cls')
                 print("Exiting program. Goodbye!")
                 break
 
