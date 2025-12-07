@@ -8,6 +8,7 @@ class Main:
                }
     
     def display_menu(self):
+        print('-'*30)
         print("Menu:")
         print("1 Option 1")
         print("2. Option 2")
