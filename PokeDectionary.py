@@ -19,7 +19,6 @@ class Main:
         print("Select an option to proceed: ")
 
     def process_job(self):
-
             self.display_menu()
             choice = input().strip()
             system('cls')
