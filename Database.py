@@ -17,21 +17,22 @@ class Database:
 
         return db_connection
 
-    '''Create the Pokemon table if it doesn't exist'''
-
+    '''Execute a SQL statement with optional values'''
     def execute(self,sql_statement,value):
         with self.connectdb() as connection:
             cursor = connection.cursor()
             cursor.execute(sql_statement,value)
             connection.commit()
 
+    '''Fetch one record from the database'''
     def fetchone(self,sql_statement,value):
         with self.connectdb() as connection:
             cursor = connection.cursor()
-            cursor.execute(sql_statement,value)
+            self.execute(sql_statement,value)
             result = cursor.fetchone()
         return result
 
+    '''Create the Pokemon table if it doesn't exist'''
     def create_table(self): 
             try:
                 self.execute('''CREATE TABLE IF NOT EXISTS pokemon (
