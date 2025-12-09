@@ -28,7 +28,7 @@ class Database:
     def fetchone(self,sql_statement,value):
         with self.connectdb() as connection:
             cursor = connection.cursor()
-            self.execute(sql_statement,value)
+            cursor.execute(sql_statement,value)
             result = cursor.fetchone()
         return result
 

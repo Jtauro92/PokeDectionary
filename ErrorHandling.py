@@ -64,17 +64,16 @@ def set_name(func):
 '''Function to validate and set a Pokemon's number'''
 def set_number(func):
     def wrapper(self,value):
-        value=value.strip()
 
         # Validate input is numeric and not empty
         if value == '':
             raise EmptyFieldError("Number cannot be empty!")
 
-        elif (value.isnumeric()):
+        try:
             number = int(value)
             if number == 0:
                 raise KeyboardInterrupt
-        else:
+        except:
             raise InvalidValueError("Number must be an interger")
 
         # Check if number is within valid range
