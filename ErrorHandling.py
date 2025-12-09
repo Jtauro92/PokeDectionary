@@ -1,3 +1,6 @@
+from os import system
+from time import sleep
+import sqlite3
 '''`Module for error handling decorators for Pokemon attributes'''
 
 #Constants
@@ -154,5 +157,7 @@ def validation_loop(setter_method):
                 raise BackToStart
             except (OutOfDexRangeError, InvalidValueError, EmptyFieldError, DuplicateValueError) as e:
                 print(e)
+                sleep(1)
+                system('cls')
                 continue
     return wrapper

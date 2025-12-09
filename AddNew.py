@@ -2,7 +2,8 @@ from ErrorHandling import (BackToStart, DuplicateValueError as dv,
                           EmptyFieldError as ef, 
                           validation_loop as vl
                           )
-from Pokemon import Pokemon as pk, sqlite3
+import sqlite3
+from Pokemon import Pokemon as pk
 
 
 '''Class to add a new Pokemon'''
@@ -16,17 +17,13 @@ class add_new(pk):
     def set_name(self):
         self.name = input("Enter name: ")
         if self.exists_in_db():  # Check if the name already exists in the database
-            print(f"This pokemon already exists!")
-            self.show()
-            raise ValueError()
+            raise dv(f'This pokemon already exists!')
 
     @vl
     def set_number(self):
         self.number = input("Enter number: ")                   
-        if self.exists_in_db() != False:  # Check if the number already exists in the database
-            print(f"This pokemon already exists!")
-            self.show()
-            raise ValueError()
+        if self.exists_in_db():  # Check if the number already exists in the database
+            raise dv(f'This pokemon already exists!')
 
     @vl
     def set_type1(self):

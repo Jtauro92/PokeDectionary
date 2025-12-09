@@ -3,13 +3,14 @@ from time import sleep
 
 from AddNew import add_new as an
 class Main:
-    system('cls')
+    
     def __init__(self):
         self.jobs ={
                 '1': an().main,
                }
     
     def display_menu(self):
+        system('cls')
         print('-'*30)
         print("Menu:")
         print("1 Add Pokemon")

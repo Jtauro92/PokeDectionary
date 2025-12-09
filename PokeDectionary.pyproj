@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>8ecf9299-562a-4a62-b533-1a2d903d45ee</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>SeearchDex.py</StartupFile>
+    <StartupFile>SearchDex.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -29,7 +29,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AddNew.py" />
-    <Compile Include="SeearchDex.py" />
+    <Compile Include="SearchDex.py" />
     <Compile Include="Database.py" />
     <Compile Include="ErrorHandling.py" />
     <Compile Include="PokeDectionary.py" />

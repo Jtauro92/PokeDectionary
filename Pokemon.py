@@ -1,5 +1,5 @@
 from ErrorHandling import set_name, set_number, set_type, set_ability
-from Database import Database as db, sqlite3
+from Database import Database as db
 
 
 '''Pokemon Class representing a Pokemon entity with attributes and methods to interact with a database.'''
@@ -96,7 +96,7 @@ class Pokemon(db):
 
     '''Display a Pokemon's details in a formatted manner'''
     def show(self):
-        p = self.get_pokemon()
+        p = self.get_pokemon(self.name)
 
         result = [f"Name: {p[0]}\nNumber: {p[1]:04}"]
         

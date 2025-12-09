@@ -1,7 +1,5 @@
 import sqlite3
 
-
-
 class Database:
     
     def __init__(self):
@@ -49,7 +47,6 @@ class Database:
                 raise e
 
     '''Add a new Pokemon to the database'''
-
     def add_pokemon(self):
         VALUES = (self.name, self.number, self.type1, self.type2, self.ability1, self.ability2, self.hidden_ability)
         sql_statement = '''INSERT INTO pokemon (name, number, type1, type2, ability1, ability2, hidden_ability)
@@ -71,14 +68,13 @@ class Database:
             print(f"Database error: {e}")
 
     '''Retrieve a Pokemon's details by name or number'''
-
-    def get_pokemon(self):
+    def get_pokemon(self, identifier):
         sql_search = '''SELECT name, number, type1, type2, ability1, ability2, hidden_ability 
                         FROM pokemon 
                         WHERE name = ? OR number = ?'''
 
         try:
-            result = self.fetchone(sql_search, (self.name, self.number))
+            result = self.fetchone(sql_search, (identifier, identifier))
         except sqlite3.Error as e:
             raise e
  

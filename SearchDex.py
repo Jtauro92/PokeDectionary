@@ -1,5 +1,10 @@
-from Pokemon import Pokemon as p, sqlite3, db
-from ErrorHandling import DuplicateValueError, validation_loop as vl, InvalidValueError
+from Pokemon import Pokemon as p
+from ErrorHandling import(DuplicateValueError,
+                         validation_loop as vl,
+                        InvalidValueError,
+                        sqlite3)
+
+
 
 '''Class to search for a Pokemon in the database'''
 class search_dex(p):
@@ -13,11 +18,8 @@ class search_dex(p):
         if identifier == '0':
             raise KeyboardInterrupt
 
-        sql_search = '''SELECT name, number, type1, type2, ability1, ability2, hidden_ability 
-                        FROM pokemon 
-                        WHERE name = ? OR number = ?'''
         try:
-            result = self.fetchone(sql_search, (identifier, identifier))
+            result = self.get_pokemon(identifier)
             if result:
                 self.name = result[0]
                 self.number = result[1]
@@ -27,7 +29,7 @@ class search_dex(p):
                 self.ability2 = result[5]
                 self.hidden_ability = result[6]
             else:
-                raise InvalidValueError("Pokemon not found.")
+                raise InvalidValueError("Pokemon not found in the database.")
         except DuplicateValueError:
             pass
         except sqlite3.Error as e:
@@ -36,10 +38,9 @@ class search_dex(p):
 
     def show_details(self):
 
-            self.get_details()
-  
-
-            self.show()
+        self.get_details()
+        self.show()
+        print()
  
 
     def main(self):
