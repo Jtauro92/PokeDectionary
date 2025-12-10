@@ -1,9 +1,7 @@
-from ErrorHandling import set_name, set_number, set_type, set_ability
-from Database import Database as db
+from pokedex import get_pokemon, set_name, set_number, set_type, set_ability
 
-
-'''Pokemon Class representing a Pokemon entity with attributes and methods to interact with a database.'''
-class Pokemon(db):
+# Pokemon class inheriting from db class in pokedex module
+class Pokemon():
 
     def __init__(self,name = "Default",number = 0,type1 = "Default",type2 ="Default",ability1="Default",ability2=None,hidden_ability=None):
         super().__init__()
@@ -96,7 +94,7 @@ class Pokemon(db):
 
     '''Display a Pokemon's details in a formatted manner'''
     def show(self):
-        p = self.get_pokemon(self.name)
+        p = get_pokemon(self.name)
 
         result = [f"Name: {p[0]}\nNumber: {p[1]:04}"]
         

@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>8ecf9299-562a-4a62-b533-1a2d903d45ee</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>SearchDex.py</StartupFile>
+    <StartupFile>pokedex\pokemon.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -28,12 +28,22 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AddNew.py" />
-    <Compile Include="SearchDex.py" />
-    <Compile Include="Database.py" />
-    <Compile Include="ErrorHandling.py" />
+    <Compile Include="jobs\addnew.py" />
+    <Compile Include="jobs\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="validation\setters.py" />
+    <Compile Include="validation\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pokedex\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="jobs\search_dex.py" />
+    <Compile Include="pokedex\database.py" />
+    <Compile Include="validation\error_handling.py" />
     <Compile Include="PokeDectionary.py" />
-    <Compile Include="Pokemon.py" />
+    <Compile Include="pokedex\pokemon.py" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="Pokev\">
@@ -47,7 +57,12 @@
     </Interpreter>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="abilities.txt" />
+    <Content Include="validation\abilities.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="pokedex\" />
+    <Folder Include="jobs\" />
+    <Folder Include="validation\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
