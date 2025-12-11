@@ -1,6 +1,6 @@
 from time import sleep
 from os import system
-import sqlite3
+from sqlite3 import Error as sqlite3_error
 
 from .errors import (EmptyFieldError , OutOfDexRangeError , 
                      DuplicateValueError, InvalidValueError, BackToStart)

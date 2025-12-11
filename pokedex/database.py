@@ -1,6 +1,6 @@
 import sqlite3
 
-class Database:
+class Database():
     
     def __init__(self):
         self.database = "pokemon_database.db"

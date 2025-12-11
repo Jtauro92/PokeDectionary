@@ -1,5 +1,4 @@
-from pokedex import Database as db
-from validation import set_name, set_number, set_type, set_ability
+from pokedex import Database as db, set_name, set_number, set_type, set_ability
 
 # Pokemon class inheriting from db class in pokedex module
 class Pokemon(db):
@@ -95,7 +94,7 @@ class Pokemon(db):
 
     '''Display a Pokemon's details in a formatted manner'''
     def show(self):
-        p = get_pokemon(self.name)
+        p = self.get_pokemon(self.name)
 
         result = [f"Name: {p[0]}\nNumber: {p[1]:04}"]
         

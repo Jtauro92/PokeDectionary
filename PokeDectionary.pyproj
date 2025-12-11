@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>8ecf9299-562a-4a62-b533-1a2d903d45ee</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>PokeDectionary.py</StartupFile>
+    <StartupFile>pokedex\pokemon.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -42,7 +42,7 @@
     <Compile Include="jobs\search_dex.py" />
     <Compile Include="pokedex\database.py" />
     <Compile Include="validation\errors.py" />
-    <Compile Include="PokeDectionary.py" />
+    <Compile Include="main.py" />
     <Compile Include="pokedex\pokemon.py" />
   </ItemGroup>
   <ItemGroup>

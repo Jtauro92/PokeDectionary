@@ -1,5 +1,4 @@
-from jobs import dv, ef, vl, BackToStart, pk
-from sqlite3 import Error as sql_error
+from jobs import dv, ef, vl, BackToStart, pk, sql
 
 '''Class to add a new Pokemon'''
 
@@ -59,7 +58,7 @@ class add_new(pk):
             self.set_ability2()
             self.set_hidden_ability()          
             self.add_pokemon()
-        except sql_error as sql:
+        except sql:
             raise sql
         except BackToStart:
             return
