@@ -1,12 +1,12 @@
-from os import system
-from time import sleep
+from validation import sleep, system
 
-from AddNew import add_new as an
+
+
 class Main:
     
     def __init__(self):
         self.jobs ={
-                '1': an().main,
+                '1': an,
                }
     
     def display_menu(self):

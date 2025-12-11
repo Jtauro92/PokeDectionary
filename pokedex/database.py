@@ -59,10 +59,10 @@ class Database:
 
 
     '''Check if a Pokemon exists in the database by name or number'''
-    def exists_in_db(self):
+    def exists_in_db(self, identifier):
         sql_search = '''SELECT COUNT(*) FROM pokemon WHERE name = ? OR number = ?'''
         try:
-            count = self.fetchone(sql_search, (self.name, self.number))[0]
+            count = self.fetchone(sql_search, (identifier, identifier))[0]
             return count > 0 # Return True if exists, False otherwise
         except sqlite3.Error as e:
             print(f"Database error: {e}")
@@ -83,5 +83,5 @@ class Database:
     
 
 if __name__ == "__main__":
-    print(Database().get_pokemon())
+    print(Database().get_pokemon('pikachu'))
 

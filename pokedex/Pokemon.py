@@ -1,7 +1,8 @@
-from pokedex import get_pokemon, set_name, set_number, set_type, set_ability
+from pokedex import get_pokemon, Database as db
+from validation import set_name, set_number, set_type, set_ability
 
 # Pokemon class inheriting from db class in pokedex module
-class Pokemon():
+class Pokemon(db):
 
     def __init__(self,name = "Default",number = 0,type1 = "Default",type2 ="Default",ability1="Default",ability2=None,hidden_ability=None):
         super().__init__()

@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>8ecf9299-562a-4a62-b533-1a2d903d45ee</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>pokedex\pokemon.py</StartupFile>
+    <StartupFile>jobs\addnew.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -32,7 +32,7 @@
     <Compile Include="jobs\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="validation\setters.py" />
+    <Compile Include="validation\decorators.py" />
     <Compile Include="validation\__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -41,7 +41,7 @@
     </Compile>
     <Compile Include="jobs\search_dex.py" />
     <Compile Include="pokedex\database.py" />
-    <Compile Include="validation\error_handling.py" />
+    <Compile Include="validation\errors.py" />
     <Compile Include="PokeDectionary.py" />
     <Compile Include="pokedex\pokemon.py" />
   </ItemGroup>

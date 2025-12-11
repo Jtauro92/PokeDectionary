@@ -1,16 +1,5 @@
 '''`Module for error handling decorators for Pokemon attributes'''
 
-#Constants
-NUM_OF_POKEMON = 1025
-TYPE_LIST = [
-    "NORMAL", "FIRE", "WATER", "ELECTRIC", "GRASS", "ICE", "FIGHTING",
-    "POISON", "GROUND", "FLYING", "PSYCHIC", "BUG", "ROCK", "GHOST",
-    "DRAGON", "DARK", "STEEL", "FAIRY"
-]
-
-with open("abilities.txt", "r") as file:
-    abilities = file.read().split(",")
-    ABILITIES = [ability.strip() for ability in abilities]
 '''Custom Error Classes'''
 
 class EmptyFieldError(ValueError):

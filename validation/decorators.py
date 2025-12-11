@@ -1,7 +1,4 @@
-from .error_handling import (EmptyFieldError, OutOfDexRangeError, 
-                                       InvalidValueError, DuplicateValueError,
-                                        BackToStart)
-from validation import system, sleep
+from validation import *
 
 #Constants
 NUM_OF_POKEMON = 1025
@@ -11,7 +8,7 @@ TYPE_LIST = [
     "DRAGON", "DARK", "STEEL", "FAIRY"
 ]
 
-with open("abilities.txt", "r") as file:
+with open("validation/abilities.txt", "r") as file:
     abilities = file.read().split(",")
     ABILITIES = [ability.strip() for ability in abilities]
 
