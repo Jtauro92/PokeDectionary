@@ -1,4 +1,4 @@
-from pokedex import get_pokemon, Database as db
+from pokedex import Database as db
 from validation import set_name, set_number, set_type, set_ability
 
 # Pokemon class inheriting from db class in pokedex module

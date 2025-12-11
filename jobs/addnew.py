@@ -1,4 +1,4 @@
-from jobs import dv, ef, vl, BackToStart, Pokemon as pk, exists_in_db
+from jobs import dv, ef, vl, BackToStart, pk
 from sqlite3 import Error as sql_error
 
 '''Class to add a new Pokemon'''
@@ -11,13 +11,13 @@ class add_new(pk):
     @vl
     def set_name(self):
         self.name = input("Enter name: ")
-        if exists_in_db(self.name):  # Check if the name already exists in the database
+        if self.exists_in_db(self.name):  # Check if the name already exists in the database
             raise dv(f'This pokemon already exists!')
 
     @vl
     def set_number(self):
         self.number = input("Enter number: ")                   
-        if exists_in_db(self.number):  # Check if the number already exists in the database
+        if self.exists_in_db(self.number):  # Check if the number already exists in the database
             raise dv(f'This pokemon already exists!')
 
     @vl
