@@ -1,4 +1,4 @@
-from jobs import dv, ef, vl, BackToStart, pk, sql
+from jobs import dv, ef, vl, BackToStart, pk, sql, exist_in_db, add_pokemon
 
 '''Class to add a new Pokemon'''
 
@@ -10,13 +10,13 @@ class add_new(pk):
     @vl
     def set_name(self):
         self.name = input("Enter name: ")
-        if self.exists_in_db(self.name):  # Check if the name already exists in the database
+        if exist_in_db(self.name):  # Check if the name already exists in the database
             raise dv(f'This pokemon already exists!')
 
     @vl
     def set_number(self):
         self.number = input("Enter number: ")                   
-        if self.exists_in_db(self.number):  # Check if the number already exists in the database
+        if exist_in_db(self.number):  # Check if the number already exists in the database
             raise dv(f'This pokemon already exists!')
 
     @vl
@@ -57,7 +57,8 @@ class add_new(pk):
             self.set_ability1()
             self.set_ability2()
             self.set_hidden_ability()          
-            self.add_pokemon()
+            add_pokemon(self.name, self.number, self.type1, self.type2,
+                        self.ability1, self.ability2, self.hidden_ability)
         except sql:
             raise sql
         except BackToStart:

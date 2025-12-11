@@ -47,8 +47,8 @@ class Database():
                 raise e
 
     '''Add a new Pokemon to the database'''
-    def add_pokemon(self):
-        VALUES = (self.name, self.number, self.type1, self.type2, self.ability1, self.ability2, self.hidden_ability)
+    def add_pokemon(self, name, number, t1, t2, a1, a2, ha):
+        VALUES = (name, number, t1, t2, a1, a2, ha)
         sql_statement = '''INSERT INTO pokemon (name, number, type1, type2, ability1, ability2, hidden_ability)
                            VALUES (?, ?, ?, ?, ?, ?, ?)'''
 

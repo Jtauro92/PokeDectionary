@@ -1,8 +1,10 @@
-from pokedex import Database as db, set_name, set_number, set_type, set_ability
+'''Module defining the Pokemon class with attributes and methods to manage Pokemon data.'''
 
-# Pokemon class inheriting from db class in pokedex module
-class Pokemon(db):
+from pokedex import set_name, set_number, set_type, set_ability, get_pokemon
 
+
+class Pokemon():
+    '''Class representing a Pokemon with attributes and methods to manage its data.'''
     def __init__(self,name = "Default",number = 0,type1 = "Default",type2 ="Default",ability1="Default",ability2=None,hidden_ability=None):
         super().__init__()
         self.__name = name
@@ -22,9 +24,9 @@ class Pokemon(db):
                 f"Ability 2: {self.__ability2}\n"
                 f"Hidden Ability: {self.__hidden_ability}")
 
-    '''Getters and Setters with validation decorators for each attribute'''
-    
-    '''Getter and Setter for name attribute'''
+    #Getters and Setters for each attribute with validation decorators
+
+    #Getter and Setter for name attribute
     @property
     def name(self):
         return self.__name
@@ -92,27 +94,28 @@ class Pokemon(db):
     def hidden_ability(self, new_ability):
         self.__hidden_ability = new_ability
 
-    '''Display a Pokemon's details in a formatted manner'''
-    def show(self):
-        p = self.get_pokemon(self.name)
 
-        result = [f"Name: {p[0]}\nNumber: {p[1]:04}"]
+    def show(self):
+        '''Method to display the Pokemon's details in a formatted manner.'''
+        name, number, t1, t2, a1, a2, ha = get_pokemon(self.name) # Retrieve details from the database
+
+        result = [f"Name: {name}\nNumber: {number:04}"]
         
-        type_str = f"Type: {p[2]}"
-        if p[3] is not None:
-            type_str += f" / {p[3]}"
+        type_str = f"Type: {t1}"
+        if t2 is not None:
+            type_str += f" / {t2}"
         result.append(type_str)
 
-        result.append(f"Ability #1: {p[4]}")
+        result.append(f"Ability #1: {a1}")
 
         ability2_str = "Ability #2: "
-        if p[5]:
-            ability2_str += p[5]
+        if a2:
+            ability2_str += a2
         result.append(ability2_str)
 
         hidden_ability_str = "Hidden Ability: "
-        if p[6]:
-            hidden_ability_str += p[6]
+        if ha:
+            hidden_ability_str += ha
         result.append(hidden_ability_str)
         
         print( "\n".join(result))
