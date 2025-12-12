@@ -1,4 +1,4 @@
-from jobs import an, sleep, system
+from jobs import an, sd, sleep, system
 
 
 class Main:
@@ -6,14 +6,15 @@ class Main:
     def __init__(self):
         self.jobs ={
                 '1': an().main,
+                '2': sd().main,
                }
     
     def display_menu(self):
         system('cls')
         print('-'*30)
         print("Menu:")
-        print("1 Add Pokemon")
-        print("2. Option 2")
+        print("1. Add Pokemon")
+        print("2. Search Dex")
         print("3. Option 3")
         print("4. Option 4")
         print("0. Exit")
