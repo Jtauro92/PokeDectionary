@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>8ecf9299-562a-4a62-b533-1a2d903d45ee</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>jobs\addnew.py</StartupFile>
+    <StartupFile>main.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -32,7 +32,10 @@
     <Compile Include="jobs\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="validation\decorators.py" />
+    <Compile Include="validation\constants.py" />
+    <Compile Include="tools\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="validation\__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -63,6 +66,7 @@
     <Folder Include="pokedex\" />
     <Folder Include="jobs\" />
     <Folder Include="validation\" />
+    <Folder Include="tools\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

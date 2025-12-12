@@ -1,4 +1,6 @@
-from jobs import dv, ef, vl, BackToStart, pk, sql, exist_in_db, add_pokemon
+from validation import (DuplicateValueError as dv, EmptyFieldError as ef, validation_loop as vl, BackToStart, 
+                   sqlite3_error)
+from pokedex import Pokemon as pk, exist_in_db, add_pokemon
 
 '''Class to add a new Pokemon'''
 
@@ -59,7 +61,7 @@ class add_new(pk):
             self.set_hidden_ability()          
             add_pokemon(self.name, self.number, self.type1, self.type2,
                         self.ability1, self.ability2, self.hidden_ability)
-        except sql:
+        except sqlite3_error as sql:
             raise sql
         except BackToStart:
             return

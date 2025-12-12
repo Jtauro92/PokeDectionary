@@ -1,9 +1,8 @@
 '''Module to search for a Pokemon in the database and display its details'''
 
-from jobs import pk, get_pokemon
+from pokedex import Pokemon as pk, get_pokemon
 from validation import( validation_loop as vl,
-                        InvalidValueError,
-                        sqlite3_error)
+                        InvalidValueError,sqlite3_error,BackToStart)
 
 class search_dex(pk):
     '''Class to search for a Pokemon in the database and display its details'''
@@ -17,7 +16,7 @@ class search_dex(pk):
         
         identifier = input("Enter Pokemon name or number to search: ").strip().title()
         if identifier == '0':
-            raise KeyboardInterrupt # Exit on '0' input
+            raise BackToStart # Exit on '0' input
 
         try:
             name, number, t1, t2, a1, a2, ha = get_pokemon(identifier) # Retrieve details from the database

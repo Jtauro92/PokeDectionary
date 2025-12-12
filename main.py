@@ -1,4 +1,7 @@
-from jobs import an, sd, sleep, system
+from jobs import add_new as an, search_dex as sd
+from validation import sleep
+from tools import clear_console as clear_screen
+
 
 
 class Main:
@@ -10,7 +13,7 @@ class Main:
                }
     
     def display_menu(self):
-        system('cls')
+        clear_screen()
         print('-'*30)
         print("Menu:")
         print("1. Add Pokemon")
@@ -24,7 +27,7 @@ class Main:
     def process_job(self):
             self.display_menu()
             choice = input().strip()
-            system('cls')
+            clear_screen()
             if choice == '0':
                 raise KeyboardInterrupt
             elif any(choice == key for key in self.jobs):
@@ -32,15 +35,15 @@ class Main:
             else:
                 print("Invalid choice. Please try again.\n")
                 sleep(1)
-                system('cls')
+                clear_screen()
 
     def main(self):
         while True:
             try:
                 self.process_job()
-                system('cls')
+                clear_screen()
             except KeyboardInterrupt:
-                system('cls')
+                clear_screen()
                 print("Exiting program. Goodbye!")
                 break
 
