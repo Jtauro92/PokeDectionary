@@ -1,6 +1,5 @@
 from jobs import add_new as an, search_dex as sd
-from validation import sleep
-from tools import clear_console as clear_screen
+from tools import clear_console as clear_screen, sleep
 
 
 
