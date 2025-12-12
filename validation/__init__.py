@@ -103,6 +103,24 @@ def set_ability(func):
         return func(self,value)
     return wrapper
 
+def set_stat(func):
+    def wrapper(self,value):
+        # Validate input is numeric and not empty
+        if value == '':
+            raise EmptyFieldError("Stat cannot be empty!")
+        try:
+            stat = int(value)
+            if stat == 0:
+                raise BackToStart
+        except:
+            raise InvalidValueError("Stat must be an interger")
+        # Check if stat is within valid range
+        if stat not in range(1, 800):
+            raise OutOfDexRangeError("Stat must be between 1 and 800!")
+            
+        return func(self,stat)
+    return wrapper
+
 '''Function to create a validation loop for setter methods'''
 def validation_loop(setter_method):
     def wrapper(self):

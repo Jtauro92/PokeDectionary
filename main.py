@@ -28,7 +28,7 @@ class Main:
             choice = input().strip()
             clear_screen()
             if choice == '0':
-                raise KeyboardInterrupt
+                return
             elif any(choice == key for key in self.jobs):
                 self.jobs[choice]()
             else:
