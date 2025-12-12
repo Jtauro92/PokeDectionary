@@ -1,3 +1,5 @@
+'''Module for managing the Pokemon database using SQLite.'''
+
 import sqlite3
 
 class Database():
@@ -68,14 +70,15 @@ class Database():
         except sqlite3.Error as e:
             print(f"Database error: {e}")
 
-    '''Retrieve a Pokemon's details by name or number'''
+
     def get_pokemon(self, identifier):
+        '''Get a Pokemon's details from the database'''
         sql_search = '''SELECT name, number, type1, type2, ability1, ability2, hidden_ability 
                         FROM pokemon 
                         WHERE name = ? OR number = ?'''
 
         try:
-            result = self.fetchone(sql_search, (identifier, identifier))
+            result = self.fetchone(sql_search, (identifier, identifier)) # Fetch the Pokemon details by name or number
         except sqlite3.Error as e:
             raise e
  

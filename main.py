@@ -45,6 +45,4 @@ class Main:
                 break
 
         
-
-if __name__ == "__main__":
-    Main().main()
+Main().main()
