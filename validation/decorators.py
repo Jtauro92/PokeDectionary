@@ -1,19 +1,7 @@
 from validation import *
 
-#Constants
-NUM_OF_POKEMON = 1025
-TYPE_LIST = [
-    "NORMAL", "FIRE", "WATER", "ELECTRIC", "GRASS", "ICE", "FIGHTING",
-    "POISON", "GROUND", "FLYING", "PSYCHIC", "BUG", "ROCK", "GHOST",
-    "DRAGON", "DARK", "STEEL", "FAIRY"
-]
-
-with open("validation/abilities.txt", "r") as file:
-    abilities = file.read().split(",")
-    ABILITIES = [ability.strip() for ability in abilities]
-
 '''Decorator Functions'''
-'''Function to validate and set a Pokemon's name'''
+# Function to validate and set a Pokemon's name
 def set_name(func):
     def wrapper(self,value):
         name = value.title().strip()
@@ -30,7 +18,7 @@ def set_name(func):
         return func(self,name)
     return wrapper
 
-'''Function to validate and set a Pokemon's number'''
+# Function to validate and set a Pokemon's number
 def set_number(func):
     def wrapper(self,value):
 

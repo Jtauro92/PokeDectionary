@@ -17,7 +17,7 @@ class Database():
 
     '''Execute a SQL statement with optional values'''
     def execute(self,sql_statement,value):
-        with self.connectdb() as connection:
+        with self.connectdb() as connection: # Context manager to ensure connection is closed
             cursor = connection.cursor()
             cursor.execute(sql_statement,value)
             connection.commit()
@@ -46,8 +46,9 @@ class Database():
             except sqlite3.Error as e:
                 raise e
 
-    '''Add a new Pokemon to the database'''
+
     def add_pokemon(self, name, number, t1, t2, a1, a2, ha):
+        '''Add a new Pokemon to the database'''
         VALUES = (name, number, t1, t2, a1, a2, ha)
         sql_statement = '''INSERT INTO pokemon (name, number, type1, type2, ability1, ability2, hidden_ability)
                            VALUES (?, ?, ?, ?, ?, ?, ?)'''
