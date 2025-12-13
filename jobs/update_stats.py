@@ -1,5 +1,7 @@
-from pokedex import update_stats, get_pokemon, stats, Pokemon
+from pokedex import update_stats, get_pokemon, stats
 from validation import validation_loop as vl
+from jobs import stats_menu as sm
+from tools import *
 
 class UpdateStats(stats):
     def __init__(self):
@@ -35,35 +37,53 @@ class UpdateStats(stats):
     def set_speed(self):
         self.speed = input("Enter Speed: ")
 
-    def set_stats(self, identifier):
-        result = get_pokemon(identifier.strip())
+    def set_stats(self):
+        identifier = input("Enter Pokemon name or number to update stats: ").strip()
         
-        choice = input("Select stat to update: ")
-        if choice == '0':
+        if identifier == '0':
             return
+        
+        result = get_pokemon(identifier.strip())
+        if result:
+            name = result[0]
+            number = result[1]
+            while True:
+                clear_console()
+                print(sm(name))
+                choice = input('Enter an option:')
+                clear_console()
+                if choice == '0':
+                    return
 
-        elif any(choice == key for key in self.jobs):
-            self.jobs[choice]()
+                if choice == '7':
+                    update_stats(number, self.hp, self.atk, self.defn, self.spatk, self.spdef, self.speed)
+                    print(f"{name}'s stats have been updated successfully.")
+                    break
 
+                if any(choice == key for key in self.jobs):
+                    self.jobs[choice]()
+                else:
+                    raise ValueError("Invalid choice. Please try again.")
         else:
-            raise ValueError("Invalid choice. Please try again.")
+            raise ValueError("Pokemon not found in the database.")
 
-        update_stats(result[1], self.hp, self.atk, self.defn, self.spatk, self.spdef, self.speed)
-        print(f"{self.jobs[choice]} updated successfully for {result[0]}.")
+
+        
     
     def main(self):
         while True:
             try:
-                identifier = input("Enter Pokemon name or number to update stats: ")
-                if identifier.strip() == '0':
-                    break
-                self.set_stats(identifier)
-            except KeyboardInterrupt:
-                print("Exiting update stats.")
-                return
+                self.set_stats()
+            except ValueError as ve:
+                print(ve)
+
+            cont = input("Update another pokemon's stats (y/n): ").strip().lower()
+            if cont != 'y':
+                break
+                
      
         
 
 if __name__ == "__main__":
     us = UpdateStats()
-    us.set_stats(input("Enter Pokemon name or number to update stats: "))
+    us.main()

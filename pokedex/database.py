@@ -7,9 +7,8 @@ class Database():
     def __init__(self):
         self.database = "pokemon_database.db"
 
-
-    '''Connect to the database'''
     def connectdb(self):
+        '''Establish a connection to the SQLite database'''
         try:
             db_connection = sqlite3.connect(self.database) # Connect to the SQLite database
         except sqlite3.Error as e:
@@ -17,23 +16,23 @@ class Database():
 
         return db_connection
 
-    '''Execute a SQL statement with optional values'''
-    def execute(self,sql_statement,value):
+    def execute(self,*args):
+        '''Execute a SQL statement with optional values'''
         with self.connectdb() as connection: # Context manager to ensure connection is closed
             cursor = connection.cursor()
-            cursor.execute(sql_statement,value)
+            cursor.execute(*args)
             connection.commit()
 
-    '''Fetch one record from the database'''
     def fetchone(self,sql_statement,value):
+        '''Fetch a single record from the database'''
         with self.connectdb() as connection:
             cursor = connection.cursor()
             cursor.execute(sql_statement,value)
             result = cursor.fetchone()
         return result
 
-    '''Create the Pokemon table if it doesn't exist'''
-    def create_table(self): 
+    def create_table(self):
+        '''Create the pokemon table if it doesn't exist'''
         try:
             self.execute('''CREATE TABLE IF NOT EXISTS pokemon (
                                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -47,51 +46,38 @@ class Database():
                                 )''')
         except sqlite3.Error as e:
             raise e
-    
 
     def create_stats_table(self):
         '''Create the stats table if it doesn't exist'''
-        populate_sql = '''INSERT INTO stats (number, hp, atk, def, spatk, spdef, speed)'''
+        
         try:
-            self.execute('''CREATE TABLE IF NOT EXISTS stats 
-                                    number INTERGER PRIMARY KEY,
-                                    hp INTEGER NOT NULL,
-                                    atk INTEGER NOT NULL,
-                                    def INTEGER NOT NULL,
-                                    spatk INTEGER NOT NULL,
-                                    spdef INTEGER NOT NULL,
-                                    speed INTEGER NOT NULL''' )
+            self.execute('''CREATE TABLE IF NOT EXISTS stats( 
+                                    number INTEGER PRIMARY KEY,
+                                    hp INTEGER,
+                                    atk INTEGER,
+                                    def INTEGER,
+                                    spatk INTEGER,
+                                    spdef INTEGER,
+                                    speed INTEGER,
+                                    FOREIGN KEY(number) REFERENCES pokemon(number)
+                            )''') 
+            populate_sql = '''INSERT OR IGNORE INTO stats (number)
+                              SELECT number FROM pokemon'''
+            self.execute(populate_sql)# Populate stats table after creation
         except sqlite3.Error as e: 
             raise e
-        try:
-            self.populate_stats() # Populate stats table after creation
-        except sqlite3.Error as e:
-            raise e("The stats table could not be populated after creation.")
-
-
-
-    '''Populate stats stats number column from pokemon table'''
-    def populate_stats(self):
-        '''Populate the stats table with Pokemon numbers from the pokemon table'''
-        sql_statement = '''INSERT OR IGNORE INTO stats (number)
-                           SELECT number FROM pokemon'''
-
-        self.execute(sql_statement, ()) # Execute the insert statement
-
-
-    '''Update Pokemon stats in the database'''
-    def update_stats(self, identifer, hp, atk, defn, spatk, spdef, speed):
+       
+    def update_stats(self, number, hp, atk, defn, spatk, spdef, speed):
         '''Update a Pokemon's stats in the database'''
         self.create_stats_table()  # Ensure the stats table exists
-        VALUES = (hp, atk, defn, spatk, spdef, speed, identifer, identifer)
+        VALUES = (hp, atk, defn, spatk, spdef, speed, number)
         sql_statement = '''UPDATE stats 
-                           SET hp = ?, atk = ?, def = ?, spatk = ?, spdef = ?, speed = ? 
-                           WHERE name = ? or number = ?'''
-        try:
-            self.execute(sql_statement, VALUES) # Execute the update statement and values
+                            SET hp = ?, atk = ?, def = ?, spatk = ?, spdef = ?, speed = ? 
+                            WHERE number = ?'''
+        try:  
+            self.execute(sql_statement, VALUES)
         except sqlite3.Error as e:
-            raise f"The stats could not be updated. Error: {e}"
-
+            raise sqlite3.Error(f"The stats could not be updated. Error: {e}")
 
     def add_pokemon(self, name, number, t1, t2, a1, a2, ha):
         '''Add a new Pokemon to the database'''
@@ -99,11 +85,12 @@ class Database():
         VALUES = (name, number, t1, t2, a1, a2, ha)
         sql_statement = '''INSERT INTO pokemon (name, number, type1, type2, ability1, ability2, hidden_ability)
                            VALUES (?, ?, ?, ?, ?, ?, ?)'''
-
+ 
         try:
             self.execute(sql_statement, VALUES) # Execute the insert statement and values
+            self.create_stats_table()  # Ensure the stats table exists
         except sqlite3.Error as e:
-            raise f"The pokemon could not be added. Error: {e}"
+            print(f"Database error: {e}")
 
 
     '''Check if a Pokemon exists in the database by name or number'''
@@ -134,7 +121,7 @@ class Database():
         sql_search = '''SELECT p.name, p.number, p.type1, p.type2, p.ability1, p.ability2, p.hidden_ability,
                                s.hp, s.atk, s.def, s.spatk, s.spdef, s.speed
                         FROM pokemon p
-                        JOIN stats s ON p.number = s.number
+                        LEFT JOIN stats s ON p.number = s.number
                         WHERE p.name = ? OR p.number = ?'''
         try:
             result = self.fetchone(sql_search, (identifier, identifier)) # Fetch the full Pokemon details by name or number
@@ -145,5 +132,6 @@ class Database():
     
 
 if __name__ == "__main__":
-    print(Database().get_pokemon('pikachu'))
+   result = Database().get_full_pokemon('Pikachu')
+   print(result)
 

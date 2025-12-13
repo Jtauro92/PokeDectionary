@@ -16,7 +16,7 @@ class search_dex(pk):
         
         identifier = input("Enter Pokemon name or number to search: ").strip().title()
         if identifier == '0':
-            raise BackToStart # Exit on '0' input
+            raise ValueError("Returning to main menu.")
 
         try:
             name, number, t1, t2, a1, a2, ha = get_pokemon(identifier) # Retrieve details from the database
@@ -42,11 +42,12 @@ class search_dex(pk):
 
     def main(self):
         while True:
-            try:
-                self.show_details()
-            except KeyboardInterrupt:
-                print("Exiting search.")
-                break
+           try:
+               self.show_details()
+           except ValueError as ve:
+               print(ve)
+               break
+
 
 if __name__ == "__main__":
     sd = search_dex()
