@@ -2,7 +2,7 @@
 from validation import set_stat
 
 class stats():
-    def __init__(self, hp=1, atk=1, defn=1, spatk=1, spdef=1, speed=1):
+    def __init__(self, hp=None, atk=None, defn=None, spatk=None, spdef=None, speed=None):
         self.__hp = hp
         self.__atk = atk
         self.__defn = defn
