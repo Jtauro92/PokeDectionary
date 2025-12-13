@@ -1,5 +1,3 @@
-from os import system
-
 #Constants
 NUM_OF_POKEMON = 1025
 TYPE_LIST = [

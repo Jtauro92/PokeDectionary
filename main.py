@@ -1,4 +1,4 @@
-from jobs import add_new as an, search_dex as sd
+from jobs import add_new as an, search_dex as sd, UpdateStats as us
 from tools import clear_console as clear_screen, sleep
 
 
@@ -9,6 +9,7 @@ class Main:
         self.jobs ={
                 '1': an().main,
                 '2': sd().main,
+                '3': us().main,
                }
     
     def display_menu(self):
@@ -17,7 +18,7 @@ class Main:
         print("Menu:")
         print("1. Add Pokemon")
         print("2. Search Dex")
-        print("3. Option 3")
+        print("3. Update Stats")
         print("4. Option 4")
         print("0. Exit")
         print('-'*30)
@@ -28,7 +29,8 @@ class Main:
             choice = input().strip()
             clear_screen()
             if choice == '0':
-                return 
+                print("Exiting the program. Goodbye!")
+                exit() 
             elif any(choice == key for key in self.jobs):
                 self.jobs[choice]()
             else:
@@ -38,13 +40,9 @@ class Main:
 
     def main(self):
         while True:
-            try:
-                self.process_job()
-                clear_screen()
-            except KeyboardInterrupt:
-                clear_screen()
-                print("Exiting program. Goodbye!")
-                break
+            self.process_job()
+            clear_screen()
+
 
         
 Main().main()

@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>8ecf9299-562a-4a62-b533-1a2d903d45ee</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>pokedex\database.py</StartupFile>
+    <StartupFile>main.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -32,6 +32,12 @@
     <Compile Include="jobs\update_stats.py" />
     <Compile Include="pokedex\stats.py" />
     <Compile Include="jobs\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="user_interface\menus.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="user_interface\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="validation\constants.py" />
@@ -67,6 +73,7 @@
   <ItemGroup>
     <Folder Include="pokedex\" />
     <Folder Include="jobs\" />
+    <Folder Include="user_interface\" />
     <Folder Include="validation\" />
     <Folder Include="tools\" />
   </ItemGroup>

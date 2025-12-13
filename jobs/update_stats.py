@@ -1,6 +1,6 @@
 from pokedex import update_stats, get_pokemon, stats
 from validation import validation_loop as vl
-from jobs import stats_menu as sm
+from user_interface import stats_menu as sm
 from tools import *
 
 class UpdateStats(stats):
