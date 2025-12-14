@@ -1,7 +1,6 @@
 '''Module defining the Pokemon class with attributes and methods to manage Pokemon data.'''
 
 from validation import set_name, set_number, set_type, set_ability
-from pokedex import get_pokemon
 
 
 class Pokemon():
@@ -96,9 +95,9 @@ class Pokemon():
         self.__hidden_ability = new_ability
 
 
-    def show(self):
+    def show(self,values:tuple):
         '''Method to display the Pokemon's details in a formatted manner.'''
-        name, number, t1, t2, a1, a2, ha = get_pokemon(self.name) # Retrieve details from the database
+        name, number, t1, t2, a1, a2, ha = values # Retrieve details from the database
 
         result = [f"Name: {name}\nNumber: {number:04}"]
         

@@ -1,6 +1,7 @@
 '''Pokedex package initializer'''
 from .database import Database 
 
+
 get_pokemon = Database().get_pokemon
 get_full_pokemon = Database().get_full_pokemon
 fetch_one = Database().fetchone
@@ -10,5 +11,6 @@ update_stats = Database().update_stats
 
 from .pokemon import Pokemon
 from .stats import stats
+
 
 

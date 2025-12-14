@@ -10,33 +10,19 @@ class search_dex(pk):
         super().__init__()
 
     
-    @vl
     def get_details(self):
         '''Method to get Pokemon details from user input'''
         
-        identifier = input("Enter Pokemon name or number to search: ").strip().title()
-        if identifier == '0':
-            raise ValueError("Returning to main menu.")
-
-        try:
-            name, number, t1, t2, a1, a2, ha = get_pokemon(identifier) # Retrieve details from the database
-            self.name = name
-            self.number = number
-            self.type1 = t1
-            self.type2 = t2
-            self.ability1 = a1
-            self.ability2 = a2
-            self.hidden_ability = ha
-        except TypeError:
-                raise InvalidValueError("Pokemon not found in the database.") #Raise error if not found
-        except sqlite3_error as e:
-            raise e("Database error: self.fetchone(sql_search, (identifier, identifier))")
+        result = get_pokemon(input("Enter Pokemon Name or Number to search: ").strip())
+        if result is None:
+            raise ValueError("Pokemon not found in the database.")
+        return result
 
 
     def show_details(self):
         '''Method to get and display Pokemon details'''
-        self.get_details() # Get details from user
-        self.show() # Display the Pokemon's details
+        result = self.get_details() # Get details from user
+        self.show(result) # Display the Pokemon's details
         print()
  
 
@@ -50,6 +36,6 @@ class search_dex(pk):
 
 
 if __name__ == "__main__":
-    sd = search_dex()
-    sd.main()
+    main = search_dex().main
+    main()
 

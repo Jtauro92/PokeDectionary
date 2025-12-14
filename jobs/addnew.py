@@ -1,8 +1,8 @@
-from validation import (DuplicateValueError as dv, EmptyFieldError as ef, validation_loop as vl, BackToStart, 
-                   sqlite3_error)
+'''Module to add a new Pokemon to the Pokedex database'''
+from validation import (DuplicateValueError as dv, EmptyFieldError as ef,
+                       validation_loop as vl, BackToStart, sqlite3_error)
 from pokedex import Pokemon as pk, exist_in_db, add_pokemon
 
-'''Class to add a new Pokemon'''
 
 class add_new(pk):
     def __init__(self):
