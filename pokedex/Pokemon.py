@@ -5,7 +5,8 @@ from validation import set_name, set_number, set_type, set_ability
 
 class Pokemon():
     '''Class representing a Pokemon with attributes and methods to manage its data.'''
-    def __init__(self,name = "Default",number = 0,type1 = "Default",type2 = None,ability1="Default",ability2=None,hidden_ability=None):
+    def __init__(self,name = "Default",number = 0,type1 = "Default",type2 = None,
+                 ability1="Default",ability2=None,hidden_ability=None):
         super().__init__()
         self.__name = name
         self.__number = number

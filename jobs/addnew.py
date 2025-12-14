@@ -1,4 +1,5 @@
 '''Module to add a new Pokemon to the Pokedex database'''
+from user_interface import show
 from validation import (DuplicateValueError as dv, EmptyFieldError as ef,
                        validation_loop as vl, BackToStart, sqlite3_error)
 from pokedex import Pokemon as pk, exist_in_db, add_pokemon
@@ -82,6 +83,5 @@ class add_new(pk):
                 break
 
 if __name__ == "__main__":
-    p = add_new()
-    p.main()
+    pass
 

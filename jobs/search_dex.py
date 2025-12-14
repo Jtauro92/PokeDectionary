@@ -1,38 +1,47 @@
 '''Module to search for a Pokemon in the database and display its details'''
 
-from pokedex import Pokemon as pk, get_pokemon
-from validation import( validation_loop as vl,
-                        InvalidValueError,sqlite3_error,BackToStart)
+from pokedex import get_pokemon
+from user_interface import show
+from tools import clear_console, sleep
 
-class search_dex(pk):
+class search_dex():
     '''Class to search for a Pokemon in the database and display its details'''
     def __init__(self):
         super().__init__()
 
-    
     def get_details(self):
         '''Method to get Pokemon details from user input'''
-        
-        result = get_pokemon(input("Enter Pokemon Name or Number to search: ").strip())
+        identifier = input("Enter Pokemon Name or Number to search: ").strip()
+        clear_console()
+        result = get_pokemon(identifier)
+        if identifier == '0':
+            clear_console()
+            raise ValueError
         if result is None:
-            raise ValueError("Pokemon not found in the database.")
+            clear_console()
+            raise TypeError("Pokemon not found in the database.")
+            
         return result
 
 
     def show_details(self):
         '''Method to get and display Pokemon details'''
-        result = self.get_details() # Get details from user
-        self.show(result) # Display the Pokemon's details
-        print()
- 
+        try:
+            result = self.get_details() # Get details from user
+            show(result) # Display the Pokemon's details
+            print()
+        except TypeError as te:
+            print(te)
+            sleep(1)
+            clear_console()
 
     def main(self):
         while True:
            try:
                self.show_details()
            except ValueError as ve:
-               print(ve)
                break
+\
 
 
 if __name__ == "__main__":
