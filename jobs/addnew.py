@@ -60,8 +60,7 @@ class add_new(pk):
             self.set_ability1()
             self.set_ability2()
             self.set_hidden_ability()          
-            add_pokemon(self.name, self.number, self.type1, self.type2,
-                        self.ability1, self.ability2, self.hidden_ability)
+            add_pokemon(*self.__dict__.values())
         except sqlite3_error as sql:
             raise sql
         except BackToStart:

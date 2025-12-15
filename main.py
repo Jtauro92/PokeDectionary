@@ -1,5 +1,5 @@
 from jobs import add_new as an, search_dex as sd, UpdateStats as us
-from tools import clear_console as clear_screen, sleep
+from tools import *
 
 
 
@@ -13,13 +13,13 @@ class Main:
                }
     
     def display_menu(self):
-        clear_screen()
+        clear_console()
         print('-'*30)
         print("Menu:")
         print("1. Add Pokemon")
         print("2. Search Dex")
         print("3. Update Stats")
-        print("4. Option 4")
+        print("4. Delete Pokemon")
         print("0. Exit")
         print('-'*30)
         print("Select an option to proceed: ")
@@ -27,7 +27,7 @@ class Main:
     def process_job(self):
             self.display_menu()
             choice = input().strip()
-            clear_screen()
+            clear_console()
             if choice == '0':
                 print("Exiting the program. Goodbye!")
                 exit() 
@@ -36,12 +36,12 @@ class Main:
             else:
                 print("Invalid choice. Please try again.\n")
                 sleep(1)
-                clear_screen()
+                clear_console()
 
     def main(self):
         while True:
             self.process_job()
-            clear_screen()
+            clear_console()
 
 
         

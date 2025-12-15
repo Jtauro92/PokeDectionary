@@ -51,7 +51,7 @@ class Database():
     def update_stats(self, *stats):
         '''Update a Pokemon's stats in the database'''
         self.create_stats_table()  # Ensure the stats table exists
-        VALUES = tuple(stats) # Prepare the values for the SQL statement
+        VALUES = (*stats,) # Prepare the values for the SQL statement
         try:  
             self.execute(UPDATE_STATS, VALUES)
         except sqlite3.Error as e:
@@ -60,7 +60,7 @@ class Database():
     def add_pokemon(self, *attr):
         '''Add a new Pokemon to the database'''
         self.create_table()  # Ensure the pokemon table exists
-        VALUES = tuple(attr)
+        VALUES = (*attr,)
  
         try:
             self.execute(ADD_POKEMON, VALUES) # Execute the insert statement and values
