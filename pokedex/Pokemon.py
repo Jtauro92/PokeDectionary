@@ -1,12 +1,14 @@
 '''Module defining the Pokemon class with attributes and methods to manage Pokemon data.'''
 
+from pokedex.stats import stats
 from validation import set_name, set_number, set_type, set_ability
 
 
-class Pokemon():
+
+class Pokemon(stats):
     '''Class representing a Pokemon with attributes and methods to manage its data.'''
     def __init__(self,name = "Default",number = 0,type1 = "Default",type2 = None,
-                 ability1="Default",ability2=None,hidden_ability=None):
+                 ability1="Default",ability2=None,hidden_ability=None, stats=None):
         super().__init__()
         self.__name = name
         self.__number = number
@@ -15,6 +17,7 @@ class Pokemon():
         self.__ability1 = ability1
         self.__ability2 = ability2
         self.__hidden_ability = hidden_ability
+        self.__stats = stats
 
     def __str__(self):
         return (f"Name: {self.__name}\n"
@@ -94,6 +97,15 @@ class Pokemon():
     @set_ability
     def hidden_ability(self, new_ability):
         self.__hidden_ability = new_ability
+
+    @property
+    def stats(self):
+        return self.__stats
+
+    @stats.setter
+    def stats(self):
+        self.__stats = [self.hp, self.number, self.type1, self.type2, 
+                        self.ability1, self.ability2, self.hidden_ability]
 
 
     def show(self,values:tuple):

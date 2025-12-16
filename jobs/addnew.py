@@ -1,11 +1,13 @@
 '''Module to add a new Pokemon to the Pokedex database'''
-from user_interface import show
-from validation import (DuplicateValueError as dv, EmptyFieldError as ef,
-                       validation_loop as vl, BackToStart, sqlite3_error)
-from pokedex import Pokemon as pk, exist_in_db, add_pokemon
 
+from user_interface import show
+from validation import (DuplicateValueError as dv, EmptyFieldError as ef, clear_console, sleep,
+                       validation_loop as vl, BackToStart, sqlite3_error)
+from pokedex import Pokemon as pk, exist_in_db, add_pokemon, get_pokemon
+from .update_stats import UpdateStats as us
 
 class add_new(pk):
+    '''Class to add a new Pokemon to the Pokedex database'''
     def __init__(self):
         super().__init__()
     
@@ -60,7 +62,19 @@ class add_new(pk):
             self.set_ability1()
             self.set_ability2()
             self.set_hidden_ability()          
-            add_pokemon(*self.__dict__.values())
+            add_pokemon(self.name, self.number, self.type1, self.type2,
+                       self.ability1, self.ability2, self.hidden_ability)
+            
+            if self.name != "Default":
+                print(f"\nSuccessfully added {self.name} to the Pokedex!\n")
+                sleep(1)
+                clear_console()
+                show(get_pokemon(self.name))
+                cont = input("\nWould you like to set its stats now? (PRESS ENTER TO CONTINUE) ").strip().lower()
+                if cont == '':
+                    us().set_stats(self.name)
+                    show(get_pokemon(self.name))
+
         except sqlite3_error as sql:
             raise sql
         except BackToStart:
@@ -77,8 +91,8 @@ class add_new(pk):
             except ValueError as ve:
                 print(ve)
 
-            cont = input("Add another Pokemon? (y/n): ").strip().lower()
-            if cont != 'y':
+            cont = input("\nAdd another new pokemon (PRESS ENTER TO CONTINUE) ").strip().lower()
+            if cont != '':
                 break
 
 if __name__ == "__main__":

@@ -39,7 +39,9 @@ GET_POKEMON = '''SELECT p.name, p.number, p.type1, p.type2, p.ability1, p.abilit
                  LEFT JOIN stats s ON p.number = s.number
                  WHERE p.name = ? OR p.number = ?'''
 
+GET_STATS = '''SELECT hp, atk, def, spatk, spdef, speed FROM stats WHERE number = ?'''
+
 __all__ = [
             'CREATE_POKEMON_TABLE', 'CREATE_STATS_TABLE', 'POPULATE_STATS'
-            ,'UPDATE_STATS', 'ADD_POKEMON', 'GET_STATUS', 'GET_POKEMON'
+            ,'UPDATE_STATS', 'ADD_POKEMON', 'GET_STATUS', 'GET_POKEMON', 'GET_STATS'
           ]

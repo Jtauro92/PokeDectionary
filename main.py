@@ -1,8 +1,6 @@
 from jobs import add_new as an, search_dex as sd, UpdateStats as us
 from tools import *
 
-
-
 class Main:
     
     def __init__(self):
@@ -31,7 +29,7 @@ class Main:
             if choice == '0':
                 print("Exiting the program. Goodbye!")
                 exit() 
-            elif any(choice == key for key in self.jobs):
+            elif choice in self.jobs:
                 self.jobs[choice]()
             else:
                 print("Invalid choice. Please try again.\n")

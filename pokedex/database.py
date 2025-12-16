@@ -78,6 +78,14 @@ class Database():
         except sqlite3.Error as e:
             print(f"Database error: {e}")
 
+    def get_stats(self, identifier):
+        '''Get a Pokemon's stats from the database'''
+        try:
+            result = self.fetchone(GET_STATS, (identifier,)) # Fetch the stats by Pokemon number
+        except sqlite3.Error as e:
+            raise e
+        return result
+    
     def get_pokemon (self, identifier):
         '''Get a Pokemon's full details including stats from the database'''
 

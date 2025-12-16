@@ -1,9 +1,9 @@
-from pokedex import update_stats, get_pokemon, stats
+from pokedex import get_stats, update_stats, get_pokemon, Pokemon as pk
 from validation import validation_loop as vl
 from user_interface import stats_menu as sm
 from tools import *
 
-class UpdateStats(stats):
+class UpdateStats(pk):
     def __init__(self):
         super().__init__()
         self.jobs = {'1': self.set_hp, 
@@ -37,25 +37,29 @@ class UpdateStats(stats):
     def set_speed(self):
         self.speed = input("Enter Speed: ")
 
-    def set_stats(self):
-        identifier = input("Enter Pokemon name or number to update stats: ").strip()
-        
-        if identifier == '0':
-            return
+    def set_stats(self, identifier=None):
+        '''Method to set stats for a given Pokemon.'''
+        if identifier is None:
+            identifier = input("Enter Pokemon name or number to update stats: ").strip()
+           
 
-        result = get_pokemon(identifier.strip())
+        elif identifier == '0':
+            return # Exit if user chooses to go back
+
+        result = get_pokemon(identifier) # Fetch pokemon details
+
         if not result:
             raise ValueError("Pokemon not found in the database.")
 
-        name, number = result[0], result[1]
+        name, number,current_stats = result[0], result[1], result[7:]
 
         while True:
             clear_console()
 
             # Merge existing stats with current object stats
-            current_inputs = [self.hp, self.atk, self.defn, self.spatk, self.spdef, self.speed]
+            updated_stats = [ self.hp, self.atk, self.defn, self.spatk, self.spdef, self.speed]
             merged_stats = [ new if new is not None else old 
-                            for new, old in zip(current_inputs, result[7:])]
+                            for new, old in zip(updated_stats, current_stats)]
 
             print(sm(name,merged_stats))
             choice = input().strip()
@@ -75,10 +79,6 @@ class UpdateStats(stats):
                 self.jobs[choice]()
             else:
                 raise ValueError("Invalid choice. Please select a valid option.")
-    
-
-
-        
     
     def main(self):
         while True:
