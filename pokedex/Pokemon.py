@@ -5,11 +5,10 @@ from validation import set_name, set_number, set_type, set_ability
 
 
 
-class Pokemon(stats):
+class Pokemon():
     '''Class representing a Pokemon with attributes and methods to manage its data.'''
     def __init__(self,name = "Default",number = 0,type1 = "Default",type2 = None,
-                 ability1="Default",ability2=None,hidden_ability=None, stats=None):
-        super().__init__()
+                 ability1="Default",ability2=None,hidden_ability=None):
         self.__name = name
         self.__number = number
         self.__type1 = type1
@@ -17,7 +16,7 @@ class Pokemon(stats):
         self.__ability1 = ability1
         self.__ability2 = ability2
         self.__hidden_ability = hidden_ability
-        self.__stats = stats
+        self.__stats = stats()
 
     def __str__(self):
         return (f"Name: {self.__name}\n"
@@ -99,13 +98,56 @@ class Pokemon(stats):
         self.__hidden_ability = new_ability
 
     @property
+    def hp(self):
+        return self.__stats.hp
+
+    @hp.setter
+    def hp(self,value):
+        self.__stats.hp = value
+
+    @property
+    def atk(self):
+        return self.__stats.atk
+
+    @atk.setter
+    def atk(self,value):
+        self.__stats.atk = value
+
+    @property
+    def defn(self):
+        return self.__stats.defn
+
+    @defn.setter
+    def defn(self,value):
+        self.__stats.defn = value
+
+    @property
+    def spatk(self):
+        return self.__stats.spatk
+
+    @spatk.setter
+    def spatk(self,value):
+        self.__stats.spatk = value
+
+    @property
+    def spdef(self):
+        return self.__stats.spdef
+
+    @spdef.setter
+    def spdef(self,value):
+        self.__stats.spdef = value
+
+    @property
+    def speed(self):
+        return self.__stats.speed
+
+    @speed.setter
+    def speed(self,value):
+        self.__stats.speed = value
+    
+    @property
     def stats(self):
         return self.__stats
-
-    @stats.setter
-    def stats(self):
-        self.__stats = [self.hp, self.number, self.type1, self.type2, 
-                        self.ability1, self.ability2, self.hidden_ability]
 
 
     def show(self,values:tuple):

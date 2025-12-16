@@ -3,9 +3,8 @@ from validation import validation_loop as vl
 from user_interface import stats_menu as sm
 from tools import *
 
-class UpdateStats(pk):
+class UpdateStats():
     def __init__(self):
-        super().__init__()
         self.jobs = {'1': self.set_hp, 
                      '2': self.set_atk, 
                      '3': self.set_defn, 
@@ -13,29 +12,30 @@ class UpdateStats(pk):
                      '5': self.set_spdef, 
                      '6': self.set_speed
                      }
+        self.pokemon = pk()
     @vl
     def set_hp(self):
-        self.hp = input("Enter HP: ")
+        self.pokemon.hp = input("Enter HP: ")
 
     @vl
     def set_atk(self):
-        self.atk = input("Enter Attack: ")
+        self.pokemon.atk = input("Enter Attack: ")
 
     @vl
     def set_defn(self):
-        self.defn = input("Enter Defense: ")
+        self.pokemon.defn = input("Enter Defense: ")
 
     @vl
     def set_spatk(self):
-        self.spatk = input("Enter Special Attack: ")
+        self.pokemon.spatk = input("Enter Special Attack: ")
 
     @vl
     def set_spdef(self):
-        self.spdef = input("Enter Special Defense: ")
+        self.pokemon.spdef = input("Enter Special Defense: ")
 
     @vl
     def set_speed(self):
-        self.speed = input("Enter Speed: ")
+        self.pokemon.speed = input("Enter Speed: ")
 
     def set_stats(self, identifier=None):
         '''Method to set stats for a given Pokemon.'''
@@ -53,15 +53,18 @@ class UpdateStats(pk):
 
         name, number,current_stats = result[0], result[1], result[7:]
 
+        # Initialize Pokemon object with fetched details
+        self.pokemon = pk(*result[:6], current_stats) # Initialize with current stats
+
         while True:
             clear_console()
+            updated_stats = [self.pokemon.hp, self.pokemon.atk, self.pokemon.defn,
+                             self.pokemon.spatk, self.pokemon.spdef, self.pokemon.speed]
 
-            # Merge existing stats with current object stats
-            updated_stats = [ self.hp, self.atk, self.defn, self.spatk, self.spdef, self.speed]
-            merged_stats = [ new if new is not None else old 
-                            for new, old in zip(updated_stats, current_stats)]
+            merged_stats =[new if new is not None else old 
+                           for new, old in zip(updated_stats, current_stats)]
 
-            print(sm(name,merged_stats))
+            print(sm(name, merged_stats))
             choice = input().strip()
             clear_console()
 
@@ -69,7 +72,7 @@ class UpdateStats(pk):
                 break
 
             if choice == '7':
-                update_stats(*merged_stats, number)
+                update_stats(*updated_stats, number)
                 print(f"Stats for {name} updated successfully.")
                 sleep(1)
                 clear_console()
