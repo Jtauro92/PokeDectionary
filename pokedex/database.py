@@ -57,16 +57,16 @@ class Database():
         except sqlite3.Error as e:
             raise sqlite3.Error(f"The stats could not be updated. Error: {e}")
 
-    def add_pokemon(self, *attr):
+    def add_pokemon(self, pkmn):
         '''Add a new Pokemon to the database'''
         self.create_table()  # Ensure the pokemon table exists
-        VALUES = (*attr,)
- 
+        VALUES = (pkmn.name, pkmn.number, pkmn.type1, pkmn.type2, pkmn.ability1, pkmn.ability2, pkmn.hidden_ability)
+
         try:
             self.execute(ADD_POKEMON, VALUES) # Execute the insert statement and values
             self.create_stats_table()  # Ensure the stats table exists
         except sqlite3.Error as e:
-            print(f"Database error: {e}")
+            raise e
 
 
     '''Check if a Pokemon exists in the database by name or number'''
