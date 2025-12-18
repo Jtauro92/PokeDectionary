@@ -1,86 +1,105 @@
 '''Module to add a new Pokemon to the Pokedex database'''
-
-from user_interface import show
+from user_interface import menus, show
 from validation import (DuplicateValueError as dv, EmptyFieldError as ef, clear_console, sleep,
                        validation_loop as vl, BackToStart, sqlite3_error)
-from pokedex import Pokemon as pk, exist_in_db, add_pokemon, get_pokemon
-from .update_stats import UpdateStats as us
+from pokedex import Pokemon, exist_in_db, add_pokemon, get_pokemon
 
-class add_new(pk):
+
+menu = menus.AddNew().menu
+
+class add_new():
     '''Class to add a new Pokemon to the Pokedex database'''
     def __init__(self):
-        super().__init__()
-    
+        self.pkmn = Pokemon()
+        self.jobs = {
+            "1": self.set_name,
+            "2": self.set_number,
+            "3": self.set_type1,
+            "4": self.set_type2,
+            "5": self.set_ability1,
+            "6": self.set_ability2,
+            "7": self.set_hidden_ability
+        }
+
     '''Setters with validation loops for each attribute'''    
     @vl
     def set_name(self):
-        self.name = input("Enter name: ")
-        if exist_in_db(self.name):  # Check if the name already exists in the database
+        self.pkmn.name = input("Enter name: ")
+        if exist_in_db(self.pkmn.name):  # Check if the name already exists in the database
             raise dv(f'This pokemon already exists!')
 
     @vl
     def set_number(self):
-        self.number = input("Enter number: ")                   
-        if exist_in_db(self.number):  # Check if the number already exists in the database
+        self.pkmn.number = input("Enter number: ")                   
+        if exist_in_db(self.pkmn.number):  # Check if the number already exists in the database
             raise dv(f'This pokemon already exists!')
 
     @vl
     def set_type1(self):
-        self.type1 = input("Enter type 1: ")
+        self.pkmn.type1 = input("Enter type 1: ")
 
     @vl
     def set_type2(self):
         try:
-            self.type2 = input("Enter type 2 (or press Enter to skip): ")
+            self.pkmn.type2 = input("Enter type 2 (or press Enter to skip): ")
         except (dv,ef):
-            self.type2 = None
+            self.pkmn.type2 = None
         
     @vl
     def set_ability1(self):
-        self.ability1 = input("Enter ability 1: ")
+        self.pkmn.ability1 = input("Enter ability 1: ")
     
     @vl
     def set_ability2(self):
         try:
-            self.ability2 = input("Enter ability 2: ")
+            self.pkmn.ability2 = input("Enter ability 2: ")
         except (dv,ef):
-            self.ability2 = None
+            self.pkmn.ability2 = None
     
     @vl
     def set_hidden_ability(self):
         try:
-            self.hidden_ability = input("Enter hidden ability: ")
+            self.pkmn.hidden_ability = input("Enter hidden ability: ")
         except (dv,ef):
-            self.hidden_ability = None
+            self.pkmn.hidden_ability = None
     
     def create_pokemon(self):
-        try:
-            self.set_name()
-            self.set_number()
-            self.set_type1()
-            self.set_type2()
-            self.set_ability1()
-            self.set_ability2()
-            self.set_hidden_ability()          
-            add_pokemon(self.name, self.number, self.type1, self.type2,
-                       self.ability1, self.ability2, self.hidden_ability)
-            
-            if self.name != "Default":
-                print(f"\nSuccessfully added {self.name} to the Pokedex!\n")
-                sleep(1)
-                clear_console()
-                show(get_pokemon(self.name))
-                cont = input("\nWould you like to set its stats now? (PRESS ENTER TO CONTINUE) ").strip().lower()
-                if cont == '':
-                    us().set_stats(self.name)
-                    show(get_pokemon(self.name))
+        '''Method to create a new Pokemon and add it to the database.'''
 
-        except sqlite3_error as sql:
-            raise sql
-        except BackToStart:
-            return
-        except ValueError as ve:
-            raise ve
+        while True:
+            print(menu(self.pkmn))
+            choice = input()
+            clear_console()
+            if choice in self.jobs:
+                try:
+                    self.jobs[choice]()
+                except (dv, ef) as e:
+                    clear_console()
+        
+                    print(e)
+
+            elif choice == "8":
+                clear_console()
+                if self.pkmn.name != "Default":
+                    add_pokemon(self.pkmn)
+                    sleep(1)
+                    clear_console()
+                    print(f"\nSuccessfully added {self.pkmn.name} to the Pokedex!\n")
+                    sleep(1)
+                    clear_console()
+                    show(get_pokemon(self.pkmn.name))
+                else:
+                    print("Please fill in at least the Name field before saving.")
+                 
+  
+                    clear_console()
+
+            elif choice == "0":
+                break
+                    
+
+
+
         
 
 
@@ -96,5 +115,4 @@ class add_new(pk):
                 break
 
 if __name__ == "__main__":
-    pass
-
+    add_new().main()

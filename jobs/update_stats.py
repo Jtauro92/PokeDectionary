@@ -1,4 +1,4 @@
-from pokedex import get_stats, update_stats, get_pokemon, Pokemon as pk
+from pokedex import update_stats, get_pokemon, Pokemon as pk
 from validation import validation_loop as vl
 from user_interface import stats_menu as sm
 from tools import *
@@ -95,8 +95,3 @@ class UpdateStats():
                 break
                 
      
-        
-
-if __name__ == "__main__":
-    us = UpdateStats()
-    us.main()

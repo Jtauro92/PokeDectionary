@@ -65,10 +65,6 @@ class stats():
     def speed(self, value):
         self.__speed = value
 
-if __name__ == "__main__":
-    es = stats()
-    es.hp = input("Enter HP: ")
-    print(f"HP set to: {es.hp}")
     
 
 

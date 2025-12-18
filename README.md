@@ -16,7 +16,7 @@ PokeDectionary is a CLI Python application that allows users to view and edit a 
 # Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/PokeDectionary.git
+   git clone https://github.com/jtauro92/PokeDectionary.git
    ```
 2. Navigate to the project directory:
    ```bash
