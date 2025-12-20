@@ -48,12 +48,12 @@ class Database():
         except sqlite3.Error as e: 
             raise e
        
-    def update_stats(self, *stats):
+    def update_stats(self, pkmn):
         '''Update a Pokemon's stats in the database'''
         self.create_stats_table()  # Ensure the stats table exists
-        VALUES = (*stats,) # Prepare the values for the SQL statement
+        VALUES = pkmn.stats# Prepare the values for the SQL statement
         try:  
-            self.execute(UPDATE_STATS, VALUES)
+            self.execute(UPDATE_STATS, (*VALUES,pkmn.number))
         except sqlite3.Error as e:
             raise sqlite3.Error(f"The stats could not be updated. Error: {e}")
 
@@ -90,7 +90,7 @@ class Database():
         '''Get a Pokemon's full details including stats from the database'''
 
         try:
-            result = self.fetchone(GET_POKEMON, (identifier, identifier)) # Fetch the full Pokemon details by name or number
+            result = self.fetchone(GET_POKEMON, (identifier.strip().capitalize(), identifier)) # Fetch the full Pokemon details by name or number
         except sqlite3.Error as e:
             raise e
  

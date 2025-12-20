@@ -1,7 +1,8 @@
-from pokedex import update_stats, get_pokemon, Pokemon as pk
-from validation import validation_loop as vl
+
+from pokedex import pokemon, update_stats, get_pokemon, Pokemon as pk
+from validation import validation_loop as vl, sleep, clear_console
 from user_interface import stats_menu as sm
-from tools import *
+
 
 class UpdateStats():
     def __init__(self):
@@ -15,83 +16,86 @@ class UpdateStats():
         self.pokemon = pk()
     @vl
     def set_hp(self):
-        self.pokemon.hp = input("Enter HP: ")
+        self.pokemon.stats.hp = input("Enter HP: ")
 
     @vl
     def set_atk(self):
-        self.pokemon.atk = input("Enter Attack: ")
+        self.pokemon.stats.atk = input("Enter Attack: ")
 
     @vl
     def set_defn(self):
-        self.pokemon.defn = input("Enter Defense: ")
+        self.pokemon.stats.defn = input("Enter Defense: ")
 
     @vl
     def set_spatk(self):
-        self.pokemon.spatk = input("Enter Special Attack: ")
+        self.pokemon.stats.spatk = input("Enter Special Attack: ")
 
     @vl
     def set_spdef(self):
-        self.pokemon.spdef = input("Enter Special Defense: ")
+        self.pokemon.stats.spdef = input("Enter Special Defense: ")
 
     @vl
     def set_speed(self):
-        self.pokemon.speed = input("Enter Speed: ")
+        self.pokemon.stats.speed = input("Enter Speed: ")
 
-    def set_stats(self, identifier=None):
-        '''Method to set stats for a given Pokemon.'''
-        if identifier is None:
-            identifier = input("Enter Pokemon name or number to update stats: ").strip()
-           
-
-        elif identifier == '0':
-            return # Exit if user chooses to go back
-
-        result = get_pokemon(identifier) # Fetch pokemon details
-
-        if not result:
-            raise ValueError("Pokemon not found in the database.")
-
-        name, number,current_stats = result[0], result[1], result[7:]
-
-        # Initialize Pokemon object with fetched details
-        self.pokemon = pk(*result[:6], current_stats) # Initialize with current stats
+    def set_stats(self):
+        '''Method to set stats for a Pokemon'''
+        if self.pokemon.name =="Default":
+            clear_console()
+            identifier = input("Enter Pokemon name or number: ").strip()
+            if identifier == "0":
+                raise ValueError
+     
+            result = get_pokemon(identifier)
+            if result:
+                self.pokemon = pk(*result[0:7],result[7:13])
+            else:
+                clear_console()
+                print("Pokemon not found")
+                sleep(1)
 
         while True:
             clear_console()
-            updated_stats = [self.pokemon.hp, self.pokemon.atk, self.pokemon.defn,
-                             self.pokemon.spatk, self.pokemon.spdef, self.pokemon.speed]
-
-            merged_stats =[new if new is not None else old 
-                           for new, old in zip(updated_stats, current_stats)]
-
-            print(sm(name, merged_stats))
-            choice = input().strip()
-            clear_console()
-
-            if choice == '0':
-                break
-
-            if choice == '7':
-                update_stats(*updated_stats, number)
-                print(f"Stats for {name} updated successfully.")
-                sleep(1)
-                clear_console()
-                break
-
+            print(sm(self.pokemon))
+            choice = input()
             if choice in self.jobs:
                 self.jobs[choice]()
-            else:
-                raise ValueError("Invalid choice. Please select a valid option.")
+                clear_console()
+
+            if choice == "7":
+                if [*self.pokemon.stats].count(None) > 0:
+                    clear_console()
+                    print("All stats must be set before exiting")
+                    sleep(1)
+                else:
+                    update_stats(self.pokemon)
+                    clear_console()
+                    print(f"Stats for {self.pokemon.name} updated successfully!")
+                    sleep(1)
+                    break
+
+            if choice == "0":
+                break
+
+        self.pokemon = pk()
+
     
     def main(self):
         while True:
             try:
                 self.set_stats()
-            except ValueError as ve:
-                print(ve)
+                cont = input("\nUpdate another Pokemon's stats (PRESS ENTER TO CONTINUE) ").strip().lower()
+                if cont != "":
+                    break
+            except ValueError:
+                cont = input("\nPRESS ENTER TO TRY AGAIN OR ANY KEY TO EXIT: ").strip().lower()
+                if cont != "":
+                    break
 
-            cont = input("Update another pokemon's stats (y/n): ").strip().lower()
-            if cont != 'y':
-                break
+
+if __name__ == "__main__":
+    main = UpdateStats().main
+    main()
+    
                 
      

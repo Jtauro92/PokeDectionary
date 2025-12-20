@@ -1,6 +1,6 @@
 '''Module defining the Pokemon class with attributes and methods to manage Pokemon data.'''
 
-from pokedex.stats import stats
+from pokedex.stats import stats as s
 from validation import set_name, set_number, set_type, set_ability
 
 
@@ -8,7 +8,7 @@ from validation import set_name, set_number, set_type, set_ability
 class Pokemon():
     '''Class representing a Pokemon with attributes and methods to manage its data.'''
     def __init__(self,name = "Default",number = 0,type1 = "Default",type2 = None,
-                 ability1="Default",ability2=None,hidden_ability=None):
+                 ability1="Default",ability2=None,hidden_ability=None, stats = []):
         self.__name = name
         self.__number = number
         self.__type1 = type1
@@ -16,7 +16,7 @@ class Pokemon():
         self.__ability1 = ability1
         self.__ability2 = ability2
         self.__hidden_ability = hidden_ability
-        self.__stats = stats()
+        self.__stats = s(*stats)
 
     def __str__(self):
         return (f"Name: {self.__name}\n"
@@ -100,57 +100,12 @@ class Pokemon():
     def hidden_ability(self, new_ability):
         self.__hidden_ability = new_ability
 
-    @property
-    def hp(self):
-        return self.__stats.hp
 
-    @hp.setter
-    def hp(self,value):
-        self.__stats.hp = value
-
-    @property
-    def atk(self):
-        return self.__stats.atk
-
-    @atk.setter
-    def atk(self,value):
-        self.__stats.atk = value
-
-    @property
-    def defn(self):
-        return self.__stats.defn
-
-    @defn.setter
-    def defn(self,value):
-        self.__stats.defn = value
-
-    @property
-    def spatk(self):
-        return self.__stats.spatk
-
-    @spatk.setter
-    def spatk(self,value):
-        self.__stats.spatk = value
-
-    @property
-    def spdef(self):
-        return self.__stats.spdef
-
-    @spdef.setter
-    def spdef(self,value):
-        self.__stats.spdef = value
-
-    @property
-    def speed(self):
-        return self.__stats.speed
-
-    @speed.setter
-    def speed(self,value):
-        self.__stats.speed = value
-    
     @property
     def stats(self):
         return self.__stats
+
+
 
 
     def show(self,values:tuple):

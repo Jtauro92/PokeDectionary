@@ -1,6 +1,6 @@
 from .menus import StatsMenu
 
-stats_menu = StatsMenu.stats_menu
+stats_menu = StatsMenu().stats_menu
 
 
 def show(values:tuple):

@@ -112,6 +112,7 @@ def set_stat(func):
                 return
         except:
             raise ValueError("Stat must be an interger")
+
         # Check if stat is within valid range
         if stat not in range(1, 800):
             raise ValueError("Stat must be between 1 and 800!")

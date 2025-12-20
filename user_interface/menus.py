@@ -3,51 +3,28 @@ class MainMenu(object):
         pass
 
 class StatsMenu:
-    def stats_menu(name, stats):
-        hp,atk, defn, spatk, spdefn, speed = stats
-        msg = f"--- Update {name}'s Stats ---\n"
-        
-        msg+= "1. HP"
-        if hp is not None:
-            msg += f": {hp}\n"
-        else:
-            msg+= "\n"
+    def __init__(self):
+          pass
+    def stats_menu(self, pkmn):
+        menu = f"--- Update {pkmn.name}'s Stats ---\n\n"
+        menu_options = ["1. HP: ", "2. Attack: ", "3. Defense: ", "4. Special Attack: ", "5. Special Defense: ", "6. Speed: ",
+                        "7. Save", "0. Cancel", "\n------ Enter your choice ------"]
 
-        msg+="2. Attack"
-        if atk is not None:
-            msg+= f": {atk}\n"
-        else:
-            msg+= "\n"
+        if pkmn.stats.hp is not None:
+            menu_options[0] += f"{pkmn.stats.hp}"
+        if pkmn.stats.atk is not None:
+            menu_options[1] += f"{pkmn.stats.atk}"
+        if pkmn.stats.defn is not None:
+            menu_options[2] += f"{pkmn.stats.defn}"
+        if pkmn.stats.spatk is not None:
+            menu_options[3] += f"{pkmn.stats.spatk}"
+        if pkmn.stats.spdef is not None:
+            menu_options[4] += f"{pkmn.stats.spdef}"
+        if pkmn.stats.speed is not None:
+            menu_options[5] += f"{pkmn.stats.speed}"
 
-        msg+="3. Defense"
-        if defn is not None:
-            msg+= f": {defn}\n"
-        else:
-            msg+= "\n"
-
-        msg+="4. Special Attack"
-        if spatk is not None:
-            msg+= f": {spatk}\n"
-        else:
-            msg+= "\n"
-
-        msg+="5. Special Defense"
-        if spdefn is not None:
-            msg+= f": {spdefn}\n"
-        else:
-            msg+= "\n"
-
-        msg+="6. Speed"
-        if speed is not None:
-            msg+= f": {speed}\n"
-        else:
-            msg+= "\n"
-        
-        msg+="7. Save and Exit\n"
-        msg+="0. Return to Main Menu\n"
-        msg += "\nSelect a stat to update:\n"
-
-        return msg
+        menu += "\n".join(menu_options)
+        return menu
 
 class AddNew:
     def __init__(self):

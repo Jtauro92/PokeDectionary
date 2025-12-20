@@ -65,6 +65,10 @@ class stats():
     def speed(self, value):
         self.__speed = value
 
+    def __iter__(self):
+        yield from [self.__hp, self.__atk, self.__defn, 
+                    self.__spatk, self.__spdef, self.__speed]
+
     
 
 

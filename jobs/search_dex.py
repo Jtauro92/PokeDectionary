@@ -39,7 +39,7 @@ class search_dex():
         while True:
            try:
                self.show_details()
-           except ValueError as ve:
+           except ValueError:
                break
 \
 

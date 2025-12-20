@@ -91,7 +91,7 @@ class add_new():
                 cont = input("\nPRESS ENTER TO CONTINUE OR ANY KEY TO SKIP: ").strip().lower()
 
                 if cont == '':
-                    self.set_stats(self.pkmn.name)
+                    self.set_stats()
                 else:
                     pass
 
