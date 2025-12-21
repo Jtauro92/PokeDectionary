@@ -11,12 +11,12 @@ class search_dex():
 
     def get_details(self):
         '''Method to get Pokemon details from user input'''
-        identifier = input("Enter Pokemon Name or Number to search: ").strip()
+        identifier = input("Enter Pokemon Name or Number to search: ").strip().title()
         clear_console()
         result = get_pokemon(identifier)
         if identifier == '0':
             clear_console()
-            raise ValueError
+            return
         if result is None:
             clear_console()
             raise TypeError("Pokemon not found in the database.")
@@ -31,20 +31,18 @@ class search_dex():
             show(result) # Display the Pokemon's details
             print()
         except TypeError as te:
-            print(te)
-            sleep(1)
-            clear_console()
+            return
 
-    def main(self):
+    def search_dex(self):
         menu = f"--------- Search Pokedex ---------\n\n"
-        menu_options = ["1. Search by Name", "2. Search by Number", "3. Search by Type",
-                       "4. View All Pokemon", "0. Return to Main Menu", "\n------ Enter your choice ------"]
+        menu_options = ["1. Search by Name or Number", "2. Search by Type",
+                       "3. View All Pokemon", "0. Return to Main Menu", "\n------ Enter your choice ------"]
         menu += "\n".join(menu_options)
         count = 1
         display_list = []
         for pokemon in pokemon_generator():
             count += 1
-            display_list.append(f"{pokemon[0]} #{pokemon[1]:04}")
+            display_list.append(f"{pokemon[0]:<13} | #{pokemon[1]:04}")
             
             if len(display_list) == 10:
                 clear_console()
@@ -54,35 +52,38 @@ class search_dex():
                 sleep(0.5)
 
 
-                if kbhit():
-                    choice = getch()
-                    if choice.isdigit():
-                        choice = int(choice)
-                        if choice == 0:
-                            print("Returning to Main Menu.")
-                            break
-                        elif choice == 1:
+            if kbhit():
+                choice = getch()
+                if choice.isdigit():
+                    choice = int(choice)
+                    if choice == 0:
+                        clear_console()
+                        print("Returning to Main Menu.")
+                        raise ValueError
+                    elif choice == 1:
+                        clear_console()
+                        while True:
                             clear_console()
                             self.show_details()
-                            sleep(5)
-                        elif choice == 2:
-                            print("Search by Number selected.")
-                        elif choice == 3:
-                            print("Search by Type selected.")
-                        elif choice == 4:
-                            print("View All Pokemon selected.")
-                    elif choice == b'\x1b':  # Escape key
-                        print("Search canceled.")
-                        break
+                            cont = input("(PRESS ENTER TO CONTINUE OR ANY KEY TO RETURN TO MENU) ").strip().lower()
+                            if cont != "":
+                                return
+                    elif choice == 3:
+                        print("Search by Type selected.")
+                    elif choice == 4:
+                        print("View All Pokemon selected.")
+                elif choice == b'\x1b':  # Escape key
+                    print("Search canceled.")
 
-
-#   def main(self):
+    def main(self):
+        '''Main method to run the search dex functionality'''
         while True:
-           try:
-               self.main()
-           except ValueError:
-               break
-\
+            try:
+                self.search_dex()
+            except ValueError:
+                break
+
+  
 
 
 if __name__ == "__main__":
