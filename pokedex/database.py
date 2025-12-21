@@ -1,4 +1,4 @@
-'''Module for managing the Pokemon database using SQLite.'''
+﻿'''Module for managing the Pokemon database using SQLite.'''
 
 import sqlite3
 from validation.sql_statements import *
@@ -6,29 +6,29 @@ from validation.sql_statements import *
 class Database():
     
     def __init__(self):
-        self.database = "pokemon_database.db"
+        self.database_name = "pokemon_database.db"
 
-    def connectdb(self):
+    def connectdb(self) -> sqlite3.Connection:
         '''Establish a connection to the SQLite database'''
         try:
-            db_connection = sqlite3.connect(self.database) # Connect to the SQLite database
+            db_connection = sqlite3.connect(self.database_name) # Connect to the SQLite database
         except sqlite3.Error as e:
             print(f"Database connection error: {e}")
 
         return db_connection
 
-    def execute(self,*args):
+    def execute(self,*args:tuple) -> None:
         '''Execute a SQL statement with optional values'''
         with self.connectdb() as connection: # Context manager to ensure connection is closed
             cursor = connection.cursor()
             cursor.execute(*args)
             connection.commit()
 
-    def fetchone(self,sql_statement,value):
+    def fetchone(self, sql_statement, *args):
         '''Fetch a single record from the database'''
         with self.connectdb() as connection:
             cursor = connection.cursor()
-            cursor.execute(sql_statement,value)
+            cursor.execute(sql_statement,*args)
             result = cursor.fetchone()
         return result
 
