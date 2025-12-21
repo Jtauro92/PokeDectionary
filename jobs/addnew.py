@@ -2,7 +2,7 @@
 from user_interface import menus, show
 from validation import (clear_console, sleep, validation_loop as vl)
 from pokedex import Pokemon as pk, exist_in_db, add_pokemon, get_pokemon
-from update_stats import UpdateStats
+from .update_stats import UpdateStats
 
 
 menu = menus.AddNew().menu

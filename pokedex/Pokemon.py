@@ -4,11 +4,12 @@ from pokedex.stats import stats as s
 from validation import set_name, set_number, set_type, set_ability
 
 
-
-class Pokemon():
+class Pokemon:
     '''Class representing a Pokemon with attributes and methods to manage its data.'''
-    def __init__(self,name = "Default",number = 0,type1 = "Default",type2 = None,
-                 ability1="Default",ability2=None,hidden_ability=None, stats = []):
+
+    def __init__(self, name:str = "Default", number:int = 0, type1:str = "Default",
+                 type2:str = None, ability1:str = "Default", ability2:str = None,
+                 hidden_ability:str = None, stats:s = ()):
         self.__name = name
         self.__number = number
         self.__type1 = type1
@@ -19,122 +20,109 @@ class Pokemon():
         self.__stats = s(*stats)
 
     def __str__(self):
-        return (f"Name: {self.__name}\n"
-                f"Number: {self.__number}\n"
-                f"Type 1: {self.__type1}\n"
-                f"Type 2: {self.__type2}\n"
-                f"Ability 1: {self.__ability1}\n"
-                f"Ability 2: {self.__ability2}\n"
-                f"Hidden Ability: {self.__hidden_ability}")
+        output = [f"*----- {self.__name} #{self.__number:04} -----*",
+                  f"Type: {self.__type1}" + (f" / {self.__type2}" if self.__type2 else ""),
+                  f"Ability #1: {self.__ability1}",
+                  f"Ability #2: " + (f"{self.__ability2}" if self.__ability2 else ""),
+                  f"Hidden Ability: " + (f"{self.__hidden_ability}" if self.__hidden_ability else ""),
+                  '*--------Stats--------*',
+                  f"HP: {self.__stats.hp}",
+                  f"ATK: {self.__stats.atk}",
+                  f"DEF: {self.__stats.defn}",
+                  f"SP.ATK: {self.__stats.spatk}",
+                  f"SP.DEF: {self.__stats.spdef}",
+                  f"SPEED: {self.__stats.speed}"]
+        return "\n".join(output)
+        
 
+    def __iter__(self):
+        '''Iterator to yield Pokemon attributes in a specific order.'''
+        yield from [self.__name, self.__number, self.__type1, self.__type2,
+                    self.__ability1, self.__ability2, self.__hidden_ability,
+                    self.__stats.hp, self.__stats.atk, self.__stats.defn,
+                    self.__stats.spatk, self.__stats.spdef, self.__stats.speed]
     #Getters and Setters for each attribute with validation decorators
 
     #Getter and Setter for name attribute
     @property
-    def name(self):
+    def name(self) -> str:
         return self.__name
 
     @name.setter #Sets name attribute
     @set_name #Decorator to validate and stardize name
-    def name(self, new_name):            
+    def name(self, new_name: str) -> None:            
         self.__name = new_name
 
-    '''Getter and Setter for number attribute'''
+    # Getter and Setter for number attribute
     @property
-    def number(self):
+    def number(self) -> int:
         return self.__number
 
     @number.setter #Sets number attribute
-    @set_number 
-    def number(self, new_number):
+    @set_number
+    def number(self, new_number: int) -> None:
         self.__number = new_number
-    
-    '''Getter and Setter for type attributes'''
+
+    # Getter and Setter for type attributes
     @property
-    def type1(self):
+    def type1(self) -> str:
         return self.__type1
 
     @type1.setter #Sets type1 attribute
-    @set_type 
-    def type1(self, new_type):        
+    @set_type
+    def type1(self, new_type: str) -> None:
         self.__type1 = new_type
 
     @property
-    def type2(self):
+    def type2(self) -> str:
         return self.__type2
 
     @type2.setter #Sets type2 attribute
-    @set_type 
-    def type2(self, new_type):
+    @set_type
+    def type2(self, new_type: str) -> None:
         if self.__type1 == "Default":
             self.__type1 = new_type
         else:
             self.__type2 = new_type
         
- 
-    '''Getter and Setter for ability attributes ensuring unique values'''
+    # Getter and Setter for ability attributes
     @property
-    def ability1(self):
+    def ability1(self) -> str:
         return self.__ability1
    
     @ability1.setter #Sets ability1 attribute
     @set_ability
-    def ability1(self, new_ability):
+    def ability1(self, new_ability: str) -> None:
         self.__ability1 = new_ability
     
     @property
-    def ability2(self):
+    def ability2(self) -> str:
         return self.__ability2
    
     @ability2.setter #Sets ability2 attribute
     @set_ability
-    def ability2(self, new_ability):
+    def ability2(self, new_ability: str) -> None:
         self.__ability2 = new_ability
 
     @property
-    def hidden_ability(self):
+    def hidden_ability(self) -> str:
         return self.__hidden_ability
     
     @hidden_ability.setter #Sets hidden_ability attribute
     @set_ability
-    def hidden_ability(self, new_ability):
+    def hidden_ability(self, new_ability: str) -> None:
         self.__hidden_ability = new_ability
 
-
+    # Getter for stats attribute
     @property
-    def stats(self):
+    def stats(self) -> tuple:
         return self.__stats
-
-
-
-
-    def show(self,values:tuple):
-        '''Method to display the Pokemon's details in a formatted manner.'''
-        name, number, t1, t2, a1, a2, ha = values # Retrieve details from the database
-
-        result = [f"Name: {name}\nNumber: {number:04}"]
-        
-        type_str = f"Type: {t1}"
-        if t2 is not None:
-            type_str += f" / {t2}"
-        result.append(type_str)
-
-        result.append(f"Ability #1: {a1}")
-
-        ability2_str = "Ability #2: "
-        if a2:
-            ability2_str += a2
-        result.append(ability2_str)
-
-        hidden_ability_str = "Hidden Ability: "
-        if ha:
-            hidden_ability_str += ha
-        result.append(hidden_ability_str)
-        
-        print( "\n".join(result))
     
 
 if __name__ == "__main__":
     pokemon = Pokemon()
     pokemon.name ="Pikachu"
-    pokemon.show()
+    pokemon.number = 25
+    pokemon.type1 = "Electric"
+    pokemon.type2 = "Fire"
+    print(pokemon)

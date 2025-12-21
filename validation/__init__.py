@@ -42,8 +42,9 @@ def set_number(func):
     return wrapper
 
 
-'''Function to validate and set a Pokemon's Type'''
+
 def set_type(func):
+    '''Function to validate and set a Pokemon's Type'''
     def wrapper(self,value):
 
         # Standardize input, return None if not a string
@@ -70,11 +71,11 @@ def set_type(func):
     return wrapper
 
 
-''' Function to validate and set a Pokemon's ability'''
-def set_ability(func):
+def set_ability(func:function) ->function:
+    ''' Function to validate and set a Pokemon's ability'''
 
-    def wrapper(self,value):
-
+    def wrapper(self, value:str):
+        "wrapper function to validate ability input"
         try:
             value = value.title().strip()
 
@@ -90,8 +91,8 @@ def set_ability(func):
 
                 #Check for duplicate abilities
                 elif ([self.ability1,self.ability2,self.hidden_ability].count(value) > 0): 
-                    raise ValueError
-
+                    raise ValueError("Duplicate abilities are not allowed!")
+            
             else:
                 raise ValueError #Return None if empty string
 
