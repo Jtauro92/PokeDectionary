@@ -90,7 +90,7 @@ class Database():
         '''Get a Pokemon's full details including stats from the database'''
 
         try:
-            result = self.fetchone(GET_POKEMON, (identifier.strip().capitalize(), identifier)) # Fetch the full Pokemon details by name or number
+            result = self.fetchone(GET_POKEMON, (identifier, identifier)) # Fetch the full Pokemon details by name or number
         except sqlite3.Error as e:
             raise e
  

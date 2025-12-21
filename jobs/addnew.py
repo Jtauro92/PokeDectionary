@@ -86,9 +86,10 @@ class add_new():
                 print(f"Successfully added {self.pkmn.name} to the Pokedex!\n")
                 show(get_pokemon(self.pkmn.name)) # Display the added Pokemon's details
                 sleep(2)
+                clear_console()
                 print("\nWould you like to enter stats for this Pokemon now?")
 
-                cont = input("\nPRESS ENTER TO CONTINUE OR ANY KEY TO SKIP: ").strip().lower()
+                cont = input("(PRESS ENTER TO CONTINUE OR ANY KEY TO SKIP) ").strip().lower()
 
                 if cont == '':
                     self.set_stats()

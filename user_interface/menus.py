@@ -57,10 +57,23 @@ class AddNew:
         menu += "\n".join(menu_options)
         return menu
 
+class SearchDex:
+    def __init__(self):
+        pass
+
+
+
+
+
+
+
+
+
 if __name__ == "__main__":
     pokemon = ("Pikachu", 0, "Electric", "fire", "Static", None, "Lightning Rod")
-    menu = AddNew().menu(pokemon)
-    print(menu)
+    menu = SearchDex().menu
+    menu()
+
 
 
 

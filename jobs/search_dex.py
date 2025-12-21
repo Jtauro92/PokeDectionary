@@ -1,6 +1,6 @@
 '''Module to search for a Pokemon in the database and display its details'''
-
-from pokedex import get_pokemon
+from msvcrt import getch, kbhit
+from pokedex import get_pokemon, pokemon_generator
 from user_interface import show
 from tools import clear_console, sleep
 
@@ -36,9 +36,50 @@ class search_dex():
             clear_console()
 
     def main(self):
+        menu = f"--------- Search Pokedex ---------\n\n"
+        menu_options = ["1. Search by Name", "2. Search by Number", "3. Search by Type",
+                       "4. View All Pokemon", "0. Return to Main Menu", "\n------ Enter your choice ------"]
+        menu += "\n".join(menu_options)
+        count = 1
+        display_list = []
+        for pokemon in pokemon_generator():
+            count += 1
+            display_list.append(f"{pokemon[0]} #{pokemon[1]:04}")
+            
+            if len(display_list) == 10:
+                clear_console()
+                print(menu)
+                print("\n".join(display_list))
+                display_list.pop(0)
+                sleep(0.5)
+
+
+                if kbhit():
+                    choice = getch()
+                    if choice.isdigit():
+                        choice = int(choice)
+                        if choice == 0:
+                            print("Returning to Main Menu.")
+                            break
+                        elif choice == 1:
+                            clear_console()
+                            self.show_details()
+                            sleep(5)
+                        elif choice == 2:
+                            print("Search by Number selected.")
+                        elif choice == 3:
+                            print("Search by Type selected.")
+                        elif choice == 4:
+                            print("View All Pokemon selected.")
+                    elif choice == b'\x1b':  # Escape key
+                        print("Search canceled.")
+                        break
+
+
+#   def main(self):
         while True:
            try:
-               self.show_details()
+               self.main()
            except ValueError:
                break
 \
