@@ -10,8 +10,9 @@ class search_dex():
 
     def get_details(self):
         '''Method to get Pokemon details from user input'''
-        identifier = input("Enter Pokemon Name or Number to search: ").strip().title()
+        
         clear_console()
+        identifier = input("Enter Pokemon Name or Number to search: ").strip().title()
         result = get_pokemon(identifier)
         if identifier == '0':
             clear_console()
@@ -27,8 +28,9 @@ class search_dex():
         '''Method to get and display Pokemon details'''
         try:
             result = self.get_details() # Get details from user
-            print(pk(result)) # Display the Pokemon's details
-            print()
+            pkmn = pk(*result[0:7],result[7:13]) # Display the Pokemon's details
+            clear_console()
+            print(pkmn, "\n")
         except TypeError:
             return
 

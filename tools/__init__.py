@@ -8,6 +8,11 @@ def clear_console():
     command = 'cls' if os.name == 'nt' else 'clear'
     os.system(command)
 
+def clear_line ():
+    """Clears the current line in the console."""
+    sys.stdout.write('\033[2K\r') # Clear the line
+    sys.stdout.flush() # Flush the output buffer
+
 def move_up(lines=1):
     """Moves the cursor up by the specified number of lines."""
     sys.stdout.write(f"\033[{lines}A")

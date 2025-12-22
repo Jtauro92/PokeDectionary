@@ -1,7 +1,7 @@
 '''Module to add a new Pokemon to the Pokedex database'''
 from user_interface import menus
 from validation import (clear_console, sleep, validation_loop as vl)
-from pokedex import Pokemon as pk, exist_in_db, add_pokemon, get_pokemon
+from pokedex import Pokemon as pk, exist_in_db, add_pokemon
 from update_stats import UpdateStats
 
 
