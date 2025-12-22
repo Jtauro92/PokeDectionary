@@ -39,8 +39,7 @@ class Pokemon:
         '''Iterator to yield Pokemon attributes in a specific order.'''
         yield from [self.__name, self.__number, self.__type1, self.__type2,
                     self.__ability1, self.__ability2, self.__hidden_ability,
-                    self.__stats.hp, self.__stats.atk, self.__stats.defn,
-                    self.__stats.spatk, self.__stats.spdef, self.__stats.speed]
+                    self.__stats]
     #Getters and Setters for each attribute with validation decorators
 
     #Getter and Setter for name attribute

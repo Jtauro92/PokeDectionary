@@ -1,8 +1,8 @@
 '''Module to add a new Pokemon to the Pokedex database'''
-from user_interface import menus, show
+from user_interface import menus
 from validation import (clear_console, sleep, validation_loop as vl)
 from pokedex import Pokemon as pk, exist_in_db, add_pokemon, get_pokemon
-from .update_stats import UpdateStats
+from update_stats import UpdateStats
 
 
 menu = menus.AddNew().menu
@@ -84,7 +84,7 @@ class add_new():
                 clear_console()
                 add_pokemon(self.pkmn) # Add the new Pokemon to the database
                 print(f"Successfully added {self.pkmn.name} to the Pokedex!\n")
-                show(get_pokemon(self.pkmn.name)) # Display the added Pokemon's details
+                print(get_pokemon(self.pkmn.name)) # Display the added Pokemon's details
                 sleep(2)
                 clear_console()
                 print("\nWould you like to enter stats for this Pokemon now?")

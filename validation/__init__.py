@@ -1,9 +1,10 @@
 from tools import *
 from .constants import ABILITIES, NUM_OF_POKEMON, TYPE_LIST
+from _collections_abc import Callable
 
 '''Decorator Functions'''
 # Function to validate and set a Pokemon's name
-def set_name(func):
+def set_name(func:Callable[[str], None]) -> Callable[[str], None]:
     def wrapper(self,value):
         name = value.title().strip()
 
@@ -71,7 +72,7 @@ def set_type(func):
     return wrapper
 
 
-def set_ability(func:function) ->function:
+def set_ability(func):
     ''' Function to validate and set a Pokemon's ability'''
 
     def wrapper(self, value:str):

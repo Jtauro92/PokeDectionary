@@ -1,6 +1,6 @@
 '''Module to search for a Pokemon in the database and display its details'''
-from pokedex import get_pokemon, pokemon_generator
-from user_interface import show
+from pokedex import get_pokemon, pokemon_generator, Pokemon as pk
+
 from tools import clear_console, move_up, sleep, getwch, kbhit, hide_cursor, show_cursor
 
 class search_dex():
@@ -27,7 +27,7 @@ class search_dex():
         '''Method to get and display Pokemon details'''
         try:
             result = self.get_details() # Get details from user
-            show(result) # Display the Pokemon's details
+            print(pk(result)) # Display the Pokemon's details
             print()
         except TypeError:
             return
