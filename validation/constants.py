@@ -8,5 +8,5 @@ TYPE_LIST = [
 
 # Load abilities from the abilities.txt file
 with open("validation/abilities.txt", "r") as file:
-    ABILITIES = [ability.strip() for ability in file.read().split(",")]
+    ABILITIES = [ability.strip().title() for ability in file.read().split(",")]
 

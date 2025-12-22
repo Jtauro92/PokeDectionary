@@ -38,8 +38,9 @@ class UpdateStats():
     def set_speed(self):
         self.pokemon.stats.speed = input("Enter Speed: ")
 
-    def set_stats(self):
+    def set_stats(self, pkmn):
         '''Method to set stats for a Pokemon'''
+        self.pokemon = pkmn
         if self.pokemon.name =="Default":
             clear_console()
             identifier = input("Enter Pokemon name or number: ").strip()
@@ -77,7 +78,7 @@ class UpdateStats():
             if choice == "0":
                 break
 
-        self.pokemon = pk()
+        pkmn = pk()
 
     
     def main(self):

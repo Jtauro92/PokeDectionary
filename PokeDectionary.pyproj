@@ -53,7 +53,6 @@
     </Compile>
     <Compile Include="jobs\search_dex.py" />
     <Compile Include="pokedex\database.py" />
-    <Compile Include="validation\errors.py" />
     <Compile Include="main.py" />
     <Compile Include="pokedex\pokemon.py" />
   </ItemGroup>

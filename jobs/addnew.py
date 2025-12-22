@@ -67,7 +67,6 @@ class add_new():
     def create_pokemon(self):
         '''Method to create a new Pokemon and add it to the database.'''
 
-
         clear_console()
         print(menu(self.pkmn))
 
@@ -79,25 +78,27 @@ class add_new():
 
 
         if choice == "8":
-                # Ensure required fields are filled before saving
-            if  [self.pkmn.name, self.pkmn.type1, self.pkmn.ability1].count("Default") == 0 and (self.pkmn.number != 0):
+            # Ensure required fields are filled before saving
+            if ("Default" not in [self.pkmn.name, self.pkmn.type1, self.pkmn.ability1] and 
+                (self.pkmn.number != 0)):
+
                 clear_console()
                 add_pokemon(self.pkmn) # Add the new Pokemon to the database
                 print(f"Successfully added {self.pkmn.name} to the Pokedex!\n")
-                print(get_pokemon(self.pkmn.name)) # Display the added Pokemon's details
+                print(self.pkmn) # Display the added Pokemon's details
                 sleep(2)
-                clear_console()
-                print("\nWould you like to enter stats for this Pokemon now?")
 
+                clear_console()
+                print("Would you like to enter stats for this Pokemon now?")
                 cont = input("(PRESS ENTER TO CONTINUE OR ANY KEY TO SKIP) ").strip().lower()
 
                 if cont == '':
-                    self.set_stats()
+                    self.set_stats(self.pkmn)
                 else:
                     pass
-
-                cont = input("\nAdd another new pokemon (PRESS ENTER TO CONTINUE) ").strip().lower()
-
+                
+                clear_console()
+                cont = input("Add another new pokemon (PRESS ENTER TO CONTINUE) ").strip().lower()
                 if cont != '':
                     raise ValueError
                 else:
