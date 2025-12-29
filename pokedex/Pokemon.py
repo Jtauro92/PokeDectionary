@@ -1,7 +1,7 @@
 '''Module defining the Pokemon class with attributes and methods to manage Pokemon data.'''
 
 from pokedex.stats import stats as s
-from validation import set_name, set_number, set_type, set_ability
+from validation import validate_name, set_number, set_type, set_ability
 
 
 class Pokemon:
@@ -48,7 +48,7 @@ class Pokemon:
         return self.__name
 
     @name.setter #Sets name attribute
-    @set_name #Decorator to validate and stardize name
+    @validate_name #Decorator to validate and stardize name
     def name(self, new_name: str) -> None:            
         self.__name = new_name
 

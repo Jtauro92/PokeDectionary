@@ -1,45 +1,62 @@
+'''Module containing validation decorators for Pokemon attributes'''
 from tools import *
 from .constants import ABILITIES, NUM_OF_POKEMON, TYPE_LIST
 from _collections_abc import Callable
 
-'''Decorator Functions'''
-def set_name(func:Callable[[str], str]) -> Callable[[str], str]:
-    '''Function to validate and set a Pokemon's name'''
 
+def validate_name(func: Callable[[str], None]) -> Callable[[str], None]:
+    '''Function to validate and set a Pokemon's name
+        arg: func - callable function to set name
+        return: wrapper - callable function that validates name input
+    '''
+    
     def wrapper(self, value: str):
-        '''Wrapper function to validate name input'''
-        
+        '''Wrapper function to validate name input
+           arg: self - instance of a class
+           arg: value - name to validate
+           return: func(self,name) - calls the original function with validated name
+        '''
+
+        # Standardize input
         name = value.title().strip()
 
-        if name == '':
+        # Validate name is not empty or numeric
+        name_is_empty = name == ''
+        name_is_number = name.isnumeric()
+
+        # Raise errors for invalid names
+        if name_is_empty:
             raise ValueError("Name cannot be empty!")
 
-        elif name.isnumeric():
+        elif name_is_number:
             if value == '0':
-                return
+                name = value
             else:
                 raise ValueError("Names cannot be numerical!")
             
         return func(self,name)
+
     return wrapper
 
-# Function to validate and set a Pokemon's number
-def set_number(func):
-    def wrapper(self,value):
 
+def set_number(func: Callable[[str], None]) -> Callable[[str], None]:
+    '''Function to validate and set a Pokemon's Number
+       arg: func - callable function to set number
+       return: wrapper - callable function that validates number input
+    '''
+
+    def wrapper(self,value):
         # Validate input is numeric and not empty
         if value == '':
             raise ValueError("Number cannot be empty!")
 
         try:
             number = int(value)
-            if number == 0:
-                return
         except:
             raise ValueError("Number must be an interger")
 
         # Check if number is within valid range
-        if number not in range(1, NUM_OF_POKEMON + 1):
+        if number not in range(0, NUM_OF_POKEMON + 1):
             raise ValueError(f"Number must be between 1 and {NUM_OF_POKEMON}!")
             
         return func(self,number)
