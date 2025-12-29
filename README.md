@@ -1,14 +1,14 @@
 # PokeDectionary
 
 # Overview
-PokeDectionary is a CLI Python application that allows users to view and edit a dictionary of Pokémon. The application provides a user-friendly interface for interacting with the Pokémon data, making it easy to find and modify information about different Pokémon species.
+PokeDectionary is a CLI Python application that allows users to view and edit a dictionary of PokÃ©mon. The application provides a user-friendly interface for interacting with the PokÃ©mon data, making it easy to find and modify information about different PokÃ©mon species.
 
 # Features
-- View a list of all Pokémon in the dictionary
-- Search for specific Pokémon by name or type
-- Edit Pokémon details such as name, type, and abilities
-- Add new Pokémon to the dictionary
-- Delete existing Pokémon from the dictionary
+- View a list of all PokÃ©mon in the dictionary
+- Search for specific PokÃ©mon by name or type
+- Edit PokÃ©mon details such as name, type, and abilities
+- Add new PokÃ©mon to the dictionary
+- Delete existing PokÃ©mon from the dictionary
 - Save changes to a local file for persistent storage
 - User-friendly command-line interface
 - SQLite database integration for efficient data management
@@ -24,13 +24,13 @@ PokeDectionary is a CLI Python application that allows users to view and edit a 
    ```
 3. Run the application:
    ```bash
-   python pokedectionary.py
+   python main.py
    ```
 # Usage
 1. Launch the application using the command above.
-2. Follow the on-screen prompts to view, search, edit, add, or delete Pokémon from the dictionary.
+2. Follow the on-screen prompts to view, search, edit, add, or delete PokÃ©mon from the dictionary.
 3. Save your changes before exiting the application to ensure that your modifications are stored.
-4. Enjoy exploring and managing your Pokémon collection!
+4. Enjoy exploring and managing your PokÃ©mon collection!
 
 # Contributing
 Contributions are welcome! If you'd like to contribute to PokeDectionary, please follow these steps:
