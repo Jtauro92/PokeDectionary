@@ -1,6 +1,6 @@
 '''Module containing validation decorators for Pokemon attributes'''
 from tools import *
-from .constants import ABILITIES, NUM_OF_POKEMON, TYPE_LIST
+from .constants import ABILITIES, NUM_OF_POKEMON, TYPE_LIST, DEFAULT
 from _collections_abc import Callable
 
 
@@ -16,50 +16,60 @@ def validate_name(func: Callable[[str], None]) -> Callable[[str], None]:
            arg: value - name to validate
            return: func(self,name) - calls the original function with validated name
         '''
+        if value:
+            # Standardize input
+            name = value.title().strip()
 
-        # Standardize input
-        name = value.title().strip()
+            # Validate name is not empty or numeric
+            name_is_empty = name == ''
+            name_is_number = name.isnumeric()
 
-        # Validate name is not empty or numeric
-        name_is_empty = name == ''
-        name_is_number = name.isnumeric()
+            # Raise errors for invalid names
+            if name_is_empty:
+                raise ValueError("Name cannot be empty!")
 
-        # Raise errors for invalid names
-        if name_is_empty:
-            raise ValueError("Name cannot be empty!")
-
-        elif name_is_number:
-            if value == '0':
-                name = value
-            else:
-                raise ValueError("Names cannot be numerical!")
+            elif name_is_number:
+                if value == '0':
+                    name = value
+                else:
+                    raise ValueError("Names cannot be numerical!")
+        else:
+            name = DEFAULT
             
         return func(self,name)
 
     return wrapper
 
 
-def set_number(func: Callable[[str], None]) -> Callable[[str], None]:
+def validate_number(func: Callable[[str], None]) -> Callable[[str], None]:
     '''Function to validate and set a Pokemon's Number
        arg: func - callable function to set number
        return: wrapper - callable function that validates number input
     '''
 
     def wrapper(self,value):
-        # Validate input is numeric and not empty
-        if value == '':
-            raise ValueError("Number cannot be empty!")
+        '''
+        Wrapper function to standrdize and validate number input
+        arg: self - instance of a class
+        arg: value - number to validate
+        return: func(self,number) - calls the original function with validated number
+        '''
+        if value:
+            value = value.strip()
+            if value == '':
+                raise ValueError("Number cannot be empty!")
+            try:
+                value = int(value)
+            except ValueError as ne:
+                raise ValueError(f"Number must be an interger. Error: {ne}")
 
-        try:
-            number = int(value)
-        except:
-            raise ValueError("Number must be an interger")
+            if value != 0:
+                if not (1 <= value <= NUM_OF_POKEMON):
+                    raise ValueError(f"Number must be between 1 and {NUM_OF_POKEMON}!")
+        else:
+            value = DEFAULT
 
-        # Check if number is within valid range
-        if number not in range(0, NUM_OF_POKEMON + 1):
-            raise ValueError(f"Number must be between 1 and {NUM_OF_POKEMON}!")
-            
-        return func(self,number)
+        return func(self,value)
     return wrapper
 
 

@@ -1,7 +1,7 @@
 '''Module for managing stats of a creature.'''
 from validation import set_stat
 
-class stats():
+class Stats():
     def __init__(self, hp=None, atk=None, defn=None, spatk=None, spdef=None, speed=None):
         self.__hp = hp
         self.__atk = atk

@@ -10,3 +10,4 @@ TYPE_LIST = [
 with open("validation/abilities.txt", "r") as file:
     ABILITIES = [ability.strip().title() for ability in file.read().split(",")]
 
+DEFAULT = None
