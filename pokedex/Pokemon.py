@@ -1,158 +1,172 @@
+# -*- coding: utf-8 -*-
 '''Module defining the Pokemon class with attributes and methods to manage Pokemon data.'''
 
-from stats import Stats as s
+from typing import Iterable
+from pokedex.stats import Stats
 from validation import validate_name, validate_number, set_type, set_ability, DEFAULT
+
 
 class Pokemon:
     '''
     Class representing a Pokemon with attributes and methods to manage its data.
+    Uses __slots__ for memory optimization and faster attribute access.
     '''
+    __slots__ = (
+        '_name', '_number', '_type1', '_type2',
+        '_ability1', '_ability2', '_hidden_ability', '_stats'
+    )
 
     def __init__(self, name: str = DEFAULT, number: int = DEFAULT, type1: str = DEFAULT,
                  type2: str = DEFAULT, ability1: str = DEFAULT, ability2: str = DEFAULT,
-                 hidden_ability: str = DEFAULT, stats: s = ()) -> None:
-        self._name = name
-        self._number = number
-        self._type1 = type1
-        self._type2 = type2
-        self._ability1 = ability1
-        self._ability2 = ability2
-        self._hidden_ability = hidden_ability
-        self._stats = s(*stats)
+                 hidden_ability: str = DEFAULT, stats: Iterable[int] | Stats = ()) -> None:
+        '''
+        Initialize a new Pokemon instance.
 
-    def __str__(self):
-        output = [f"*----- {self._name or 'Default'} " +
-                 (f"#{self._number:04}" if self._number else "Default") +"-----*",
-                  f"Type: {self._type1 or "Default"}" + 
-                  (f" / {self._type2}" if self._type2 else ''),
-                  f"Ability #1: {self._ability1}",
-                  f"Ability #2: " + (f"{self._ability2}" if self._ability2 else ""),
-                  f"Hidden Ability: " + (f"{self._hidden_ability}" 
-                                         if self._hidden_ability else ""),
-                  '*--------Stats--------*',
-                  f"HP: {self._stats.hp}",
-                  f"ATK: {self._stats.atk}",
-                  f"DEF: {self._stats.defn}",
-                  f"SP.ATK: {self._stats.spatk}",
-                  f"SP.DEF: {self._stats.spdef}",
-                  f"SPEED: {self._stats.speed}"]
-        return "\n".join(output)
+        Args:
+            name (str): The name of the Pokemon.
+            number (int): The Pokedex number.
+            type1 (str): The primary type.
+            type2 (str): The secondary type.
+            ability1 (str): The first ability.
+            ability2 (str): The second ability.
+            hidden_ability (str): The hidden ability.
+            stats (Iterable[int] | Stats): A tuple of stats or a Stats object.
+        '''
+        # Initialize all slots to defaults to prevent AttributeErrors
+        for slot in self.__slots__:
+            setattr(self, slot, DEFAULT)
         
+        self._stats = Stats()
+
+        # Initialize stats first, then route others through validated setters
+        self.name = name
+        self.number = number
+        self.type1 = type1
+        self.type2 = type2
+        self.ability1 = ability1
+        self.ability2 = ability2
+        self.hidden_ability = hidden_ability
+        self.stats = stats
+
+    def __str__(self) -> str:
+        '''Return a formatted string representation of the Pokemon.'''
+        name_display = self.name or 'Default'
+        number_display = f"#{self.number:04}" if self.number else '\b'
+        type_display = f"{self.type1 or ''}"
+        if self.type2:
+            type_display += f" / {self.type2}"
+
+        output = [
+            f"*----- {name_display} {number_display} -----*",
+            f"Type: {type_display}",
+            f"Ability #1: {self.ability1 or ''}",
+            f"Ability #2: {self.ability2 or ''}",
+            f"Hidden Ability: {self.hidden_ability or ''}",
+            '\n*--------Stats--------*',
+            f"HP: {self.stats.hp}",
+            f"ATK: {self.stats.atk}",
+            f"DEF: {self.stats.defn}",
+            f"SP.ATK: {self.stats.spatk}",
+            f"SP.DEF: {self.stats.spdef}",
+            f"SPEED: {self.stats.speed}"
+        ]
+        return "\n".join(output)
 
     def __iter__(self):
-        '''
-        Iterator to yield Pokemon attributes in a specific order.
-        '''
-        yield from [self._name, self._number, self._type1, self._type2,
-                    self._ability1, self._ability2, self._hidden_ability,
-                    self._stats]
-    
-        
-    #Getters and Setters for each attribute with validation decorators
+        '''Iterator to yield Pokemon attributes in a specific order.'''
+        yield from [self.name, self.number, self.type1, self.type2,
+                    self.ability1, self.ability2, self.hidden_ability,
+                    self.stats]
 
-    #Getter and Setter for name attribute
+    # Name
     @property
     def name(self) -> str:
+        '''Get the Pokemon's name.'''
         return self._name
 
-    @name.setter 
-    @validate_name  # Wraps name setter with validate_name function
-    def name(self, new_name: str) -> None:
-        '''
-        Sets the name attribute using the validate_name decorator.
-        '''
-        self._name = new_name
+    @name.setter
+    @validate_name
+    def name(self, value: str) -> None:
+        self._name = value
 
-
-    # Getter and Setter for number attribute
+    # Number
     @property
     def number(self) -> int:
+        '''Get the Pokemon's number.'''
         return self._number
 
     @number.setter
-    @validate_number  # Wraps number setter with validate_number function
-    def number(self, number: int) -> None:
-        '''
-        Sets the number attribute using the validate_number decorator.
-        '''
-        self._number = number
+    @validate_number
+    def number(self, value: int) -> None:
+        self._number = value
 
-
-    # Getter and Setter for type attributes
+    # Types
     @property
     def type1(self) -> str:
+        '''Get the primary type.'''
         return self._type1
 
-    @type1.setter 
-    @set_type  # Wraps type1 setter with set_type function
-    def type1(self, new_type: str) -> None:
-        '''
-        Sets the type1 attribute using the set_type decorator.
-        '''
-        self._type1 = new_type
-
+    @type1.setter
+    @set_type
+    def type1(self, value: str) -> None:
+        self._type1 = value
 
     @property
     def type2(self) -> str:
-        return self.__type2
+        '''Get the secondary type.'''
+        return self._type2
 
-    @type2.setter 
-    @set_type  # Wraps type2 setter with set_type function
-    def type2(self, new_type: str) -> None:
-        '''
-        Sets the type2 attribute using the set_type decorator.
-        '''
+    @type2.setter
+    @set_type
+    def type2(self, value: str) -> None:
+        # If type1 is not set, assign to type1 instead
         if self._type1 == DEFAULT:
-            self._type1 = new_type
+            self._type1 = value
         else:
-            self._type2 = new_type
+            self._type2 = value
 
-
-    # Getter and Setter for ability attributes
+    # Abilities
     @property
     def ability1(self) -> str:
+        '''Get the first ability.'''
         return self._ability1
-   
-    @ability1.setter 
-    @set_ability  # Wraps ability1 setter with set_ability function
-    def ability1(self, new_ability: str) -> None:
-        '''
-        Sets the ability1 attribute using the set_ability decorator.
-        '''
-        self._ability1 = new_ability
-    
+
+    @ability1.setter
+    @set_ability
+    def ability1(self, value: str) -> None:
+        self._ability1 = value
 
     @property
     def ability2(self) -> str:
+        '''Get the second ability.'''
         return self._ability2
 
-    @ability2.setter  
-    @set_ability  # Wraps ability2 setter with set_ability function
-    def ability2(self, new_ability: str) -> None:
-        '''
-        Sets the ability2 attribute using the set_ability decorator.
-        '''
-        self._ability2 = new_ability
-
+    @ability2.setter
+    @set_ability
+    def ability2(self, value: str) -> None:
+        self._ability2 = value
 
     @property
     def hidden_ability(self) -> str:
+        '''Get the hidden ability.'''
         return self._hidden_ability
 
     @hidden_ability.setter
-    @set_ability  # Wraps hidden_ability setter with set_ability function
-    def hidden_ability(self, ability: str) -> None:
-        '''
-        Sets the hidden_ability attribute using the set_ability decorator.
-        arg: ability - new hidden ability to set
-        '''
-        self._hidden_ability = ability
+    @set_ability
+    def hidden_ability(self, value: str) -> None:
+        self._hidden_ability = value
 
+    # Stats
     @property
-    def stats(self) -> tuple:  # Getter for stats attribute
+    def stats(self) -> Stats:
+        '''Get the Pokemon's stats.'''
         return self._stats
 
+    @stats.setter
+    def stats(self, value: Iterable[int] | Stats) -> None:
+        self._stats = Stats(*value)
 
 if __name__ == "__main__":
-    pokemon = Pokemon()
-    print(pokemon)
+    pokemon = Pokemon(stats=(45, 49, 49, 65, 65))
+    # Example stats for Bulbasaur
+    print(*pokemon.stats)

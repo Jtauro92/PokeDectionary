@@ -46,8 +46,10 @@ GET_BY_TYPE = '''SELECT p.name, p.number, p.type1, p.type2, p.ability1, p.abilit
                  FROM pokemon p
                  LEFT JOIN stats s ON p.number = s.number
                  WHERE p.type1 = ? OR p.type2 = ?'''
+EXIST_IN_DEX = '''SELECT COUNT(*) FROM pokemon WHERE number = ? or name = ?'''
 
 __all__ = [
             'CREATE_POKEMON_TABLE', 'CREATE_STATS_TABLE', 'POPULATE_STATS'
-            ,'UPDATE_STATS', 'ADD_POKEMON', 'GET_STATUS', 'GET_POKEMON', 'GET_STATS'
+            , 'UPDATE_STATS', 'ADD_POKEMON', 'GET_STATUS', 'GET_POKEMON', 
+            'GET_STATS', 'GET_BY_TYPE', 'EXIST_IN_DEX'
           ]

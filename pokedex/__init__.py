@@ -9,6 +9,7 @@ exist_in_db = Database().exists_in_db
 add_pokemon = Database().add_pokemon
 update_stats = Database().update_stats
 get_stats = Database().get_stats
+update_stats = Database().update_stats
 
 def pokemon_generator():
     count = 1

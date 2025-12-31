@@ -7,11 +7,9 @@ class StatsMenu:
           pass
     def stats_menu(self, pkmn):
         menu = f"--- Update {pkmn.name}'s Stats ---\n\n"
-        menu_options = ["1. HP: ", "2. Attack: ", "3. Defense: ", "4. Special Attack: ", "5. Special Defense: ", "6. Speed: ",
+        menu_options = [f"1. HP: {pkmn.stats.hp or ''} ", "2. Attack: ", "3. Defense: ", "4. Special Attack: ", "5. Special Defense: ", "6. Speed: ",
                         "7. Save", "0. Cancel", "\n------ Enter your choice ------"]
 
-        if pkmn.stats.hp is not None:
-            menu_options[0] += f"{pkmn.stats.hp}"
         if pkmn.stats.atk is not None:
             menu_options[1] += f"{pkmn.stats.atk}"
         if pkmn.stats.defn is not None:

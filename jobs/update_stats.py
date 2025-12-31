@@ -1,70 +1,71 @@
+from pokedex.pokemon import Pokemon
+from pokedex import get_pokemon, update_stats
+from validation import sleep, clear_console
+from user_interface import stats_menu
 
-from pokedex import pokemon, update_stats, get_pokemon, Pokemon as pk
-from validation import validation_loop as vl, sleep, clear_console
-from user_interface import stats_menu as sm
 
+class UpdateStats:
+    """Class to handle updating Pokemon stats."""
 
-class UpdateStats():
     def __init__(self):
-        self.jobs = {'1': self.set_hp, 
-                     '2': self.set_atk, 
-                     '3': self.set_defn, 
-                     '4': self.set_spatk, 
-                     '5': self.set_spdef, 
-                     '6': self.set_speed
-                     }
-        self.pokemon = pk()
-    @vl
-    def set_hp(self):
-        self.pokemon.stats.hp = input("Enter HP: ")
+        self.jobs = {
+            '1': ('hp', "Enter HP: "),
+            '2': ('atk', "Enter Attack: "),
+            '3': ('defn', "Enter Defense: "),
+            '4': ('spatk', "Enter Special Attack: "),
+            '5': ('spdef', "Enter Special Defense: "),
+            '6': ('speed', "Enter Speed: ")
+        }
+        self.pokemon = Pokemon()
 
-    @vl
-    def set_atk(self):
-        self.pokemon.stats.atk = input("Enter Attack: ")
+    def _update_stat(self, stat_attr: str, prompt: str):
+        """Generic method to update a stat with validation loop."""
+        while True:
+            try:
+                clear_console()
+                value = input(prompt)
+                setattr(self.pokemon.stats, stat_attr, value)
+                break
+            except ValueError as e:
+                clear_console()
+                print(f"Error: {e}")
+                sleep(1)
 
-    @vl
-    def set_defn(self):
-        self.pokemon.stats.defn = input("Enter Defense: ")
-
-    @vl
-    def set_spatk(self):
-        self.pokemon.stats.spatk = input("Enter Special Attack: ")
-
-    @vl
-    def set_spdef(self):
-        self.pokemon.stats.spdef = input("Enter Special Defense: ")
-
-    @vl
-    def set_speed(self):
-        self.pokemon.stats.speed = input("Enter Speed: ")
-
-    def set_stats(self, pkmn):
-        '''Method to set stats for a Pokemon'''
-        self.pokemon = pkmn
-        if self.pokemon.name =="Default":
+    def _load_pokemon(self):
+        """Load a Pokemon from the database if not already loaded."""
+        if self.pokemon.name != None:
+            return
+        while True:
             clear_console()
             identifier = input("Enter Pokemon name or number: ").strip()
             if identifier == "0":
                 raise ValueError
-     
+
             result = get_pokemon(identifier)
             if result:
-                self.pokemon = pk(*result[0:7],result[7:13])
+                # Unpack result to create Pokemon object
+                return Pokemon(*result[0:7], result[7:13])
             else:
                 clear_console()
                 print("Pokemon not found")
                 sleep(1)
 
+    def set_stats(self, pkmn=None):
+        """Method to set stats for a Pokemon."""
+        self.pokemon = pkmn if pkmn else self._load_pokemon()
+
         while True:
             clear_console()
-            print(sm(self.pokemon))
+            print(stats_menu(self.pokemon))
             choice = input()
+
             if choice in self.jobs:
-                self.jobs[choice]()
+                stat_attr, prompt = self.jobs[choice]
+                self._update_stat(stat_attr, prompt)
                 clear_console()
 
-            if choice == "7":
-                if [*self.pokemon.stats].count(None) > 0:
+            elif choice == "7":
+                if None in self.pokemon.stats:
                     clear_console()
                     print("All stats must be set before exiting")
                     sleep(1)
@@ -75,13 +76,11 @@ class UpdateStats():
                     sleep(1)
                     break
 
-            if choice == "0":
+            elif choice == "0":
                 break
 
-        pkmn = pk()
-
-    
     def main(self):
+        """Main loop for updating stats."""
         while True:
             try:
                 self.set_stats()
@@ -95,8 +94,5 @@ class UpdateStats():
 
 
 if __name__ == "__main__":
-    main = UpdateStats().main
-    main()
-    
-                
-     
+    app = UpdateStats()
+    app.main()
