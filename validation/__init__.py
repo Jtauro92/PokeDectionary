@@ -2,7 +2,7 @@
 from functools import wraps
 from typing import Callable, Any
 from tools import sleep, clear_console
-from .constants import ABILITIES, NUM_OF_POKEMON, TYPE_LIST, DEFAULT
+from .constants import ABILITIES, NUM_OF_POKEMON, TYPE_LIST
 
 
 def validate_name(func: Callable[[Any, str], None]) -> Callable[[Any, str], None]:
@@ -11,7 +11,7 @@ def validate_name(func: Callable[[Any, str], None]) -> Callable[[Any, str], None
     @wraps(func)  # Preserve metadata of the original function
     def wrapper(self, value: str):
         if not value:
-            return func(self, DEFAULT)
+            return func(self, None)
 
         # Standardize input
         name = value.strip().title()
@@ -37,7 +37,7 @@ def validate_number(func: Callable[[Any, int], None]) -> Callable[[Any, Any], No
     @wraps(func)
     def wrapper(self, value: Any):
         if not value:
-            return func(self, DEFAULT)
+            return func(self, None)
 
         if isinstance(value, str):
             value = value.strip()
@@ -144,22 +144,24 @@ def set_stat(func: Callable[[Any, int], None]) -> Callable[[Any, Any], None]:
         
     return wrapper
 
+class ValidatedProperty:
+    """Descriptor to handle validated attributes."""
+    def __init__(self, validator):
+        self.validator = validator
 
-def validation_loop(setter_method: Callable[[Any], None]) -> Callable[[Any], None]:
-    '''Function to create a validation loop for setter methods'''
-    
-    @wraps(setter_method)
-    def wrapper(self):
-        while True:
-            try:
-                clear_console()
-                setter_method(self)
-                break
-            except ValueError as e:
-                clear_console()
-                print(f"Error: {e}")
-                sleep(1)
-                continue
-    return wrapper
+    def __set_name__(self, owner, name):
+        self.private_name = f"_{name}"
+
+    def __get__(self, instance, owner):
+        if instance is None:
+            return self
+        return getattr(instance, self.private_name, None)
+
+    def __set__(self, instance, value):
+        @self.validator
+        def setter(inst, val):
+            setattr(inst, self.private_name, val)
+        setter(instance, value)
+
 
 __all__ = ['validate_name', 'validate_number', 'set_type', 'set_ability', 'set_stat', 'validation_loop', 'sleep', 'clear_console', 'ABILITIES', 'NUM_OF_POKEMON', 'TYPE_LIST', 'DEFAULT']

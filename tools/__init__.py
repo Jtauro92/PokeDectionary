@@ -2,6 +2,8 @@ import os
 import sys
 from time import sleep
 from msvcrt import getwch, kbhit
+from typing import Callable, Any
+from functools import wraps
                
 def clear_console():
     """Clears the console screen."""
@@ -28,4 +30,22 @@ def show_cursor():
     sys.stdout.write("\033[?25h")
     sys.stdout.flush()
 
-__all__ = ['clear_console', 'sleep', 'getwch', 'kbhit', 'move_up', 'hide_cursor', 'show_cursor']
+def validation_loop(setter_method: Callable[[Any], None]) -> Callable[[Any], None]:
+    '''Function to create a validation loop for setter methods'''
+    
+    @wraps(setter_method)
+    def wrapper(self):
+        while True:
+            try:
+                clear_console()
+                setter_method(self)
+                break
+            except ValueError as e:
+                clear_console()
+                print(f"Error: {e}")
+                sleep(1)
+                continue
+    return wrapper
+
+__all__ = ['clear_console', 'sleep', 'getwch', 'kbhit',
+          'move_up', 'hide_cursor', 'show_cursor', 'validation_loop']

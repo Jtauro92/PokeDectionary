@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>8ecf9299-562a-4a62-b533-1a2d903d45ee</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>jobs\update_stats.py</StartupFile>
+    <StartupFile>pokedex\pokemon.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -18,6 +18,7 @@
     <UnitTestRootDirectory>.</UnitTestRootDirectory>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
     <EnableNativeCodeDebugging>True</EnableNativeCodeDebugging>
+    <InterpreterArguments>-i</InterpreterArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>

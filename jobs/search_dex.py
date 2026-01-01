@@ -46,6 +46,7 @@ class search_dex():
         display_list = []
         
 
+
         for pokemon in pokemon_generator():
             hide_cursor()
             item = f"{pokemon[0]:<13} | #{pokemon[1]:04}"

@@ -1,75 +1,124 @@
-'''Module for managing stats of a creature.'''
+"""
+Module for managing the statistics of a Pokemon.
+
+This module defines the Stats class and the Stat descriptor, which handles
+validation and storage of individual stat values (HP, Attack, Defense, etc.).
+"""
+from typing import Any, Iterator, Union
 from validation import set_stat
 
-class Stats():
-    def __init__(self, hp=None, atk=None, defn=None, spatk=None, spdef=None, speed=None):
-        self.__hp = hp
-        self.__atk = atk
-        self.__defn = defn
-        self.__spatk = spatk
-        self.__spdef = spdef
-        self.__speed = speed
 
-    @property
-    def hp(self):
-        return self.__hp
+class Stat:
+    """
+    Descriptor for a Pokemon stat with built-in validation.
 
-    @hp.setter
-    @set_stat
-    def hp(self, value):
-        self.__hp = value
+    This descriptor manages the access and assignment of stat values, ensuring
+    that all assignments pass through the `set_stat` validation decorator.
+    """
 
-    @property
-    def atk(self):
-        return self.__atk
+    def __set_name__(self, owner: Any, name: str) -> None:
+        """
+        Assign the private attribute name and pre-compile the validated setter.
 
-    @atk.setter
-    @set_stat
-    def atk(self, value):
-        self.__atk = value
+        Args:
+            owner: The class owning the descriptor.
+            name: The name of the attribute in the owner class.
+        """
+        self.private_name = f"_{name}"
 
-    @property
-    def defn(self):
-        return self.__defn
+        # Pre-compile the setter with validation to avoid overhead in __set__
+        # This ensures validation logic is attached once per attribute definition
+        @set_stat
+        def setter(instance: Any, value: int) -> None:
+            '''
+            Set the stat value on the instance after validation.
+            
+            Args:
+                instance: The instance of the owner class.
+                value: The value to assign to the stat.
+            '''
+            setattr(instance, self.private_name, value)
+        
+        self._setter = setter
 
-    @defn.setter
-    @set_stat
-    def defn(self, value):
-        self.__defn = value
+    def __get__(self, instance: Any, owner: Any) -> Union[int, 'Stat', None]:
+        """
+        Retrieve the stat value from the instance.
 
-    @property
-    def spatk(self):
-        return self.__spatk
+        Args:
+            instance: The instance of the owner class.
+            owner: The owner class itself.
 
-    @spatk.setter
-    @set_stat
-    def spatk(self, value):
-        self.__spatk = value
+        Returns:
+            The integer value of the stat, or the descriptor itself if accessed via the class.
+        """
+        if instance is None:
+            return self
+        return getattr(instance, self.private_name, None)
 
-    @property
-    def spdef(self):
-        return self.__spdef
+    def __set__(self, instance: Any, value: int) -> None:
+        """
+        Set the stat value on the instance using the validated setter.
+
+        Args:
+            instance: The instance of the owner class.
+            value: The value to assign to the stat.
+        """
+        self._setter(instance, value)
 
 
-    @spdef.setter
-    @set_stat
-    def spdef(self, value):
-        self.__spdef = value
+class Stats:
+    """
+    Class representing the collection of stats for a Pokemon.
 
-    @property
-    def speed(self):
-        return self.__speed
-    
-    @speed.setter
-    @set_stat
-    def speed(self, value):
-        self.__speed = value
+    Attributes:
+        hp (int): Hit Points.
+        atk (int): Attack stat.
+        defn (int): Defense stat.
+        spatk (int): Special Attack stat.
+        spdef (int): Special Defense stat.
+        speed (int): Speed stat.
+    """
 
-    def __iter__(self):
-        yield from [self.__hp, self.__atk, self.__defn, 
-                    self.__spatk, self.__spdef, self.__speed]
+    __slots__ = ('_hp', '_atk', '_defn', '_spatk', '_spdef', '_speed')
 
-    
+    # Create descriptors for each stat
+    hp, atk, defn, spatk, spdef, speed = (Stat() for _ in range(6))
+
+    def __init__(
+        self, 
+        hp: int | None = None, 
+        atk: int | None = None, 
+        defn: int | None = None, 
+        spatk: int | None = None, 
+        spdef: int | None = None, 
+        speed: int | None = None
+    ) -> None:
+        """
+        Initialize the Stats object.
+
+        Private attributes are set directly to bypass validation during initialization,
+        allowing for raw data loading (e.g., from a database or file).
+
+        Args:
+            hp: Hit Points.
+            atk: Attack stat.
+            defn: Defense stat.
+            spatk: Special Attack stat.
+            spdef: Special Defense stat.
+            speed: Speed stat.
+        """
+        self._hp, self._atk, self._defn = hp, atk, defn
+        self._spatk, self._spdef, self._speed = spatk, spdef, speed
+
+    def __iter__(self) -> Iterator[int | None]:
+        """
+        Iterate over the stat values.
+
+        Yields:
+            The value of each stat in the order: HP, ATK, DEF, SP.ATK, SP.DEF, SPEED.
+        """
+        yield from (getattr(self, attr) for attr in self.__slots__)
 
 
 
