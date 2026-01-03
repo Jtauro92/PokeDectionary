@@ -100,10 +100,10 @@ class Database:
             identifier (str | int): The name or number to check.
 
         Returns:
-            Optional[Tuple]: The record if found, else None.
+            bool: True if exists, False otherwise.
         '''
-        return self.fetchone(EXIST_IN_DEX, (identifier, identifier)) is not None
- 
+        return self.fetchone(EXIST_IN_DEX, (identifier, identifier))[0] > 0
+
 
     def get_stats(self, identifier: Union[str, int]) -> Optional[Tuple]:
         '''
@@ -116,30 +116,6 @@ class Database:
             Optional[Tuple]: The stats record.
         '''
         return self.fetchone(GET_STATS, (identifier,))
-
-    def get_pokemon(self, identifier: Union[str, int]) -> Optional[Tuple]:
-        '''
-        Get a Pokemon's full details including stats from the database.
-
-        Args:
-            identifier (str | int): The name or number of the Pokemon.
-
-        Returns:
-            Optional[Tuple]: The full Pokemon record.
-        '''
-        return self.fetchone(GET_POKEMON, (identifier, identifier))
-
-    def get_pokemon(self, identifier: Union[str, int]) -> Optional[Tuple]:
-        '''
-        Get a Pokemon's full details including stats from the database.
-
-        Args:
-            identifier (str | int): The name or number of the Pokemon.
-
-        Returns:
-            Optional[Tuple]: The full Pokemon record.
-        '''
-        return self.fetchone(GET_POKEMON, (identifier, identifier))
 
     def get_pokemon(self, identifier: Union[str, int]) -> Optional[Tuple]:
         '''

@@ -1,38 +1,29 @@
 '''Module to search for a Pokemon in the database and display its details'''
-from pokedex import get_pokemon, pokemon_generator, Pokemon as pk
+from pokedex import get_pokemon, pokemon_generator
+from pokedex.pokemon import Pokemon as pk
 
 from tools import clear_console, move_up, sleep, getwch, kbhit, hide_cursor, show_cursor
 
 class search_dex():
     '''Class to search for a Pokemon in the database and display its details'''
-    def __init__(self):
-        pass
 
-    def get_details(self):
-        '''Method to get Pokemon details from user input'''
-        
-        clear_console()
-        identifier = input("Enter Pokemon Name or Number to search: ").strip().title()
-        result = get_pokemon(identifier)
-        if identifier == '0':
-            clear_console()
-            return
-        if result is None:
-            clear_console()
-            raise TypeError("Pokemon not found in the database.")
-            
-        return result
-
-
-    def search_alphanum(self):
+    def search_alphanum(self,pkmn = None):
         '''Method to get and display Pokemon details'''
-        try:
-            result = self.get_details() # Get details from user
-            pkmn = pk(*result[0:7],result[7:13]) # Display the Pokemon's details
-            clear_console()
-            print(pkmn, "\n")
-        except TypeError:
-            return
+        while not pkmn:
+            identifier = input(
+                "Enter Pokemon Name or Number to search: ").strip().title()
+            if identifier == '0':
+               return
+            result = get_pokemon(identifier)
+            if result:
+                pkmn = pk(*result[0:7], result[7:13])
+            else:
+                clear_console()
+                raise ValueError("Pokemon not found in the database.")
+
+        clear_console()
+        print(pkmn)
+        input("\nPRESS ENTER TO RETURN TO SEARCH MENU")
 
     def search_dex(self):
         menu = f"--------- Search Pokedex ---------\n\n"
@@ -57,19 +48,22 @@ class search_dex():
                 choice = getwch()
 
                 if choice == '0':
-                    raise ValueError
+                    break
 
                 elif choice == '1':
                     while True:
                         clear_console()
                         show_cursor()
-                        self.search_alphanum()
-                        hide_cursor()
-                        print("(PRESS ENTER TO CONTINUE OR ANY KEY TO RETURN TO MENU) ")
-        
-                        choice = getwch()
-                        if choice != '\r':
-                            return
+                        try:
+                            self.search_alphanum()
+                        
+                        except ValueError as e:
+                            clear_console()
+                            print(f"Error: {e}")
+                            sleep(1)
+                            continue
+
+                   
 
                 elif choice == '2':
                     clear_console()

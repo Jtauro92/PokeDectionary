@@ -6,54 +6,36 @@ class StatsMenu:
     def __init__(self):
           pass
     def stats_menu(self, pkmn):
-        menu = f"--- Update {pkmn.name}'s Stats ---\n\n"
-        menu_options = [f"1. HP: {pkmn.stats.hp or ''} ", "2. Attack: ", "3. Defense: ", "4. Special Attack: ", "5. Special Defense: ", "6. Speed: ",
-                        "7. Save", "0. Cancel", "\n------ Enter your choice ------"]
 
-        if pkmn.stats.atk is not None:
-            menu_options[1] += f"{pkmn.stats.atk}"
-        if pkmn.stats.defn is not None:
-            menu_options[2] += f"{pkmn.stats.defn}"
-        if pkmn.stats.spatk is not None:
-            menu_options[3] += f"{pkmn.stats.spatk}"
-        if pkmn.stats.spdef is not None:
-            menu_options[4] += f"{pkmn.stats.spdef}"
-        if pkmn.stats.speed is not None:
-            menu_options[5] += f"{pkmn.stats.speed}"
+        return "\n".join([f"--- Update {pkmn.name}'s Stats ---\n", 
+                        f"1. HP: {pkmn.stats.hp or ''} ", 
+                        f"2. Attack: {pkmn.stats.atk or ''}", 
+                        f"3. Defense: {pkmn.stats.defn or ''}", 
+                        f"4. Special Attack: {pkmn.stats.spatk or ''}", 
+                        f"5. Special Defense: {pkmn.stats.spdef or ''}", 
+                        f"6. Speed: {pkmn.stats.speed or ''}",
+                        "7. Save", 
+                        "0. Cancel", 
+                        "\n------ Enter your choice ------"])
 
-        menu += "\n".join(menu_options)
-        return menu
+class AddNewMenu:
+    def __init__(self,pkmn):
 
-class AddNew:
-    def __init__(self):
-        pass
-    def menu(self,pkmn):
+        self.menu =    [f"--------- Add Pokemon ---------\n",
+                        f"1. Name: {pkmn.name or ''}",
+                        f"2. Number: {pkmn.number or ''}",
+                        f"3. Type: {pkmn.type1 or ''}" if not (not pkmn.type1 and pkmn.type2) else pkmn.type2,
+                        f"4. Type 2: {pkmn.type2 or ''}",
+                        f"5: Ability: {pkmn.ability1 or ''}",
+                        f"6: Ability 2: {pkmn.ability2 or ''}",
+                        f"7: Hidden Ability: {pkmn.hidden_ability or ''}",
+                        "-"*30,
+                        "8: Save",
+                        "0: Return to Main Menu",
+                         "\n------ Enter your choice ------"]
 
-        menu = f"--------- Add Pokemon ---------\n\n"
-        menu_options = ["1. Name: ", "2. Number: ", "3. Type: ", "4. Type 2: ",
-                       "5: Ability: ", "6: Ability 2: ", "7: Hidden Ability: ","-"*30,
-                       "8: Save", "0: Return to Main Menu", "\n------ Enter your choice ------"]
-
-        if pkmn.name != "Default":
-            menu_options[0] += f"{pkmn.name}"
-
-        if pkmn.number != 0:
-            menu_options[1] += f"{pkmn.number:04}"
-
-        if pkmn.type1 != "Default":
-            menu_options[2] += f"{pkmn.type1}"
-        if pkmn.type2:
-            menu_options[2] += f" / {pkmn.type2}"
-
-        if pkmn.ability1 != "Default":
-            menu_options[4] += f"{pkmn.ability1}"
-        if pkmn.ability2:
-            menu_options[5] += f"{pkmn.ability2}"
-        if pkmn.hidden_ability:
-            menu_options[6] += f"{pkmn.hidden_ability}"
-
-        menu += "\n".join(menu_options)
-        return menu
+    def __str__(self):
+        return "\n".join(self.menu)
 
 class SearchDex:
     def __init__(self):

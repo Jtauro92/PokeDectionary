@@ -1,4 +1,4 @@
-from jobs import add_new as an, search_dex as sd, UpdateStats as us
+from jobs import AddNewPokemon as an, search_dex as sd, UpdateStats as us
 from tools import *
 
 class Main:

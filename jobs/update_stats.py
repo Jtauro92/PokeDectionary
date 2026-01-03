@@ -52,7 +52,7 @@ class UpdateStats:
 
     def set_stats(self, pkmn=None):
         """Method to set stats for a Pokemon."""
-        self.pokemon = pkmn if pkmn else self._load_pokemon()
+        self.pokemon = pkmn or self._load_pokemon()
 
         while True:
             clear_console()

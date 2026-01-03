@@ -1,17 +1,18 @@
 '''Module to add a new Pokemon to the Pokedex database'''
-from user_interface import menus
-from validation import (clear_console, sleep, validation_loop as vl)
-from pokedex import Pokemon as pk, exist_in_db, add_pokemon
-from update_stats import UpdateStats
+from user_interface.menus import AddNewMenu
+from tools import (clear_console, sleep, validation_loop as vl)
+from pokedex.pokemon import Pokemon as pk
+from pokedex import exist_in_db, add_pokemon
+from jobs.update_stats import update_stats
 
 
-menu = menus.AddNew().menu
+menu = AddNewMenu
 
-class add_new():
+class AddNewPokemon:
     '''Class to add a new Pokemon to the Pokedex database'''
     def __init__(self):
         self.pkmn = pk()
-        self.set_stats = UpdateStats().set_stats
+        self.set_stats = update_stats
         self.jobs = {
             "1": self.set_name,
             "2": self.set_number,

@@ -1,4 +1,4 @@
-from .addnew import add_new 
+from .addnew import AddNewPokemon 
 from .search_dex import search_dex
 from .update_stats import UpdateStats
 

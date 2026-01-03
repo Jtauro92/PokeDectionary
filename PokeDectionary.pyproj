@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>8ecf9299-562a-4a62-b533-1a2d903d45ee</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>pokedex\pokemon.py</StartupFile>
+    <StartupFile>main.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
