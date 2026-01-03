@@ -30,6 +30,11 @@ def show_cursor():
     sys.stdout.write("\033[?25h")
     sys.stdout.flush()
 
+def get_keypress():
+    """Waits for a keypress and returns the character."""
+    if kbhit():
+        return getwch()  # Return the actual character
+
 def validation_loop(setter_method: Callable[[Any], None]) -> Callable[[Any], None]:
     '''Function to create a validation loop for setter methods'''
     
@@ -47,5 +52,5 @@ def validation_loop(setter_method: Callable[[Any], None]) -> Callable[[Any], Non
                 continue
     return wrapper
 
-__all__ = ['clear_console', 'sleep', 'getwch', 'kbhit',
-          'move_up', 'hide_cursor', 'show_cursor', 'validation_loop']
+__all__ = ['clear_console', 'sleep',
+          'move_up', 'hide_cursor', 'show_cursor', 'validation_loop', 'get_keypress']

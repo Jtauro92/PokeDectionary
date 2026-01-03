@@ -3,17 +3,18 @@ class MainMenu(object):
         pass
 
 class StatsMenu:
-    def __init__(self):
-          pass
-    def stats_menu(self, pkmn):
+    def __init__(self, pkmn):
+        self.pkmn = pkmn
 
-        return "\n".join([f"--- Update {pkmn.name}'s Stats ---\n", 
-                        f"1. HP: {pkmn.stats.hp or ''} ", 
-                        f"2. Attack: {pkmn.stats.atk or ''}", 
-                        f"3. Defense: {pkmn.stats.defn or ''}", 
-                        f"4. Special Attack: {pkmn.stats.spatk or ''}", 
-                        f"5. Special Defense: {pkmn.stats.spdef or ''}", 
-                        f"6. Speed: {pkmn.stats.speed or ''}",
+    def __str__(self):
+
+        return "\n".join([f"--- Update {self.pkmn.name}'s Stats ---\n", 
+                        f"1. HP: {self.pkmn.stats.hp or ''} ", 
+                        f"2. Attack: {self.pkmn.stats.atk or ''}", 
+                        f"3. Defense: {self.pkmn.stats.defn or ''}", 
+                        f"4. Special Attack: {self.pkmn.stats.spatk or ''}", 
+                        f"5. Special Defense: {self.pkmn.stats.spdef or ''}", 
+                        f"6. Speed: {self.pkmn.stats.speed or ''}",
                         "7. Save", 
                         "0. Cancel", 
                         "\n------ Enter your choice ------"])

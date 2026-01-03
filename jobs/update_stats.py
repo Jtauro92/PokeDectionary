@@ -1,7 +1,7 @@
 from pokedex.pokemon import Pokemon
 from pokedex import get_pokemon, update_stats
-from validation import sleep, clear_console
-from user_interface import stats_menu
+from tools import sleep, clear_console
+from user_interface import StatsMenu
 
 
 class UpdateStats:
@@ -56,7 +56,7 @@ class UpdateStats:
 
         while True:
             clear_console()
-            print(stats_menu(self.pokemon))
+            print(StatsMenu(self.pokemon))
             choice = input()
 
             if choice in self.jobs:
