@@ -1,13 +1,14 @@
 CREATE_POKEMON_TABLE = '''CREATE TABLE IF NOT EXISTS pokemon (
-                                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                    name TEXT NOT NULL,
-                                    number INTEGER NOT NULL,
+                                    id INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT,
+                                    name TEXT NOT NULL UNIQUE,
+                                    number INTEGER NOT NULL UNIQUE,
                                     type1 TEXT NOT NULL,
                                     type2 TEXT,
                                     ability1 TEXT NOT NULL,
                                     ability2 TEXT,
                                     hidden_ability TEXT
                                 )'''
+
 
 
 CREATE_STATS_TABLE = '''CREATE TABLE IF NOT EXISTS stats( 
@@ -27,6 +28,7 @@ POPULATE_STATS = '''INSERT OR IGNORE INTO stats (number)
 UPDATE_STATS = '''UPDATE stats 
                   SET hp = ?, atk = ?, def = ?, spatk = ?, spdef = ?, speed = ? 
                   WHERE number = ?'''
+ADD_TO_STATS = '''INSERT INTO stats (number) VALUES (?)'''
 
 ADD_POKEMON = '''INSERT INTO pokemon (name, number, type1, type2, ability1, ability2, hidden_ability)
                  VALUES (?, ?, ?, ?, ?, ?, ?)'''
@@ -52,5 +54,5 @@ EXIST_IN_DEX = '''SELECT COUNT(*)
 __all__ = [
             'CREATE_POKEMON_TABLE', 'CREATE_STATS_TABLE', 'POPULATE_STATS'
             , 'UPDATE_STATS', 'ADD_POKEMON', 'GET_STATUS', 'GET_POKEMON', 
-            'GET_STATS', 'GET_BY_TYPE', 'EXIST_IN_DEX'
+            'GET_STATS', 'GET_BY_TYPE', 'EXIST_IN_DEX', 'ADD_TO_STATS'
           ]

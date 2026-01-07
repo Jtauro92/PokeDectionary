@@ -3,7 +3,7 @@ from user_interface.menus import AddNewMenu
 from tools import (clear_console, sleep, validation_loop as vl)
 from pokedex.pokemon import Pokemon as pk
 from pokedex import exist_in_db, add_pokemon
-from jobs.update_stats import update_stats
+from jobs.update_stats import UpdateStats
 
 
 menu = AddNewMenu
@@ -12,7 +12,7 @@ class AddNewPokemon:
     '''Class to add a new Pokemon to the Pokedex database'''
     def __init__(self):
         self.pkmn = pk()
-        self.set_stats = update_stats
+        self.update_stats = UpdateStats().set_stats
         self.jobs = {
             "1": self.set_name,
             "2": self.set_number,
@@ -74,52 +74,49 @@ class AddNewPokemon:
         choice = input()
         
         if choice in self.jobs:
- 
             self.jobs[choice]()
 
-
         if choice == "8":
-            # Ensure required fields are filled before saving
-            if ("Default" not in [self.pkmn.name, self.pkmn.type1, self.pkmn.ability1] and 
-                (self.pkmn.number != 0)):
-
-                clear_console()
-                add_pokemon(self.pkmn) # Add the new Pokemon to the database
-                print(f"Successfully added {self.pkmn.name} to the Pokedex!\n")
-                print(self.pkmn) # Display the added Pokemon's details
-                sleep(2)
-
-                clear_console()
-                print("Would you like to enter stats for this Pokemon now?")
-                cont = input("(PRESS ENTER TO CONTINUE OR ANY KEY TO SKIP) ").strip().lower()
-
-                if cont == '':
-                    self.set_stats(self.pkmn)
-                else:
-                    pass
-                
-                clear_console()
-                cont = input("Add another new pokemon (PRESS ENTER TO CONTINUE) ").strip().lower()
-                if cont != '':
-                    raise ValueError
-                else:
-                    pass
-            else:
-                clear_console()
-                print("Please fill in all required fields (Name, Number, Type 1, Ability 1) before saving.")
-                sleep(1)
+            
+            try:
+                self._save_data()
+            except ValueError:
+                return
 
 
         elif choice == "0":
+            self.pkmn = pk()  # Reset to default Pokemon
             cont = input("\nPRESS ENTER TO TRY AGAIN OR ANY KEY TO EXIT: ").strip().lower()
             if cont != '':
                 raise ValueError
             else:
                 pass
                
-            self.pkmn = pk() # Reset to default Pokemon
 
+    def _save_data(self):
+        # Ensure required fields are filled before saving
+        required = [self.pkmn.name, self.pkmn.number,
+                    self.pkmn.type1, self.pkmn.ability1]
+        if all(required) and (self.pkmn.number != 0):
+            clear_console()
+            try:
+                add_pokemon(self.pkmn)
+                print(f"Successfully added {self.pkmn.name} to the Pokedex!\n")
+                print(self.pkmn)
+                sleep(2)
+                
+                clear_console()
+                print("Would you like to set {}'s stats now?".format(self.pkmn.name))
+                if input("Press ENTER to set stats or any other key to skip: ").strip() == '':
+                    self.update_stats(self.pkmn)
+                else:
+                    return
+            except Exception as e:
+                print(f"Error adding Pokemon: {e}")
 
+        if input("\nPRESS ENTER TO CONTINUE").strip() != '':
+            raise ValueError
+            
 
     def main(self):
         while True:
@@ -131,4 +128,4 @@ class AddNewPokemon:
 
 
 if __name__ == "__main__":
-    add_new().main()
+    AddNewPokemon().main()

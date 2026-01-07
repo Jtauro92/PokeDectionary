@@ -35,21 +35,22 @@ def get_keypress():
     if kbhit():
         return getwch()  # Return the actual character
 
-def validation_loop(setter_method: Callable[[Any], None]) -> Callable[[Any], None]:
-    '''Function to create a validation loop for setter methods'''
+def validation_loop(func: Callable) -> Callable:
+    '''Function to create a validation loop for methods'''
     
-    @wraps(setter_method)
-    def wrapper(self):
+    @wraps(func)
+    def wrapper(self, *args, **kwargs):
         while True:
             try:
                 clear_console()
-                setter_method(self)
-                break
+                return func(self, *args, **kwargs)
             except ValueError as e:
                 clear_console()
                 print(f"Error: {e}")
+                # Add sleep to allow user to read the error before clearing
+                if hasattr(e, 'message'): # Optional: if you have custom errors
+                    pass 
                 sleep(1)
-                continue
     return wrapper
 
 __all__ = ['clear_console', 'sleep',

@@ -1,7 +1,7 @@
 from pokedex.pokemon import Pokemon
 from pokedex import get_pokemon, update_stats
-from tools import sleep, clear_console
-from user_interface import StatsMenu
+from tools import sleep, clear_console, validation_loop as vl
+from user_interface.menus import StatsMenu
 
 
 class UpdateStats:
@@ -18,41 +18,28 @@ class UpdateStats:
         }
         self.pokemon = Pokemon()
 
+    @vl
     def _update_stat(self, stat_attr: str, prompt: str):
         """Generic method to update a stat with validation loop."""
-        while True:
-            try:
-                clear_console()
-                value = input(prompt)
-                setattr(self.pokemon.stats, stat_attr, value)
-                break
-            except ValueError as e:
-                clear_console()
-                print(f"Error: {e}")
-                sleep(1)
+        # Loop and try/except are now handled by @vl
+        value = input(prompt)
+        setattr(self.pokemon.stats, stat_attr, value)
 
-    def _load_pokemon(self):
-        """Load a Pokemon from the database if not already loaded."""
-        if self.pokemon.name != None:
-            return
-        while True:
-            clear_console()
-            identifier = input("Enter Pokemon name or number: ").strip()
-            if identifier == "0":
-                raise ValueError
+    @vl
+    def _get_valid_pokemon(self):
+        identifier = input("Enter Pokemon name or number: ").strip()
+        if identifier == "0":
+            raise ValueError
+        
+        result = get_pokemon(identifier)
+        if result:
+            return Pokemon(*result[0:7], result[7:13])
+        else:
+            raise ValueError("Pokemon not found")
 
-            result = get_pokemon(identifier)
-            if result:
-                # Unpack result to create Pokemon object
-                return Pokemon(*result[0:7], result[7:13])
-            else:
-                clear_console()
-                print("Pokemon not found")
-                sleep(1)
-
-    def set_stats(self, pkmn=None):
+    def set_stats(self, pkmn: Pokemon = None):
         """Method to set stats for a Pokemon."""
-        self.pokemon = pkmn or self._load_pokemon()
+        self.pokemon = pkmn or self._get_valid_pokemon()
 
         while True:
             clear_console()

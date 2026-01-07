@@ -11,15 +11,15 @@ update_stats = Database().update_stats
 get_stats = Database().get_stats
 update_stats = Database().update_stats
 
+
 def pokemon_generator():
     count = 1
     while True:
         if count > NUM_OF_POKEMON:
-            count = 0
+            count = 1
         pkmn = get_pokemon(count)
-        if pkmn is None:
-            count += 1
-        else:
-            yield pkmn
-            count += 1
+        if pkmn:
+           yield pkmn
+        count += 1
+
 

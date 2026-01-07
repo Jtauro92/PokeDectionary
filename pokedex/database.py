@@ -1,26 +1,18 @@
 ﻿'''Module for managing the Pokemon database using SQLite.'''
 
-import sqlite3
-from typing import Any, Optional, Tuple, Union
+from sqlite3 import Connection as conn, Error as se
+from typing import Optional, Tuple, Union
 from validation.sql_statements import *
 
 DB_NAME = "pokemon_database.db"
 
 
-class Database:
+class Database(conn):
     '''Manages interactions with the Pokemon SQLite database.'''
 
-    def __init__(self, db_name: str = DB_NAME):
-        self.db_name = db_name
+    def __init__(self):
+        super().__init__(DB_NAME, isolation_level=None)
         self._initialize_tables()
-
-    def _get_connection(self) -> sqlite3.Connection:
-        '''Establish and return a connection to the SQLite database.'''
-        try:
-            return sqlite3.connect(self.db_name)
-        except sqlite3.Error as e:
-            print(f"Database connection error: {e}")
-            raise
 
     def _initialize_tables(self) -> None:
         '''Create necessary tables if they do not exist.'''
@@ -30,9 +22,9 @@ class Database:
             # Attempt to populate stats (e.g. defaults), ignoring errors if they exist
             try:
                 self.execute(POPULATE_STATS)
-            except sqlite3.Error:
+            except se:
                 pass
-        except sqlite3.Error as e:
+        except se as e:
             print(f"Error initializing tables: {e}")
 
     def execute(self, sql: str, parameters: tuple = ()) -> None:
@@ -43,11 +35,10 @@ class Database:
             sql (str): The SQL query to execute.
             parameters (tuple): The parameters to substitute into the query.
         '''
-        with self._get_connection() as connection:
-            cursor = connection.cursor()
+        with self:
+            cursor = self.cursor()
             cursor.execute(sql, parameters)
-            connection.commit()
-            return cursor.rowcount > 0
+            return cursor.rowcount
 
     def fetchone(self, sql: str, parameters: tuple = ()) -> Optional[Tuple]:
         '''
@@ -60,12 +51,12 @@ class Database:
         Returns:
             Optional[Tuple]: The fetched record or None.
         '''
-        with self._get_connection() as connection:
-            cursor = connection.cursor()
+        with self:
+            cursor = self.cursor()
             cursor.execute(sql, parameters)
             return cursor.fetchone()
 
-    def update_stats(self, pkmn: Any) -> None:
+    def update_stats(self, pkmn: object) -> None:
         '''
         Update a Pokemon's stats in the database.
 
@@ -76,21 +67,21 @@ class Database:
         values = tuple(pkmn.stats)
         try:
             self.execute(UPDATE_STATS, (*values, pkmn.number))
-        except sqlite3.Error as e:
-            raise sqlite3.Error(f"The stats could not be updated. Error: {e}")
+        except se:
+            raise se(f"The stats could not be updated. Error: {se}")
 
-    def add_pokemon(self, pkmn: Any) -> None:
+    def add_pokemon(self, pkmn: object) -> None:
         '''
         Add a new Pokemon to the database.
 
         Args:
             pkmn: The Pokemon object to add.
         '''
-        values = (
-            pkmn.name, pkmn.number, pkmn.type1, pkmn.type2,
-            pkmn.ability1, pkmn.ability2, pkmn.hidden_ability
-        )
-        self.execute(ADD_POKEMON, values)
+        result = self.execute(ADD_POKEMON, tuple(pkmn)[0:7])
+        if result:
+            self._add_to_stats(pkmn)
+        else:
+            print("Failed to add Pokemon to the database.")
 
     def exists_in_db(self, identifier: Union[str, int]) -> Optional[Tuple]:
         '''
@@ -102,7 +93,7 @@ class Database:
         Returns:
             bool: True if exists, False otherwise.
         '''
-        return self.fetchone(EXIST_IN_DEX, (identifier, identifier))[0] > 0
+        return self.get_pokemon(identifier) is not None
 
 
     def get_stats(self, identifier: Union[str, int]) -> Optional[Tuple]:
@@ -129,11 +120,20 @@ class Database:
         '''
         return self.fetchone(GET_POKEMON, (identifier, identifier))
 
+    def _add_to_stats(self, pkmn: object) -> None:
+        '''
+        Add a stats record for a Pokemon in the database.
+        Args:
+            pkmn: The Pokemon object containing stats and number.
+        '''
+        if self.execute(ADD_TO_STATS, (pkmn.number,)) == 0:
+            raise se
+
 
 if __name__ == "__main__":
     db = Database()
     # Example usage
     try:
-        print(db.exists_in_db("Pikachu"))
-    except sqlite3.Error as e:
-        print(f"Error checking existence: {e}")
+        print(db.exists_in_db("jhlk"))
+    except se:
+        print(f"Error checking existence: {se}")

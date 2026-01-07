@@ -50,7 +50,8 @@ class Pokemon:
                 f"HP: {s.hp}\nATK: {s.atk}\nDEF: {s.defn}\nSP.ATK: {s.spatk}\nSP.DEF: {s.spdef}\nSPEED: {s.speed}")
 
     def __iter__(self) -> Iterable:
-        yield from (self.name, self.number, self.type1, self.type2, self.ability1, self.ability2, self.hidden_ability, self.stats)
+        yield from (self.name, self.number, self.type1, self.type2, 
+                    self.ability1, self.ability2, self.hidden_ability, self.stats)
 
     @property
     def type2(self) -> Optional[str]: return getattr(self, '_type2', None)

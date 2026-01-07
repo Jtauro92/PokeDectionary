@@ -24,11 +24,10 @@ class search_dex():
 
             clear_console()
             print(pkmn)
-            break
-        print("\nPRESS ENTER TO RETURN TO SEARCH MENU")
-        cont = get_keypress()
-        if cont == '0':
-            return
+            print("\nPRESS ENTER TO RETURN TO SEARCH MENU")
+            if input().strip() == '':
+                return
+
 
     def search_dex(self):
         menu = f"--------- Search Pokedex ---------\n\n"
