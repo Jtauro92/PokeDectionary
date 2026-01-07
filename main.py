@@ -1,4 +1,5 @@
 from jobs import AddNewPokemon as an, search_dex as sd, UpdateStats as us
+from user_interface.menus import MainMenu
 from tools import *
 
 class Main:
@@ -23,7 +24,7 @@ class Main:
         print("Select an option to proceed: ")
 
     def process_job(self):
-            self.display_menu()
+            print(MainMenu())
             choice = input().strip()
             clear_console()
             if choice == '0':

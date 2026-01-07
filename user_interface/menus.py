@@ -1,28 +1,36 @@
-class MainMenu(object):
-    def display_menu():
-        pass
-
-class StatsMenu:
-    def __init__(self, pkmn):
-        self.pkmn = pkmn
-
+class Menu:
+    def __init__(self, menu_items = []):
+        self.menu_items = menu_items
     def __str__(self):
+        return "\n".join(self.menu_items)
 
-        return "\n".join([f"--- Update {self.pkmn.name}'s Stats ---\n", 
-                        f"1. HP: {self.pkmn.stats.hp or ''} ", 
-                        f"2. Attack: {self.pkmn.stats.atk or ''}", 
-                        f"3. Defense: {self.pkmn.stats.defn or ''}", 
-                        f"4. Special Attack: {self.pkmn.stats.spatk or ''}", 
-                        f"5. Special Defense: {self.pkmn.stats.spdef or ''}", 
-                        f"6. Speed: {self.pkmn.stats.speed or ''}",
+class MainMenu(Menu):
+    def __init__(self):
+        super().__init__(["------- Pokedex Main Menu -------\n",
+                          "1. Add New Pokemon",
+                          "2. Update Pokemon Stats",
+                          "3. Search Pokedex",
+                          "4. Delete Pokemon", 
+                          "0. Exit",
+                          "\n------ Enter your choice ------"])
+class StatsMenu(Menu):
+    def __init__(self, pkmn):
+        super().__init__([f"--- Update {pkmn.name}'s Stats ---\n", 
+                        f"1. HP: {pkmn.stats.hp or ''} ", 
+                        f"2. Attack: {pkmn.stats.atk or ''}", 
+                        f"3. Defense: {pkmn.stats.defn or ''}", 
+                        f"4. Special Attack: {pkmn.stats.spatk or ''}", 
+                        f"5. Special Defense: {pkmn.stats.spdef or ''}", 
+                        f"6. Speed: {pkmn.stats.speed or ''}",
                         "7. Save", 
                         "0. Cancel", 
-                        "\n------ Enter your choice ------"])
+                        "\n------ Enter your choice ------]"])
 
-class AddNewMenu:
+
+class AddNewMenu(Menu):
     def __init__(self,pkmn):
 
-        self.menu =    [f"--------- Add Pokemon ---------\n",
+        super().__init__([f"--------- Add Pokemon ---------\n",
                         f"1. Name: {pkmn.name or ''}",
                         f"2. Number: {pkmn.number or ''}",
                         f"3. Type: {pkmn.type1 or ''}" if not (not pkmn.type1 and pkmn.type2) else pkmn.type2,
@@ -33,22 +41,11 @@ class AddNewMenu:
                         "-"*30,
                         "8: Save",
                         "0: Return to Main Menu",
-                         "\n------ Enter your choice ------"]
-
-    def __str__(self):
-        return "\n".join(self.menu)
+                         "\n------ Enter your choice ------"])
 
 class SearchDex:
     def __init__(self):
         pass
-
-
-
-
-
-
-
-
 
 if __name__ == "__main__":
     pokemon = ("Pikachu", 0, "Electric", "fire", "Static", None, "Lightning Rod")
