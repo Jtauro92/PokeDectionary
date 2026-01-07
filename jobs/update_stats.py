@@ -29,7 +29,7 @@ class UpdateStats:
     def _get_valid_pokemon(self):
         identifier = input("Enter Pokemon name or number: ").strip()
         if identifier == "0":
-            raise ValueError
+            return identifier
         
         result = get_pokemon(identifier)
         if result:
@@ -40,6 +40,8 @@ class UpdateStats:
     def set_stats(self, pkmn: Pokemon = None):
         """Method to set stats for a Pokemon."""
         self.pokemon = pkmn or self._get_valid_pokemon()
+        if self.pokemon == "0":
+            return
 
         while True:
             clear_console()

@@ -1,3 +1,4 @@
+
 class Menu:
     def __init__(self, menu_items = []):
         self.menu_items = menu_items
@@ -43,20 +44,22 @@ class AddNewMenu(Menu):
                         "0: Return to Main Menu",
                          "\n------ Enter your choice ------"])
 
-class SearchDex:
+class SearchDex(Menu):
     def __init__(self):
         super().__init__(["--------- Search Pokedex ---------\n",
                           "1. Search by Name or Number", 
                           "2. Search by Type",
                           "3. View All Pokemon", 
                           "0. Return to Main Menu", 
-                          "\n------ Enter your choice ------"])
-        self.rolling_list = []
+                          "\n------ Enter your choice ------\n"])
+
+
+
 
 if __name__ == "__main__":
     pokemon = ("Pikachu", 0, "Electric", "fire", "Static", None, "Lightning Rod")
-    menu = SearchDex().menu
-    menu()
+    menu = SearchDex
+    print(menu())
 
 
 
