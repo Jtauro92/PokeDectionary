@@ -10,32 +10,20 @@ class Main:
                 '2': sd().main,
                 '3': us().main,
                }
-    
-    def display_menu(self):
-        clear_console()
-        print('-'*30)
-        print("Menu:")
-        print("1. Add Pokemon")
-        print("2. Search Dex")
-        print("3. Update Stats")
-        print("4. Delete Pokemon")
-        print("0. Exit")
-        print('-'*30)
-        print("Select an option to proceed: ")
 
     def process_job(self):
-            print(MainMenu())
-            choice = input().strip()
+        print(MainMenu())
+        choice = getwch()
+        clear_console()
+        if choice == '0':
+            print("Exiting the program. Goodbye!")
+            exit() 
+        elif choice in self.jobs:
+            self.jobs[choice]()
+        else:
+            print("Invalid choice. Please try again.\n")
+            sleep(1)
             clear_console()
-            if choice == '0':
-                print("Exiting the program. Goodbye!")
-                exit() 
-            elif choice in self.jobs:
-                self.jobs[choice]()
-            else:
-                print("Invalid choice. Please try again.\n")
-                sleep(1)
-                clear_console()
 
     def main(self):
         while True:

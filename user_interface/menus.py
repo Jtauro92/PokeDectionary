@@ -8,11 +8,12 @@ class MainMenu(Menu):
     def __init__(self):
         super().__init__(["------- Pokedex Main Menu -------\n",
                           "1. Add New Pokemon",
-                          "2. Update Pokemon Stats",
-                          "3. Search Pokedex",
+                          "2. Search Pokedex",
+                          "3. Update Stats",
                           "4. Delete Pokemon", 
                           "0. Exit",
                           "\n------ Enter your choice ------"])
+
 class StatsMenu(Menu):
     def __init__(self, pkmn):
         super().__init__([f"--- Update {pkmn.name}'s Stats ---\n", 
@@ -29,7 +30,6 @@ class StatsMenu(Menu):
 
 class AddNewMenu(Menu):
     def __init__(self,pkmn):
-
         super().__init__([f"--------- Add Pokemon ---------\n",
                         f"1. Name: {pkmn.name or ''}",
                         f"2. Number: {pkmn.number or ''}",
@@ -45,7 +45,13 @@ class AddNewMenu(Menu):
 
 class SearchDex:
     def __init__(self):
-        pass
+        super().__init__(["--------- Search Pokedex ---------\n",
+                          "1. Search by Name or Number", 
+                          "2. Search by Type",
+                          "3. View All Pokemon", 
+                          "0. Return to Main Menu", 
+                          "\n------ Enter your choice ------"])
+        self.rolling_list = []
 
 if __name__ == "__main__":
     pokemon = ("Pikachu", 0, "Electric", "fire", "Static", None, "Lightning Rod")

@@ -1,6 +1,6 @@
 '''Module to add a new Pokemon to the Pokedex database'''
 from user_interface.menus import AddNewMenu
-from tools import (clear_console, sleep, validation_loop as vl)
+from tools import (clear_console, sleep, validation_loop as vl, getwch)
 from pokedex.pokemon import Pokemon as pk
 from pokedex import exist_in_db, add_pokemon
 from jobs.update_stats import UpdateStats
@@ -71,7 +71,7 @@ class AddNewPokemon:
         clear_console()
         print(menu(self.pkmn))
 
-        choice = input()
+        choice = getwch()
         
         if choice in self.jobs:
             self.jobs[choice]()
@@ -86,11 +86,11 @@ class AddNewPokemon:
 
         elif choice == "0":
             self.pkmn = pk()  # Reset to default Pokemon
-            cont = input("\nPRESS ENTER TO TRY AGAIN OR ANY KEY TO EXIT: ").strip().lower()
+            clear_console()
+            print('PRESS ENTER TO TRY AGAIN OR ANY KEY TO EXIT: ')
+            cont = getwch()
             if cont != '':
                 raise ValueError
-            else:
-                pass
                
 
     def _save_data(self):

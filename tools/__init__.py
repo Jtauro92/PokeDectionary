@@ -2,7 +2,7 @@ import os
 import sys
 from time import sleep
 from msvcrt import getwch, kbhit
-from typing import Callable, Any
+from typing import Callable
 from functools import wraps
                
 def clear_console():
@@ -32,7 +32,7 @@ def show_cursor():
 
 def get_keypress():
     """Waits for a keypress and returns the character."""
-    if kbhit():
+    if kbhit(): 
         return getwch()  # Return the actual character
 
 def validation_loop(func: Callable) -> Callable:
@@ -54,4 +54,4 @@ def validation_loop(func: Callable) -> Callable:
     return wrapper
 
 __all__ = ['clear_console', 'sleep',
-          'move_up', 'hide_cursor', 'show_cursor', 'validation_loop', 'get_keypress']
+          'move_up', 'hide_cursor', 'show_cursor', 'validation_loop', 'get_keypress', 'getwch']

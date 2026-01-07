@@ -51,7 +51,7 @@ class search_dex():
             choice = get_keypress()
 
             if choice == '0':
-                return
+                raise ValueError
 
             elif choice == '1':
                 while True:
