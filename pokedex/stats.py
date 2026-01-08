@@ -97,19 +97,12 @@ class Stats:
         """
         Initialize the Stats object.
 
-        Private attributes are set directly to bypass validation during initialization,
-        allowing for raw data loading (e.g., from a database or file).
-
-        Args:
-            hp: Hit Points.
-            atk: Attack stat.
-            defn: Defense stat.
-            spatk: Special Attack stat.
-            spdef: Special Defense stat.
-            speed: Speed stat.
+        We assign to public attributes (self.hp) to ensure the @set_stat validation
+        runs immediately upon object creation.
         """
-        self._hp, self._atk, self._defn = hp, atk, defn
-        self._spatk, self._spdef, self._speed = spatk, spdef, speed
+        # Triggers Stat.__set__ for validation
+        self.hp, self.atk, self.defn = hp, atk, defn
+        self.spatk, self.spdef, self.speed = spatk, spdef, speed
 
     def __iter__(self) -> Iterator[int | None]:
         """

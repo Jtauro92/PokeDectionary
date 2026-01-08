@@ -1,7 +1,6 @@
 '''Pokedex package initializer'''
 from .database import Database 
-
-from validation import NUM_OF_POKEMON
+from .constants import NUM_OF_POKEMON
 
 get_pokemon = Database().get_pokemon
 fetch_one = Database().fetchone

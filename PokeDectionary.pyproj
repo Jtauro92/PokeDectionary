@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>8ecf9299-562a-4a62-b533-1a2d903d45ee</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>main.py</StartupFile>
+    <StartupFile>pokedex\pokemon.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -41,11 +41,13 @@
     <Compile Include="user_interface\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="validation\constants.py" />
+    <Compile Include="pokedex\constants.py" />
     <Compile Include="tools\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="validation\descriptors.py" />
     <Compile Include="validation\sql_statements.py" />
+    <Compile Include="validation\validators.py" />
     <Compile Include="validation\__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -69,7 +71,7 @@
     </Interpreter>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="validation\abilities.txt" />
+    <Content Include="pokedex\abilities.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="pokedex\" />

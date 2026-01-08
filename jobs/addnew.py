@@ -23,6 +23,7 @@ class AddNewPokemon:
             "7": self.set_hidden_ability
         }
 
+
     '''Setters with validation loops for each attribute'''    
     @vl
     def set_name(self):

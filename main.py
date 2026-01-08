@@ -17,7 +17,7 @@ class Main:
         clear_console()
         if choice == '0':
             print("Exiting the program. Goodbye!")
-            exit() 
+            raise SystemExit
         elif choice in self.jobs:
             self.jobs[choice]()
         else:
@@ -27,8 +27,11 @@ class Main:
 
     def main(self):
         while True:
-            self.process_job()
-            clear_console()
+            try:
+                self.process_job()
+                clear_console()
+            except SystemExit:
+                return
 
 
         

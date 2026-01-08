@@ -13,7 +13,13 @@ PokeDectionary is a CLI Python application that allows users to view and edit a 
 - User-friendly command-line interface
 - SQLite database integration for efficient data management
 
-# Installation
+## Setup based on 'PokeDectionary'
+
+### Prerequisites
+- Python 3.9+
+- pip
+
+### Installation
 1. Clone the repository:
    ```bash
    git clone https://github.com/jtauro92/PokeDectionary.git
