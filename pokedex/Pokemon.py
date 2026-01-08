@@ -35,7 +35,7 @@ class Pokemon:
 
 
 if __name__ == "__main__":
-    p = Pokemon(stats=(45, 49, 49, 65, 65))
+    p = Pokemon(stats=(45, 49, 49, 65, 65, 40))
     p.name = 'Jason'
     p.type2 = 'Poison'
     print(p)

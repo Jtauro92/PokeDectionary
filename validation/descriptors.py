@@ -1,5 +1,5 @@
 from validation.validators import (
-    validate_name, validate_number, set_type, set_ability, ValidatedProperty
+    validate_name, validate_number, set_type, set_ability
 )
 from pokedex.stats import Stats
 
@@ -25,52 +25,38 @@ class AttrDescriptor(StatsDescriptor):
 
     def __set__(self, instance, value):
         if self.private_name == "_name":
-            # Define a temporary setter to apply the @validate_name decorator
             @validate_name
             def validated_setter(inst, val):   
                 setattr(inst, self.private_name, val)
-            
-            # Execute the decorated setter with the provided value
             validated_setter(instance, value)
 
-        elif self.private_name == "_number":
-            # Define a temporary setter to apply the @validate_number decorator
+        elif self.private_name == "_number":  # Changed to elif
             @validate_number
             def validated_setter(inst, val):
                 setattr(inst, self.private_name, val)
-            
-            # Execute the decorated setter with the provided value
             validated_setter(instance, value)
 
-        elif self.private_name == "_type1":
-            # Define a temporary setter to apply the @set_type decorator
+        elif self.private_name == "_type1":   # Changed to elif
             @set_type
             def validated_setter(inst, val):
                 setattr(inst, self.private_name, val)
-            
-            # Execute the decorated setter with the provided value
             validated_setter(instance, value)
 
-        elif self.private_name == "_type2":
-            # Define a temporary setter to apply the @set_type decorator
+        elif self.private_name == "_type2":   # Changed to elif
             @set_type
             def validated_setter(inst, val):
                 if not inst.type1 and val:
                     inst.type1 = val
                 else:
                     setattr(inst, self.private_name, val)
-            
-            # Execute the decorated setter with the provided value
             validated_setter(instance, value)
 
-        elif self.private_name in ("_ability1", "_ability2", "_hidden_ability"):
-            # Define a temporary setter to apply the @set_ability decorator
+        elif self.private_name in ("_ability1", "_ability2", "_hidden_ability"): # Changed to elif
             @set_ability
             def validated_setter(inst, val):
                 setattr(inst, self.private_name, val)
-            
-            # Execute the decorated setter with the provided value
             validated_setter(instance, value)
 
         else:
+            # Now this only runs if NO validation was needed
             setattr(instance, self.private_name, value)
