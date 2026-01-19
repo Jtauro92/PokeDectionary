@@ -12,10 +12,16 @@ class Pokemon:
     ability1, ability2, hidden_ability = (AttrDescriptor() for _ in range(3))
     stats = StatsDescriptor()
 
-    def __init__(self, name: Optional[str] = None, number: Optional[int] = None, 
-                 type1: Optional[str] = None, type2: Optional[str] = None, 
-                 ability1: Optional[str] = None, ability2: Optional[str] = None, 
-                 hidden_ability: Optional[str] = None, stats: Tuple[int, ...] = ()):
+    def __init__(self, 
+                 name: Optional[str] = None, 
+                 number: Optional[int] = None, 
+                 type1: Optional[str] = None, 
+                 type2: Optional[str] = None, 
+                 ability1: Optional[str] = None, 
+                 ability2: Optional[str] = None, 
+                 hidden_ability: Optional[str] = None, 
+                 stats: Optional[Iterable[int]] = ()):
+
         self.name, self.number = name, number
         self.type1, self.type2 = type1, type2
         self.ability1, self.ability2, self.hidden_ability = ability1, ability2, hidden_ability
@@ -35,7 +41,7 @@ class Pokemon:
 
 
 if __name__ == "__main__":
-    p = Pokemon(stats=(45, 49, 49, 65, 65, 40))
+    p = Pokemon()
     p.name = 'Jason'
     p.type2 = 'Poison'
     print(p)

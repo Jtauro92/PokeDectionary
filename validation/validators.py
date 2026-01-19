@@ -123,7 +123,7 @@ def set_stat(func: Callable[[Any, int], None]) -> Callable[[Any, Any], None]:
     
     @wraps(func)
     def wrapper(self, value: Any):
-        if value == '' or value is None:
+        if value is None:
              raise ValueError("Stat cannot be empty!")
 
         try:

@@ -4,14 +4,14 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>8ecf9299-562a-4a62-b533-1a2d903d45ee</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>pokedex\pokemon.py</StartupFile>
+    <StartupFile>main.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>PokeDectionary</Name>
     <RootNamespace>PokeDectionary</RootNamespace>
-    <InterpreterId>MSBuild|Pokev|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>Global|VisualStudio|Pokev</InterpreterId>
     <IsWindowsApplication>False</IsWindowsApplication>
     <TestFramework>pytest</TestFramework>
     <UnitTestPattern>test*.py</UnitTestPattern>
@@ -60,17 +60,6 @@
     <Compile Include="pokedex\pokemon.py" />
   </ItemGroup>
   <ItemGroup>
-    <Interpreter Include="Pokev\">
-      <Id>Pokev</Id>
-      <Version>3.13</Version>
-      <Description>Pokev (Python 3.13 (64-bit))</Description>
-      <InterpreterPath>Scripts\python.exe</InterpreterPath>
-      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
-      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
-      <Architecture>X64</Architecture>
-    </Interpreter>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="pokedex\abilities.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -79,6 +68,10 @@
     <Folder Include="user_interface\" />
     <Folder Include="validation\" />
     <Folder Include="tools\" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="Global|VisualStudio|Pokev" />
+    <InterpreterReference Include="Global|VisualStudio|Scripts" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
