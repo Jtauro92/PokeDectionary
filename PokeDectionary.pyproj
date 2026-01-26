@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>8ecf9299-562a-4a62-b533-1a2d903d45ee</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>jobs\search_dex.py</StartupFile>
+    <StartupFile>pokedex\pokemon.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -71,7 +71,6 @@
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|VisualStudio|Pokev" />
-    <InterpreterReference Include="Global|VisualStudio|Scripts" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

@@ -29,11 +29,20 @@ class Pokemon:
 
     def __str__(self) -> str:
         s = self.stats
-        return (f"*----- {self.name or 'Default'}{f' #{self.number:04}' if self.number else ''} -----*\n"
-                f"Type: {self.type1 or ''}{f' / {self.type2}' if self.type2 else ''}\n"
-                f"Ability #1: {self.ability1 or ''}\nAbility #2: {self.ability2 or ''}\n"
-                f"Hidden Ability: {self.hidden_ability or ''}\n\n*--------Stats--------*\n"
-                f"HP: {s.hp}\nATK: {s.atk}\nDEF: {s.defn}\nSP.ATK: {s.spatk}\nSP.DEF: {s.spdef}\nSPEED: {s.speed}")
+        return "\n".join([f"*----- {self.name or 'Default'} {f'#{self.number:04}' if self.number else ''}-----*",
+                f"Type: {self.type1 or ''}{f"/ {self.type2}" if self.type2 else ''}",
+                f"Ability #1: {self.ability1 or ''}",
+                f"Ability #2: {self.ability2 or ''}",
+                f"Hidden Ability: {self.hidden_ability or ''}",
+                f"\n*--------Stats--------*",
+                f"HP: {s.hp}",
+                f"ATK: {s.atk}",
+                f"DEF: {s.defn}",
+                f"SP.ATK: {s.spatk}",
+                f"SP.DEF: {s.spdef}",
+                f"SPEED: {s.speed}"
+                ])
+
 
     def __iter__(self) -> Iterable:
         yield from (self.name, self.number, self.type1, self.type2, 
@@ -42,6 +51,6 @@ class Pokemon:
 
 if __name__ == "__main__":
     p = Pokemon()
-    p.name = 'Jason'
+    p.number = 25
     p.type2 = 'Poison'
     print(p)

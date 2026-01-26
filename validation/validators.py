@@ -123,21 +123,22 @@ def set_stat(func: Callable[[Any, int], None]) -> Callable[[Any, Any], None]:
     
     @wraps(func)
     def wrapper(self, value: Any):
-        if value is None:
-             raise ValueError("Stat cannot be empty!")
+        if value:
+            if value == '':
+                 raise ValueError("Stat cannot be empty!")
 
-        try:
-            stat = int(value)
-        except (ValueError, TypeError):
-            raise ValueError("Stat must be an integer")
+            try:
+                stat = int(value)
+            except (ValueError, TypeError):
+                raise ValueError("Stat must be an integer")
 
-        if stat == 0:
-            return # Abort/Skip
+            if stat == 0:
+                return # Abort/Skip
 
-        # Check if stat is within valid range
-        if stat not in range(1, 800):
-            raise ValueError("Stat must be between 1 and 800!")
+            # Check if stat is within valid range
+            if stat not in range(1, 800):
+                raise ValueError("Stat must be between 1 and 800!")
             
-        return func(self, stat)
+            return func(self, stat)
         
     return wrapper
