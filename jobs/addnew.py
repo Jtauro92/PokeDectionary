@@ -1,4 +1,5 @@
 '''Module to add a new Pokemon to the Pokedex database'''
+from genericpath import exists
 from user_interface.menus import AddNewMenu
 from tools import (clear_console, sleep, validation_loop as vl, getwch)
 from pokedex.pokemon import Pokemon as pk
@@ -25,46 +26,44 @@ class AddNewPokemon:
 
 
     '''Setters with validation loops for each attribute'''    
-    @vl
     def set_name(self):
         if get_pokemon(name := input("Enter name: ").title()):  # Check if the name already exists in the database
             raise ValueError(f'This pokemon already exists!')
         self.pkmn.name = name
 
-    @vl
     def set_number(self):
         if get_pokemon(number := input("Enter number: ")):# Check if the number already exists in the database
             raise ValueError(f'This pokemon already exists!')                 
         self.pkmn.number = number
 
-    @vl
     def set_type1(self):
         self.pkmn.type1 = input("Enter type 1: ")
 
-    @vl
     def set_type2(self):
         try:
             self.pkmn.type2 = input("Enter type 2 (or press Enter to skip): ")
         except ValueError:
             self.pkmn.type2 = None
         
-    @vl
     def set_ability1(self):
         self.pkmn.ability1 = input("Enter ability 1: ")
     
-    @vl
     def set_ability2(self):
         try:
             self.pkmn.ability2 = input("Enter ability 2: ")
         except ValueError:
             self.pkmn.ability2 = None
     
-    @vl
     def set_hidden_ability(self):
         try:
             self.pkmn.hidden_ability = input("Enter hidden ability: ")
         except ValueError:
             self.pkmn.hidden_ability = None
+
+    @vl
+    def _process_jobs(self, choice):
+        if choice in self.jobs:
+            self.jobs[choice]()
     
     def create_pokemon(self):
         '''Method to create a new Pokemon and add it to the database.'''
@@ -74,8 +73,7 @@ class AddNewPokemon:
 
         choice = getwch()
         
-        if choice in self.jobs:
-            self.jobs[choice]()
+        self._process_jobs(choice)
 
         if choice == "8":
             
