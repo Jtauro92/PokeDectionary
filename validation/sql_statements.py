@@ -33,7 +33,6 @@ ADD_TO_STATS = '''INSERT INTO stats (number) VALUES (?)'''
 ADD_POKEMON = '''INSERT INTO pokemon (name, number, type1, type2, ability1, ability2, hidden_ability)
                  VALUES (?, ?, ?, ?, ?, ?, ?)'''
 
-GET_STATUS = '''SELECT COUNT(*) FROM pokemon WHERE name = ? OR number = ?'''
 
 GET_POKEMON = '''SELECT p.name, p.number, p.type1, p.type2, p.ability1, p.ability2, p.hidden_ability,
                  s.hp, s.atk, s.def, s.spatk, s.spdef, s.speed
@@ -48,11 +47,10 @@ GET_BY_TYPE = '''SELECT p.name, p.number, p.type1, p.type2, p.ability1, p.abilit
                  FROM pokemon p
                  LEFT JOIN stats s ON p.number = s.number
                  WHERE p.type1 = ? OR p.type2 = ?'''
-EXIST_IN_DEX = '''SELECT COUNT(*) 
-                  FROM pokemon WHERE number = ? OR name = ?'''
+
 
 __all__ = [
             'CREATE_POKEMON_TABLE', 'CREATE_STATS_TABLE', 'POPULATE_STATS'
-            , 'UPDATE_STATS', 'ADD_POKEMON', 'GET_STATUS', 'GET_POKEMON', 
-            'GET_STATS', 'GET_BY_TYPE', 'EXIST_IN_DEX', 'ADD_TO_STATS'
+            , 'UPDATE_STATS', 'ADD_POKEMON', 'GET_POKEMON', 
+            'GET_STATS', 'GET_BY_TYPE', 'ADD_TO_STATS'
           ]

@@ -83,19 +83,6 @@ class Database(conn):
         else:
             print("Failed to add Pokemon to the database.")
 
-    def exists_in_db(self, identifier: Union[str, int]) -> Optional[Tuple]:
-        '''
-        Check if a Pokemon exists in the database by name or number.
-
-        Args:
-            identifier (str | int): The name or number to check.
-
-        Returns:
-            bool: True if exists, False otherwise.
-        '''
-        return self.get_pokemon(identifier) is not None
-
-
     def get_stats(self, identifier: Union[str, int]) -> Optional[Tuple]:
         '''
         Get a Pokemon's stats from the database.

@@ -2,8 +2,8 @@
 from user_interface.menus import AddNewMenu
 from tools import (clear_console, sleep, validation_loop as vl, getwch)
 from pokedex.pokemon import Pokemon as pk
-from pokedex import exist_in_db, add_pokemon
-from jobs.update_stats import UpdateStats
+from pokedex import add_pokemon
+from jobs.update_stats import UpdateStats, get_pokemon
 
 
 menu = AddNewMenu
@@ -27,15 +27,15 @@ class AddNewPokemon:
     '''Setters with validation loops for each attribute'''    
     @vl
     def set_name(self):
-        self.pkmn.name = input("Enter name: ")
-        if exist_in_db(self.pkmn.name):  # Check if the name already exists in the database
+        if get_pokemon(name := input("Enter name: ").title()):  # Check if the name already exists in the database
             raise ValueError(f'This pokemon already exists!')
+        self.pkmn.name = name
 
     @vl
     def set_number(self):
-        self.pkmn.number = input("Enter number: ")                   
-        if exist_in_db(self.pkmn.number):  # Check if the number already exists in the database
-            raise ValueError(f'This pokemon already exists!')
+        if get_pokemon(number := input("Enter number: ")):# Check if the number already exists in the database
+            raise ValueError(f'This pokemon already exists!')                 
+        self.pkmn.number = number
 
     @vl
     def set_type1(self):

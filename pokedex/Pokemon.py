@@ -27,6 +27,11 @@ class Pokemon:
         self.ability1, self.ability2, self.hidden_ability = ability1, ability2, hidden_ability
         self.stats = stats
 
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Pokemon):
+            return NotImplemented
+        return (self.name, self.number) == (other.name, other.number)
+
     def __str__(self) -> str:
         s = self.stats
         return "\n".join([f"*----- {self.name or 'Default'} {f'#{self.number:04}' if self.number else ''}-----*",
