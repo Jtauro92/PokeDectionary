@@ -5,9 +5,12 @@ from pokedex.stats import Stats
 
 class StatsDescriptor:
     """Descriptor to handle Stats assignment and conversion."""
+
+    # This method is called when the descriptor is assigned to a class attribute.
     def __set_name__(self, owner, name):
         self.private_name = f"_{name}"
 
+    # This method is called when the attribute is accessed. It retrieves the value from the instance's __dict__ using the private name.
     def __get__(self, instance, owner):
         if instance is None:
             return self

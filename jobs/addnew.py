@@ -1,5 +1,4 @@
 '''Module to add a new Pokemon to the Pokedex database'''
-from genericpath import exists
 from user_interface.menus import AddNewMenu
 from tools import (clear_console, sleep, validation_loop as vl, getwch)
 from pokedex.pokemon import Pokemon as pk
@@ -24,8 +23,7 @@ class AddNewPokemon:
             "7": self.set_hidden_ability
         }
 
-
-    '''Setters with validation loops for each attribute'''    
+    '''Setters for each attribute'''    
     def set_name(self):
         if get_pokemon(name := input("Enter name: ").title()):  # Check if the name already exists in the database
             raise ValueError(f'This pokemon already exists!')

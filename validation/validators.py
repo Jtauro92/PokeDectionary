@@ -19,10 +19,12 @@ def validate_name(func: Callable[[Any, str], None]) -> Callable[[Any, str], None
         # Check for '0' skip/default convention if intended, 
         # based on original code: if value == '0': name = value
         if name == '0':
-            return func(self, name)
+            return 
 
         if name.isnumeric():
             raise ValueError("Names cannot be numerical!")
+
+        
 
         return func(self, name)
 
@@ -49,10 +51,9 @@ def validate_number(func: Callable[[Any, int], None]) -> Callable[[Any, Any], No
 
         # Check for '0' skip convention
         if number == 0:
-            # Original code: if value != 0: check range. 
-            # If 0, it just calls func(self, 0)
-            pass 
-        elif not (1 <= number <= NUM_OF_POKEMON):
+            return
+
+        if not (1 <= number <= NUM_OF_POKEMON):
             raise ValueError(f"Number must be between 1 and {NUM_OF_POKEMON}!")
 
         return func(self, number)
