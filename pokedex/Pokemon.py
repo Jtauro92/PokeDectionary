@@ -21,7 +21,8 @@ class Pokemon:
                  ability1: str | None = None, 
                  ability2: str | None = None, 
                  hidden_ability: str | None = None, 
-                 stats: tuple[int] = ()):
+                 stats: tuple[int] = ()
+                 ):
 
         self.name, self.number = name, number
         self.type1, self.type2 = type1, type2
@@ -52,5 +53,4 @@ if __name__ == "__main__":
     p.hidden_ability = 'Lightning Rod'
     p.type1 = 'Electric'
     p.type2 = 'Poison'
-    p.stats = (27, 55, 40, 50, 50, 90)
     print(p)

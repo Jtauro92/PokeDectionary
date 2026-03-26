@@ -111,7 +111,7 @@ class Stats:
         Yields:
             The value of each stat in the order: HP, ATK, DEF, SP.ATK, SP.DEF, SPEED.
         """
-        yield from (getattr(self, attr) for attr in self.__slots__)
+        yield from (getattr(self, attr, '') for attr in self.__slots__)
 
 
 

@@ -69,8 +69,7 @@ class Table:
     @data.setter
     def data(self, value: object | list[str | int]):
         if isinstance(value, object):
-            data = [atr for atr in value]
-            self._data = [data[0:7],*data[7:]]
+            self._data = [atr for atr in value]
         elif isinstance(value, list):
             self._data = value
         else:

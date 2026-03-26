@@ -2,6 +2,7 @@
 from pokedex import get_pokemon, pokemon_generator
 from pokedex.pokemon import Pokemon as pk
 from user_interface.menus import SearchDex as menu
+from msvcrt import getwch, kbhit
 
 from tools import (clear_console, move_up, sleep, get_keypress,
                   hide_cursor, show_cursor, getwch)
@@ -48,37 +49,38 @@ class search_dex():
             display_list.append(item)
 
 
-            choice = get_keypress()
+            if kbhit():
+                choice = getwch()
 
-            if choice == '0':
-                raise ValueError
+                if choice == '0':
+                    raise ValueError
 
-            elif choice == '1':
-                while True:
-                    clear_console()
-                    show_cursor()
-                    try:
-                        self.search_alphanum()
+                elif choice == '1':
+                    while True:
                         clear_console()
-                        return
+                        show_cursor()
+                        try:
+                            self.search_alphanum()
+                            clear_console()
+                            return
                         
-                    except ValueError as e:
-                        clear_console()
-                        print(f"Error: {e}")
-                        sleep(1)
-                        continue
+                        except ValueError as e:
+                            clear_console()
+                            print(f"Error: {e}")
+                            sleep(1)
+                            continue
 
-            elif choice == '2':
-                clear_console()
-                print("Search by Type selected.")
-                sleep(1)
-                return
+                elif choice == '2':
+                    clear_console()
+                    print("Search by Type selected.")
+                    sleep(1)
+                    return
 
-            elif choice == '3':
-                clear_console()
-                print("View All Pokemon selected.")
-                sleep(1)
-                return
+                elif choice == '3':
+                    clear_console()
+                    print("View All Pokemon selected.")
+                    sleep(1)
+                    return
                 
             if len(display_list) < 10:
                 continue
