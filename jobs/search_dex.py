@@ -4,7 +4,7 @@ from pokedex.pokemon import Pokemon as pk
 from user_interface.menus import SearchDex as menu
 from msvcrt import getwch, kbhit
 
-from tools import (clear_console, move_up, sleep, get_keypress,
+from tools import (clear_console, move_up, sleep,
                   hide_cursor, show_cursor, getwch)
 
 class search_dex():
@@ -18,7 +18,7 @@ class search_dex():
         
         result = get_pokemon(identifier)
         if result:
-            return pk(*result[0:7], result[7:13])
+            return pk(*result[0:7], result[7:])
         else:
             raise ValueError("Pokemon not found")
 
@@ -36,19 +36,20 @@ class search_dex():
             else:
                 return
 
+    def search_type(self):
+        '''Method to search for Pokemon by type'''
+
 
     def search_dex(self):
         clear_console()
         print(menu())
 
         display_list = []
-        
+
         for pokemon in pokemon_generator():
             hide_cursor()
             item = f"{pokemon[0]:<13} | #{pokemon[1]:04}"
             display_list.append(item)
-
-
             if kbhit():
                 choice = getwch()
 
@@ -63,7 +64,7 @@ class search_dex():
                             self.search_alphanum()
                             clear_console()
                             return
-                        
+                    
                         except ValueError as e:
                             clear_console()
                             print(f"Error: {e}")
@@ -80,8 +81,8 @@ class search_dex():
                     clear_console()
                     print("View All Pokemon selected.")
                     sleep(1)
-                    return
-                
+                    return   
+
             if len(display_list) < 10:
                 continue
                 
@@ -93,6 +94,8 @@ class search_dex():
                 print("\n".join(display_list))
                 
                 sleep(0.5)
+
+   
 
 
     def main(self):
