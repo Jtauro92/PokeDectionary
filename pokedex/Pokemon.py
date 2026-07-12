@@ -4,9 +4,12 @@
 from typing import Iterable
 from validation.descriptors import AttrDescriptor, StatsDescriptor
 from tools import Table
+from pokedex.stats import Stats
+
 class Pokemon:
     '''Class representing a Pokemon with attributes and methods to manage its data.'''
-    __slots__ = ('_name', '_number', '_type1', '_type2', '_ability1', '_ability2', '_hidden_ability', '_stats')
+    __slots__ = ('_name', '_number', '_type1', '_type2', 
+                 '_ability1', '_ability2', '_hidden_ability', '_stats')
 
     # Using descriptors for validation and automatic conversion
     name, number, type1, type2 = (AttrDescriptor() for _ in range(4))
@@ -14,20 +17,25 @@ class Pokemon:
     stats = StatsDescriptor()
 
     def __init__(self, 
-                 name: str | None = None, 
-                 number: str | None = None, 
-                 type1: str | None = None, 
-                 type2: str | None = None, 
-                 ability1: str | None = None, 
-                 ability2: str | None = None, 
-                 hidden_ability: str | None = None, 
-                 stats: tuple[int] = ()
-                 ):
+                name: str | None = None, 
+                number: str | None = None, 
+                type1: str | None = None, 
+                type2: str | None = None, 
+                ability1: str | None = None, 
+                ability2: str | None = None, 
+                hidden_ability: str | None = None, 
+                hp: int | None = None,
+                atk: int | None = None,
+                defn: int | None = None,
+                spa: int | None = None,
+                spdef: int | None = None,
+                speed: int | None = None
+                    ):
 
         self.name, self.number = name, number
         self.type1, self.type2 = type1, type2
         self.ability1, self.ability2, self.hidden_ability = ability1, ability2, hidden_ability
-        self.stats = stats
+        self.stats = Stats(hp, atk, defn, spa, spdef, speed)
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, Pokemon):
@@ -53,4 +61,5 @@ if __name__ == "__main__":
     p.hidden_ability = 'Lightning Rod'
     p.type1 = 'Electric'
     p.type2 = 'Poison'
+    p.stats = (35, 55, 40, 50, 50, 90)
     print(p)

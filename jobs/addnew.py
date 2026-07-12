@@ -1,8 +1,9 @@
 '''Module to add a new Pokemon to the Pokedex database'''
 from user_interface.menus import AddNewMenu
-from tools import (clear_console, sleep, validation_loop as vl, getwch)
+from tools import (clear_console, sleep, validation_loop as vl, getwch, Grid)
 from pokedex.pokemon import Pokemon as pk
 from pokedex import add_pokemon
+from pokedex.constants import TYPE_LIST
 from jobs.update_stats import UpdateStats, get_pokemon
 
 
@@ -34,12 +35,52 @@ class AddNewPokemon:
             raise ValueError(f'This pokemon already exists!')                 
         self.pkmn.number = number
 
+    class SetType:
+        def __init__(self):
+            self.index = 0
+            self.type = ''
+        def _navigation(self):
+
+                if getwch() == "\r":
+                    return True
+                key = getwch()
+                    
+                if key == "H": #up arrow
+                    self.index -=3
+                if key == "P": #down arrow
+                    self.index  +=3
+                if key == "K": #left arrow
+                    self.index -=1
+                if key == "M": #right arrow
+                    self.index +=1
+                elif key == "\r":
+                    return True
+                if self.index > len(TYPE_LIST) - 1:
+                    self.index = 0
+
+                if self.index < 0:
+                    self.index = len(TYPE_LIST) - 1
+
+
+        def choose_type(self):
+            while True:
+                clear_console()
+                print("Choose a type:")
+                TYPE_LIST[self.index] = "-> " + TYPE_LIST[self.index] + " <-"
+                grid = Grid(TYPE_LIST,6, 3)
+                print(grid)
+                TYPE_LIST[self.index] = TYPE_LIST[self.index].replace("-> ", "").replace(" <-", "")
+                if self._navigation():
+                    self.type = TYPE_LIST[self.index]
+                    print(f"You chose {self.type}")
+                    return self.type
+
     def set_type1(self):
-        self.pkmn.type1 = input("Enter type 1: ")
+        self.pkmn.type1 = self.SetType().choose_type()
 
     def set_type2(self):
         try:
-            self.pkmn.type2 = input("Enter type 2 (or press Enter to skip): ")
+            self.pkmn.type2 = self.SetType().choose_type()
         except ValueError:
             self.pkmn.type2 = None
         
@@ -121,6 +162,8 @@ class AddNewPokemon:
                 self.create_pokemon()
             except ValueError:
                 break
+ 
+
 
 
 

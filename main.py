@@ -2,7 +2,7 @@ from jobs import AddNewPokemon as an, search_dex as sd, UpdateStats as us
 from tools import kbhit
 from user_interface.menus import MainMenu
 from tools import *
-
+import sys
 class Main:
     
     def __init__(self):
@@ -38,8 +38,7 @@ class Main:
         choice = getwch()
         clear_console()
         if choice == '0':
-            print("Exiting the program. Goodbye!")
-            raise SystemExit
+            sys.exit("Exiting the program. Goodbye!")
         elif choice in self.jobs:
             self.jobs[choice]()
         else:
@@ -49,10 +48,8 @@ class Main:
 
     def main(self):
         while True:
-            try:
-                self.process_job()
-                clear_console()
-            except SystemExit:
-                return
+
+            self.process_job()
+
        
 Main().main()

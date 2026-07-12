@@ -94,5 +94,34 @@ class Table:
             ""
         ])
 
+class Grid:
+    def __init__(self, items: list, rows: int, cols: int):
+        self._items = items
+        self.rows = rows
+        self.cols = cols
+
+    @property
+    def items(self):
+        return self._items
+
+    def __str__(self) -> str:
+        output = ""
+        separator = "*" + "=" * (self.cols * 17 - 1) + "*\n"
+        for i in range(self.rows):
+            # Calculate the start and end indices for the current row
+            start_idx = i * self.cols
+            end_idx = start_idx + self.cols
+            row_items = self.items[start_idx:end_idx]
+            output += separator + " | ".join(f"{item:^15}" for item in row_items) + "\n"
+
+        return output
+
+
+
 __all__ = ['clear_console', 'sleep',
           'move_up', 'hide_cursor', 'show_cursor', 'validation_loop', 'get_keypress', 'getwch']
+
+if '__main__' == __name__:
+   grid = Grid(['Pikachu', 'Bulbasaur', 'Charmander', 'Squirtle', 'Eevee', 'Snorlax',
+                'Flareon'], 4, 3)
+   print(grid)
