@@ -127,7 +127,7 @@ class AddNewPokemon:
             clear_console()
             print('PRESS ENTER TO TRY AGAIN OR ANY KEY TO EXIT: ')
             cont = getwch()
-            if cont != '':
+            if cont != '\r':
                 raise ValueError
                
 
