@@ -77,8 +77,6 @@ def set_type(func: Callable[[Any, str], None]) -> Callable[[Any, str], None]:
         if not value:
              raise ValueError("Type cannot be empty!")
 
-        if value not in TYPE_LIST:
-            raise ValueError("This type does not exist!")
 
         # Check for duplicate types
         # Note: This prevents setting type1 to "FIRE" if type2 is "FIRE".

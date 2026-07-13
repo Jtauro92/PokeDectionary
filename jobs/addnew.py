@@ -53,10 +53,9 @@ class AddNewPokemon:
                     self.index -=1
                 if key == "M": #right arrow
                     self.index +=1
-                elif key == "\r":
-                    return True
+
                 if self.index > len(TYPE_LIST) - 1:
-                    self.index = 0
+                    self.index = self.index % len(TYPE_LIST)
 
                 if self.index < 0:
                     self.index = len(TYPE_LIST) - 1
