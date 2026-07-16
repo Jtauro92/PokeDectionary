@@ -62,5 +62,5 @@ if __name__ == "__main__":
     p.hidden_ability = 'Lightning Rod'
     p.type1 = 'Electric'
     p.type2 = 'Poison'
-    p.stats = (35, 55, 40, 50, 50, 360)
+    p.stats = (35, 55, 40, 50, 50, 600)
     print(p)

@@ -57,7 +57,7 @@ def validation_loop(func: Callable) -> Callable:
 class Table:
     COL_NAMES = ["Ability 1", 
                  "Ability 2", "HAbility"]
-    COL_WIDTHS = [15, 15, 15]
+    COL_WIDTHS = [15, 15, 17]
 
     def __init__(self, data: object | list[str | int] =[]):
         self._data = data
@@ -82,7 +82,7 @@ class Table:
         self.data[6] = self.data[6] if self.data[6] else ""
         columns = [f"{name:^{width}}" for name, width in zip(self.COL_NAMES, self.COL_WIDTHS)]
         row = [f"{value:^{width}}" for value, width in zip(self.data[4:7], self.COL_WIDTHS)]
-        separator = "*" + "=" * (sum(self.COL_WIDTHS) + 5) + "*"
+        separator = "*" + "=" * (sum(self.COL_WIDTHS)) + "*"
 
         return "\n".join([
             header,
@@ -124,7 +124,7 @@ class Bar_Graph:
     def __str__(self) -> str:
         max_value = max(self.data)
         scale = self.max_width / max_value if max_value > 0 else 1
-        output = "\nBase Stats\n"
+        output = f"{'\n+================== Base Stats ==================+\n'}"
         for value, attr in zip(self.data, self.attr):
             bar_length = int(value * scale)
             output = f"{output}{attr}: " + '█' * bar_length + f"{value:>3}\n"
