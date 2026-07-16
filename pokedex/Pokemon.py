@@ -3,7 +3,7 @@
 
 from typing import Iterable
 from validation.descriptors import AttrDescriptor, StatsDescriptor
-from tools import Table
+from tools import Table, Bar_Graph
 from pokedex.stats import Stats
 
 class Pokemon:
@@ -45,7 +45,8 @@ class Pokemon:
     def __str__(self) -> str:
         table = Table()
         table.data = self
-        return str(table)
+        bar = Bar_Graph(self.stats)
+        return str(table) + str(bar)
 
 
     def __iter__(self) -> Iterable:
@@ -61,5 +62,5 @@ if __name__ == "__main__":
     p.hidden_ability = 'Lightning Rod'
     p.type1 = 'Electric'
     p.type2 = 'Poison'
-    p.stats = (35, 55, 40, 50, 50, 90)
+    p.stats = (35, 55, 40, 50, 50, 360)
     print(p)

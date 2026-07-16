@@ -56,8 +56,8 @@ def validation_loop(func: Callable) -> Callable:
 
 class Table:
     COL_NAMES = ["Ability 1", 
-                 "Ability 2", "HAbility", "HP", "Attack", "Defense", "SP.ATK", "SP.DEF", "Speed"]
-    COL_WIDTHS = [15, 15, 15, 8, 9, 7, 8, 6, 6]
+                 "Ability 2", "HAbility"]
+    COL_WIDTHS = [15, 15, 15]
 
     def __init__(self, data: object | list[str | int] =[]):
         self._data = data
@@ -76,12 +76,12 @@ class Table:
             raise ValueError("Data must be a string, integer, or list of strings/integers.")
 
     def __str__(self) -> str:
-        header = f"{f'Name: {self.data[0]} | ID: {self.data[1]}':^90}"
-        typing = f"{f"Type: {self.data[2]} / {self.data[3]}":^90}" if self.data[3] else f"{f'Type: {self.data[2]}':^90}"
+        header = f"{f'Name: {self.data[0]} | ID: {self.data[1]}':^50}"
+        typing = f"{f"Type: {self.data[2]} / {self.data[3]}":^50}" if self.data[3] else f"{f'Type: {self.data[2]}':^90}"
         self.data[5] = self.data[5] if self.data[5] else ""
         self.data[6] = self.data[6] if self.data[6] else ""
         columns = [f"{name:^{width}}" for name, width in zip(self.COL_NAMES, self.COL_WIDTHS)]
-        row = [f"{value:^{width}}" for value, width in zip(self.data[4:], self.COL_WIDTHS)]
+        row = [f"{value:^{width}}" for value, width in zip(self.data[4:7], self.COL_WIDTHS)]
         separator = "*" + "=" * (sum(self.COL_WIDTHS) + 5) + "*"
 
         return "\n".join([
@@ -115,6 +115,20 @@ class Grid:
             output += separator + " | ".join(f"{item:^15}" for item in row_items) + "\n"
 
         return output
+
+class Bar_Graph:
+    def __init__(self, data: list[int], max_width: int = 50):
+        self.data = data
+        self.max_width = max_width
+        self.attr = ["HP ", "ATK", "DEF", "SPA", "SPD", "SPE"]
+    def __str__(self) -> str:
+        max_value = max(self.data)
+        scale = self.max_width / max_value if max_value > 0 else 1
+        output = "\nBase Stats\n"
+        for value, attr in zip(self.data, self.attr):
+            bar_length = int(value * scale)
+            output = f"{output}{attr}: " + '█' * bar_length + f"{value:>3}\n"
+        return output   
 
 
 

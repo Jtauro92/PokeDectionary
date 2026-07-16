@@ -2,7 +2,7 @@
 from functools import wraps
 from typing import Callable, Any
 # Removed tools import as per previous instruction to decouple UI
-from pokedex.constants import ABILITIES, NUM_OF_POKEMON, TYPE_LIST
+from pokedex.constants import ABILITIES, NUM_OF_POKEMON
 
 
 def validate_name(func: Callable[[Any, str], None]) -> Callable[[Any, str], None]:
@@ -66,6 +66,7 @@ def set_type(func: Callable[[Any, str], None]) -> Callable[[Any, str], None]:
 
     @wraps(func)
     def wrapper(self, value: str):
+        
         if not isinstance(value, str):
             return func(self, value)
 
