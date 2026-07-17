@@ -130,7 +130,7 @@ def set_stat(func: Callable[[Any, int], None]) -> Callable[[Any, Any], None]:
             try:
                 stat = int(value)
             except (ValueError, TypeError):
-                raise ValueError("Stat must be an integer")
+                stat = 0 # Invalid input, will be handled below
 
             if stat == 0:
                 return # Abort/Skip
