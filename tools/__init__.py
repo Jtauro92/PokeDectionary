@@ -77,13 +77,13 @@ class Table:
 
     def __str__(self) -> str:
         header = f"{f'Name: {self.data[0]} | ID: {self.data[1]}':^50}"
-        typing = f"{f"Type: {self.data[2]} / {self.data[3]}":^50}" if self.data[3] else f"{f'Type: {self.data[2]}':^90}"
+        typing = f"{f"Type: {self.data[2]} / {self.data[3]}":^50}" if self.data[3] else f"{f'Type: {self.data[2]}':^50}"
         self.data[5] = self.data[5] if self.data[5] else ""
         self.data[6] = self.data[6] if self.data[6] else ""
         columns = [f"{name:^{width}}" for name, width in zip(self.COL_NAMES, self.COL_WIDTHS)]
         row = [f"{value:^{width}}" for value, width in zip(self.data[4:7], self.COL_WIDTHS)]
         separator = "*" + "=" * (sum(self.COL_WIDTHS)) + "*"
-
+        bar = Bar_Graph(self.data[7:])
         return "\n".join([
             header,
             typing,
@@ -91,7 +91,8 @@ class Table:
             "|".join(columns),
             separator,
             "|".join(row),
-            ""
+            str(bar)
+            
         ])
 
 class Grid:
@@ -118,9 +119,19 @@ class Grid:
 
 class Bar_Graph:
     def __init__(self, data: list[int], max_width: int = 50):
-        self.data = data
+        self._data = data
         self.max_width = max_width
         self.attr = ["HP ", "ATK", "DEF", "SPA", "SPD", "SPE"]
+
+    @property
+    def data(self) -> list[int]:
+        return self._data
+    @data.setter
+    def data(self, value: list[int]):
+        if not isinstance(value, list) or len(value) != 6:
+            raise ValueError("Data must be a list of 6 integers.")
+        self._data = value
+
     def __str__(self) -> str:
         max_value = max(self.data)
         scale = self.max_width / max_value if max_value > 0 else 1

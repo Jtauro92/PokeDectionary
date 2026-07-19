@@ -45,8 +45,7 @@ class Pokemon:
     def __str__(self) -> str:
         table = Table()
         table.data = self
-        bar = Bar_Graph(self.stats)
-        return str(table) + str(bar)
+        return str(table)
 
 
     def __iter__(self) -> Iterable:

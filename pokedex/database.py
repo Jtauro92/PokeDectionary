@@ -64,7 +64,7 @@ class Database(conn):
             pkmn: The Pokemon object containing stats and number.
         '''
         # pkmn.stats is iterable (Stats object)
-        values = tuple(pkmn.stats)
+        values = (pkmn.stats)
         try:
             self.execute(UPDATE_STATS, (*values, pkmn.number))
         except se:

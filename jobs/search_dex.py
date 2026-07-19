@@ -18,7 +18,7 @@ class search_dex():
         
         result = get_pokemon(identifier)
         if result:
-            return pk(*result[0:7], result[7:])
+            return pk(*result)
         else:
             raise ValueError("Pokemon not found")
 

@@ -15,7 +15,7 @@ CREATE_STATS_TABLE = '''CREATE TABLE IF NOT EXISTS stats(
                             number INTEGER PRIMARY KEY,
                             hp INTEGER,
                             atk INTEGER,
-                            def INTEGER,
+                            defn INTEGER,
                             spatk INTEGER,
                             spdef INTEGER,
                             speed INTEGER,
@@ -26,7 +26,7 @@ POPULATE_STATS = '''INSERT OR IGNORE INTO stats (number)
                               SELECT number FROM pokemon'''
 
 UPDATE_STATS = '''UPDATE stats 
-                  SET hp = ?, atk = ?, def = ?, spatk = ?, spdef = ?, speed = ? 
+                  SET hp = ?, atk = ?, defn = ?, spatk = ?, spdef = ?, speed = ? 
                   WHERE number = ?'''
 ADD_TO_STATS = '''INSERT INTO stats (number) VALUES (?)'''
 
@@ -40,7 +40,7 @@ GET_POKEMON = '''SELECT p.name, p.number, p.type1, p.type2, p.ability1, p.abilit
                  LEFT JOIN stats s ON p.number = s.number
                  WHERE p.name = ? OR p.number = ?'''
 
-GET_STATS = '''SELECT hp, atk, def, spatk, spdef, speed FROM stats WHERE number = ?'''
+GET_STATS = '''SELECT hp, atk, defn, spatk, spdef, speed FROM stats WHERE number = ?'''
 
 GET_BY_TYPE = '''SELECT p.name, p.number, p.type1, p.type2, p.ability1, p.ability2, p.hidden_ability,
                  s.hp, s.atk, s.def, s.spatk, s.spdef, s.speed
