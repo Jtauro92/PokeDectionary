@@ -2,10 +2,12 @@
 
 from sqlite3 import Connection as conn, Error as se
 from typing import Optional, Tuple, Union
-from validation.sql_statements import *
+from validation.sql_statements import * 
+import requests
 
 DB_NAME = "pokemon_database.db"
 
+base_url = "https://pokeapi.co/api/v2/pokemon/"
 
 class Database(conn):
     '''Manages interactions with the Pokemon SQLite database.'''
@@ -13,6 +15,26 @@ class Database(conn):
     def __init__(self):
         super().__init__(DB_NAME, isolation_level=None)
         self._initialize_tables()
+        count = 0
+        while count <= 1025:
+            try:
+                response = requests.get(f"{base_url}{count}")
+                if response.status_code == 200:
+                    data = response.json()
+                    name = data['name'].capitalize()
+                    number = data['id']
+                    type1 = data['types'][0]['type']['name'].upper() if len(data['types']) > 0 else None
+                    type2 = data['types'][1]['type']['name'].upper() if len(data['types']) > 1 else None
+                    ability1 = data['abilities'][0]['ability']['name'].replace('-', ' ').title() if len(data['abilities']) > 0 else None
+                    ability2 = data['abilities'][1]['ability']['name'].replace('-', ' ').title() if len(data['abilities']) > 1 and data['abilities'][1]['is_hidden'] == False else None
+                    hidden_ability = next((ab['ability']['name'].replace('-', ' ').title() for ab in data['abilities'] if ab.get('is_hidden')), None)
+                    
+                    # Add the Pokemon to the database
+                    self.execute(ADD_POKEMON, (name, number, type1, type2, ability1, ability2, hidden_ability))
+                count += 1
+            except Exception as e:
+                print(f"Error fetching data for Pokemon {count}: {e}")
+                return
 
     def _initialize_tables(self) -> None:
         '''Create necessary tables if they do not exist.'''
