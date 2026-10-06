@@ -35,7 +35,7 @@ ADD_POKEMON = '''INSERT INTO pokemon (name, number, type1, type2, ability1, abil
 
 
 GET_POKEMON = '''SELECT p.name, p.number, p.type1, p.type2, p.ability1, p.ability2, p.hidden_ability,
-                 s.hp, s.atk, s.def, s.spatk, s.spdef, s.speed
+                 s.hp, s.atk, s.defn, s.spatk, s.spdef, s.speed
                  FROM pokemon p
                  LEFT JOIN stats s ON p.number = s.number
                  WHERE p.name = ? OR p.number = ?'''
@@ -43,7 +43,7 @@ GET_POKEMON = '''SELECT p.name, p.number, p.type1, p.type2, p.ability1, p.abilit
 GET_STATS = '''SELECT hp, atk, defn, spatk, spdef, speed FROM stats WHERE number = ?'''
 
 GET_BY_TYPE = '''SELECT p.name, p.number, p.type1, p.type2, p.ability1, p.ability2, p.hidden_ability,
-                 s.hp, s.atk, s.def, s.spatk, s.spdef, s.speed
+                 s.hp, s.atk, s.defn, s.spatk, s.spdef, s.speed
                  FROM pokemon p
                  LEFT JOIN stats s ON p.number = s.number
                  WHERE p.type1 = ? OR p.type2 = ?'''

@@ -15,7 +15,7 @@ class Database(conn):
     def __init__(self):
         super().__init__(DB_NAME, isolation_level=None)
         self._initialize_tables()
-        count = 0
+        count = 1
         while count <= 1025:
             try:
                 response = requests.get(f"{base_url}{count}")
@@ -31,10 +31,10 @@ class Database(conn):
                     
                     # Add the Pokemon to the database
                     self.execute(ADD_POKEMON, (name, number, type1, type2, ability1, ability2, hidden_ability))
-                count += 1
+                    count += 1
             except Exception as e:
                 print(f"Error fetching data for Pokemon {count}: {e}")
-                return
+            break
 
     def _initialize_tables(self) -> None:
         '''Create necessary tables if they do not exist.'''
