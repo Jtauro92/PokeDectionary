@@ -48,7 +48,7 @@ class search_dex():
 
         for pokemon in pokemon_generator():
             hide_cursor()
-            item = f"{pokemon[0]:<13} | #{pokemon[1]:04}"
+            item = f"{pokemon[0]:<13}      |  #{pokemon[1]:04}             "
             display_list.append(item)
             if kbhit():
                 choice = getwch()

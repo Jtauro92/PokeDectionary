@@ -3,6 +3,8 @@
 from sqlite3 import Connection as conn, Error as se
 from typing import Optional, Tuple, Union
 from validation.sql_statements import * 
+from pokedex.constants import NUM_OF_POKEMON
+from pokedex.pokemon import Pokemon as pkmn
 import requests
 
 DB_NAME = "pokemon_database.db"
@@ -15,26 +17,6 @@ class Database(conn):
     def __init__(self):
         super().__init__(DB_NAME, isolation_level=None)
         self._initialize_tables()
-        count = 1
-        while count <= 1025:
-            try:
-                response = requests.get(f"{base_url}{count}")
-                if response.status_code == 200:
-                    data = response.json()
-                    name = data['name'].capitalize()
-                    number = data['id']
-                    type1 = data['types'][0]['type']['name'].upper() if len(data['types']) > 0 else None
-                    type2 = data['types'][1]['type']['name'].upper() if len(data['types']) > 1 else None
-                    ability1 = data['abilities'][0]['ability']['name'].replace('-', ' ').title() if len(data['abilities']) > 0 else None
-                    ability2 = data['abilities'][1]['ability']['name'].replace('-', ' ').title() if len(data['abilities']) > 1 and data['abilities'][1]['is_hidden'] == False else None
-                    hidden_ability = next((ab['ability']['name'].replace('-', ' ').title() for ab in data['abilities'] if ab.get('is_hidden')), None)
-                    
-                    # Add the Pokemon to the database
-                    self.execute(ADD_POKEMON, (name, number, type1, type2, ability1, ability2, hidden_ability))
-                    count += 1
-            except Exception as e:
-                print(f"Error fetching data for Pokemon {count}: {e}")
-            break
 
     def _initialize_tables(self) -> None:
         '''Create necessary tables if they do not exist.'''
@@ -48,6 +30,46 @@ class Database(conn):
                 pass
         except se as e:
             print(f"Error initializing tables: {e}")
+            return
+        start = self._get_resume_id()
+        if start <= NUM_OF_POKEMON:
+            self._populate_from_PokeAPI(start)
+
+    def _get_resume_id(self) -> int:
+        '''Get the ID of the last Pokemon added to the database.'''
+        result = self.fetchone("SELECT COUNT(*) FROM pokemon")
+        return result[0] + 1 if result else 0
+
+    def _populate_from_PokeAPI(self, start_id: int) -> None:
+        '''Populate the database with Pokemon data from the PokeAPI starting from a specific ID.'''
+        for count in range(start_id, NUM_OF_POKEMON + 1):
+            try:
+                response = requests.get(f"{base_url}{count}")
+                if response.status_code == 200:
+                    data = response.json()
+                    pk = pkmn()
+                    pk.name = data['name'].title()
+                    pk.number = data['id']
+                    pk.type1 = data['types'][0]['type']['name'].upper() if len(data['types']) > 0 else None
+                    pk.type2 = data['types'][1]['type']['name'].upper() if len(data['types']) > 1 else None
+                    pk.ability1 = data['abilities'][0]['ability']['name'].replace('-', ' ').title() if len(data['abilities']) > 0 else None
+                    pk.ability2 = next((ab['ability']['name'].replace('-', ' ').title() for ab in data['abilities'][1:] if not ab.get('is_hidden')), None)
+                    pk.hidden_ability = next((ab['ability']['name'].replace('-', ' ').title() for ab in data['abilities'] if ab.get('is_hidden')), None)
+                    pk.stats.hp = data['stats'][0]['base_stat']
+                    pk.stats.atk = data['stats'][1]['base_stat']
+                    pk.stats.defn = data['stats'][2]['base_stat']
+                    pk.stats.spatk = data['stats'][3]['base_stat']
+                    pk.stats.spdef = data['stats'][4]['base_stat']
+                    pk.stats.speed = data['stats'][5]['base_stat']
+
+                    # Add the Pokemon to the database
+                    self.add_pokemon(pk)
+                    self.update_stats(pk)
+                    print(f"Added Pokemon {pk.name} (#{pk.number:04}) to the database.")
+
+            except Exception as e:
+                print(f"Error fetching data for Pokemon {count}: {e}")
+                break
 
     def execute(self, sql: str, parameters: tuple = ()) -> None:
         '''
