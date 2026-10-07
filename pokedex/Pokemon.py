@@ -5,6 +5,7 @@ from typing import Iterable
 from validation.descriptors import AttrDescriptor, StatsDescriptor
 from tools import Table, Bar_Graph
 from pokedex.stats import Stats
+import requests
 
 class Pokemon:
     '''Class representing a Pokemon with attributes and methods to manage its data.'''
@@ -45,12 +46,22 @@ class Pokemon:
     def __str__(self) -> str:
         table = Table()
         table.data = self
-        return str(table)
+        return str(table) + f"\n{self._flavor_text()}"
 
 
     def __iter__(self) -> Iterable:
         yield from (self.name, self.number, self.type1, self.type2, 
                     self.ability1, self.ability2, self.hidden_ability, *self.stats)
+
+    def _flavor_text(self) -> str:
+        base_url = f"https://pokeapi.co/api/v2/pokemon-species/{self.name}"
+        response = requests.get(base_url)
+        if response.status_code == 200:
+            data = response.json()
+            for entry in data['flavor_text_entries']:
+                if entry['language']['name'] == 'en':
+                    return entry['flavor_text'].replace('\n', ' ').replace('\f', ' ')
+        return "No flavor text available."
 
 
 if __name__ == "__main__":
