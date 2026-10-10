@@ -34,6 +34,7 @@ class Main:
 
 
     def process_job(self):
+        clear_console()
         print(MainMenu())
         choice = getwch()
         clear_console()
