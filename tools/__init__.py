@@ -96,18 +96,23 @@ class Table:
         ])
 
 class Grid:
+    '''Class to display a grid of items in a formatted manner'''
+
     def __init__(self, items: list, rows: int, cols: int):
         self._items = items
         self.rows = rows
         self.cols = cols
+    '''Initialize the Grid with a list of items and the number of rows and columns.'''
 
     @property
     def items(self):
+        '''Property to get the items in the grid.'''
         return self._items
 
     def __str__(self) -> str:
+        '''Return a string representation of the grid.'''
         output = ""
-        separator = "*" + "=" * (self.cols * 17 - 1) + "*\n"
+        separator = "*" + "=" * (self.cols * 17 - 1) + "*\n" # Create a separator line
         for i in range(self.rows):
             # Calculate the start and end indices for the current row
             start_idx = i * self.cols

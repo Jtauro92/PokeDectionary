@@ -62,7 +62,8 @@ class AddNewPokemon:
 
 
         def choose_type(self):
-            while True:
+            '''Method to choose a type from the TYPE_LIST using arrow keys and enter key.'''
+            while True: # Loop until a type is chosen
                 clear_console()
                 print("Choose a type:")
                 TYPE_LIST[self.index] = "-> " + TYPE_LIST[self.index] + " <-"
