@@ -23,17 +23,24 @@ class StatsDescriptor:
         setattr(instance, self.private_name, value)
 
 class AttrDescriptor(StatsDescriptor):
+    '''Descriptor to handle attribute assignment with validation.'''
     def __init__(self):
         super().__init__()
 
     def __set__(self, instance, value):
-        if self.private_name == "_name":
-            @validate_name
-            def validated_setter(inst, val):   
-                setattr(inst, self.private_name, val)
-            validated_setter(instance, value)
+        '''Apply validation to the assigned value.'''
+        if self.private_name == "_name": #Set the private name for the attribute
+            @validate_name # Apply the name validation decorator
+            def validated_setter(inst, val):
+                '''Set the validated value to the instance's private attribute.
+                   Args:
+                    inst: The instance to set the attribute on.
+                    val: The value to set.
+                '''
+                setattr(inst, self.private_name, val) # Set the validated value to the instance's private attribute
+            validated_setter(instance, value) # Call the validated setter with the instance and value
 
-        elif self.private_name == "_number":  # Changed to elif
+        elif self.private_name == "_number":  # set the private name for the attribute
             @validate_number
             def validated_setter(inst, val):
                 setattr(inst, self.private_name, val)

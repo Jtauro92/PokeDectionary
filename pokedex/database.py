@@ -42,6 +42,8 @@ class Database(conn):
 
     def _populate_from_PokeAPI(self, start_id: int) -> None:
         '''Populate the database with Pokemon data from the PokeAPI starting from a specific ID.'''
+
+
         for count in range(start_id, NUM_OF_POKEMON + 1):
             try:
                 response = requests.get(f"{base_url}{count}")

@@ -5,12 +5,14 @@ from jobs.addnew import AddNewPokemon
 
 
 class TestAddNewPokemon(unittest.TestCase):
+    '''Test the AddNewPokemon class.'''
 
     def test_set_name_numerical_input_raises_value_error(self):
+        '''Test that set_name raises a ValueError when a numerical input is provided.'''
         add_new = AddNewPokemon()
-        with patch('builtins.input', return_value='123'):
-            with self.assertRaises(ValueError):
-                add_new.set_name()
+        with patch('builtins.input', return_value='123'): #patch input to return a numerical string
+            with self.assertRaisesRegex(ValueError, "Names cannot be numerical!"): #expect a ValueError with the specific message
+                add_new.set_name() #invoke the method that should validate the input
 
     def test_set_name_existing_pokemon_raises_value_error(self):
         add_new = AddNewPokemon()
@@ -20,16 +22,19 @@ class TestAddNewPokemon(unittest.TestCase):
 
     def test_set_name_valid_input_capitalization(self):
         add_new = AddNewPokemon()
-        with patch('builtins.input', return_value='pikachu') \
-            as input_mock, \
-            patch('jobs.addnew.get_pokemon', return_value=None) \
-            as get_pokemon_mock:
+        with patch('builtins.input', return_value='jason'):
                 add_new.set_name()
-                self.assertEqual(add_new.pkmn.name, 'Pikachu')
+                self.assertEqual(add_new.pkmn.name, 'Jason')
 
     def test_set_number_string_input_raises_value_error(self):
         add_new = AddNewPokemon()
         with patch('builtins.input', return_value='abc'):
+            with self.assertRaises(ValueError):
+                add_new.set_number()
+
+    def test_set_number_existing_pokemon_raises_value_error(self):
+        add_new = AddNewPokemon()
+        with patch('builtins.input', return_value='25'):
             with self.assertRaises(ValueError):
                 add_new.set_number()
 

@@ -4,7 +4,7 @@ from tools import (clear_console, sleep, validation_loop as vl, getwch, Grid)
 from pokedex.pokemon import Pokemon as pk
 from pokedex import add_pokemon
 from pokedex.constants import TYPE_LIST
-from jobs.update_stats import UpdateStats, get_pokemon
+from jobs.update_stats import UpdateStats
 
 
 menu = AddNewMenu
@@ -26,14 +26,10 @@ class AddNewPokemon:
 
     '''Setters for each attribute'''    
     def set_name(self):
-        if get_pokemon(name := input("Enter name: ").title()):  # Check if the name already exists in the database
-            raise ValueError(f'This pokemon already exists!')
-        self.pkmn.name = name
+        self.pkmn.name = input("Enter name: ").title()
 
     def set_number(self):
-        if get_pokemon(number := input("Enter number: ")):# Check if the number already exists in the database
-            raise ValueError(f'This pokemon already exists!')                 
-        self.pkmn.number = number
+        self.pkmn.number = input("Enter number: ")
 
     class SetType:
         def __init__(self):

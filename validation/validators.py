@@ -5,6 +5,7 @@ from typing import Callable, Any
 from pokedex.constants import ABILITIES, NUM_OF_POKEMON
 
 
+
 def validate_name(func: Callable[[Any, str], None]) -> Callable[[Any, str], None]:
     '''Function to validate and set a Pokemon's name'''
 
@@ -23,8 +24,10 @@ def validate_name(func: Callable[[Any, str], None]) -> Callable[[Any, str], None
 
         if name.isnumeric():
             raise ValueError("Names cannot be numerical!")
+        from pokedex import get_pokemon
+        if get_pokemon(name):
+            raise ValueError(f"This Pokemon already exists!")
 
-        
 
         return func(self, name)
 
@@ -55,6 +58,10 @@ def validate_number(func: Callable[[Any, int], None]) -> Callable[[Any, Any], No
 
         if not (1 <= number <= NUM_OF_POKEMON):
             raise ValueError(f"Number must be between 1 and {NUM_OF_POKEMON}!")
+
+        from pokedex import get_pokemon
+        if get_pokemon(number):
+            raise ValueError(f"This Pokemon already exists!")
 
         return func(self, number)
         
